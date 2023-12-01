@@ -28,7 +28,7 @@ def remove_deprecated() -> None:
     client: DockerClient = from_env()
     if client.ping():
         docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
-        for registry_id in track(DEPRECATED, description="Remove images deprecated by workspace."):
+        for registry_id in track(DEPRECATED, "Remove deprecated images:".ljust(35)):
             if registry_id in docker_images:
                 client.images.remove(registry_id)
                 print(f"<Image: '{ registry_id }'> removed.")

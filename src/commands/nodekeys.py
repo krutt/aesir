@@ -28,7 +28,7 @@ def nodekeys() -> None:
     """Fetch nodekeys from active LND containers."""
     client: DockerClient = from_env()
     if client.ping():
-        for container in track(client.containers.list(), description="Fetch LND nodekeys."):
+        for container in track(client.containers.list(), "Fetch LND nodekeys:".ljust(35)):
             if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
                 info: NodeInfo = TypeAdapter(NodeInfo).validate_json(
                     container.exec_run(

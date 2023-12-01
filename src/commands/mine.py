@@ -39,7 +39,7 @@ def mine(blockcount: int, blocktime: int) -> None:
     client: DockerClient = from_env()
     if client.ping():
         mining_targets: List[str] = []
-        for container in track(client.containers.list(), description="Generate mining treasuries"):
+        for container in track(client.containers.list(), "Generate mining treasuries:".ljust(35)):
             if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
                 new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                     container.exec_run(
