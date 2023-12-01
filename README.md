@@ -6,8 +6,6 @@
 
 [![Tranche Banner](static/tranche-banner.svg)](static/tranche-banner.svg)
 
-## Command line interface used for generating local Lightning test environment
-
 ### Known issues
 ```python
 docker.errors.DockerException: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))
