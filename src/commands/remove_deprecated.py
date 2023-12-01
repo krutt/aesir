@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/commands/remove_deprecated.py
-# VERSION: 	   0.1.0
+# VERSION: 	   0.2.0
 # CREATED: 	   2023-12-01 06:24
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
