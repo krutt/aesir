@@ -1,0 +1,160 @@
+clusters:
+  duo:
+    tranche-bitcoind:
+      alias: bitcoind
+      command:
+        - -server=1
+        - -regtest=1
+        - -rpcauth=tranche:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -debug=1
+        - -zmqpubrawblock=tcp://0.0.0.0:28334
+        - -zmqpubrawtx=tcp://0.0.0.0:28335
+        - -zmqpubhashblock=tcp://0.0.0.0:28336
+        - -txindex=0
+        - -dnsseed=0
+        - -upnp=0
+        - -rpcbind=0.0.0.0
+        - -rpcallowip=0.0.0.0/0
+        - -rpcport=18443
+        - -rpcworkqueue=128
+        - -rest
+        - -listen=1
+        - -listenonion=0
+        - -fallbackfee=0.0002
+        - -blockfilterindex=1
+        - -peerblockfilters=1
+        - -datadir=/home/bitcoin/.bitcoin
+        - -prune=600
+      ports:
+        - 18443:18443
+        - 28334:28334
+        - 28335:28335
+    tranche-ping:
+      alias: lnd
+      command:
+        - --noseedbackup
+        - --trickledelay=5000
+        - --externalip=tranche-ping
+        - --tlsextradomain=tranche-ping
+        - --listen=0.0.0.0:9735
+        - --rpclisten=0.0.0.0:10001
+        - --restlisten=0.0.0.0:8080
+        - --bitcoin.active
+        - --bitcoin.regtest
+        - --bitcoin.node=bitcoind
+        - --bitcoind.rpchost=tranche-bitcoind
+        - --bitcoind.rpcuser=tranche
+        - --bitcoind.rpcpass=tranche
+        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+      ports:
+        - 9735:9735
+        - 10001:10001
+    tranche-pong:
+      alias: lnd
+      ports:
+        - 9735:9736
+        - 10001:10002
+      command:
+        - --noseedbackup
+        - --trickledelay=5000
+        - --externalip=tranche-pong
+        - --tlsextradomain=tranche-pong
+        - --listen=0.0.0.0:9735
+        - --rpclisten=0.0.0.0:10001
+        - --restlisten=0.0.0.0:8080
+        - --bitcoin.active
+        - --bitcoin.regtest
+        - --bitcoin.node=bitcoind
+        - --bitcoind.rpchost=tranche-bitcoind
+        - --bitcoind.rpcuser=tranche
+        - --bitcoind.rpcpass=tranche
+        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+    tranche-postgres:
+      alias: postgres
+      env_vars:
+        - POSTGRES_HOST_AUTH_METHOD=trust
+      ports:
+        - 5432:5432
+    tranche-redis:
+      alias: redis
+      ports:
+        - 6379:6379
+  uno:
+    tranche-bitcoind:
+      alias: bitcoind
+      command:
+        - -server=1
+        - -regtest=1
+        - -rpcauth=tranche:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -debug=1
+        - -zmqpubrawblock=tcp://0.0.0.0:28334
+        - -zmqpubrawtx=tcp://0.0.0.0:28335
+        - -zmqpubhashblock=tcp://0.0.0.0:28336
+        - -txindex=0
+        - -dnsseed=0
+        - -upnp=0
+        - -rpcbind=0.0.0.0
+        - -rpcallowip=0.0.0.0/0
+        - -rpcport=18443
+        - -rpcworkqueue=128
+        - -rest
+        - -listen=1
+        - -listenonion=0
+        - -fallbackfee=0.0002
+        - -blockfilterindex=1
+        - -peerblockfilters=1
+        - -datadir=/home/bitcoin/.bitcoin
+        - -prune=600
+      ports:
+        - 18443:18443
+        - 28334:28334
+        - 28335:28335
+    tranche-lnd:
+      alias: lnd
+      command:
+        - --noseedbackup
+        - --trickledelay=5000
+        - --externalip=tranche-lnd
+        - --tlsextradomain=tranche-lnd
+        - --listen=0.0.0.0:9735
+        - --rpclisten=0.0.0.0:10001
+        - --restlisten=0.0.0.0:8080
+        - --bitcoin.active
+        - --bitcoin.regtest
+        - --bitcoin.node=bitcoind
+        - --bitcoind.rpchost=tranche-bitcoind
+        - --bitcoind.rpcuser=tranche
+        - --bitcoind.rpcpass=tranche
+        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+      ports:
+        - 9735:9735
+        - 10001:10001
+    tranche-postgres:
+      alias: postgres
+      env_vars:
+        - POSTGRES_HOST_AUTH_METHOD=trust
+      ports:
+        - 5432:5432
+    tranche-redis:
+      alias: redis
+      ports:
+        - 6379:6379
+deprecated:
+  - polarlightning/bitcoind:24.0
+  - polarlightning/lnd:0.16.0-beta
+  - polarlightning/lnd:0.16.1-beta
+  - polarlightning/lnd:0.16.2-beta
+  - polarlightning/lnd:0.16.4-beta
+  - polarlightning/lnd:0.17.0-beta.rc1
+  - polarlightning/lnd:0.17.0-beta.rc2
+  - polarlightning/lnd:0.17.0-beta
+  - polarlightning/lnd:0.17.1-beta
+images:
+  bitcoind: polarlightning/bitcoind:25.0
+  lnd: polarlightning/lnd:0.17.2-beta
+  postgres: postgres:latest
+  redis: redis:latest
+network: tranche
