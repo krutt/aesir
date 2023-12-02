@@ -28,7 +28,7 @@ packages = [
   {include='core.py'}
 ]
 readme = 'README.md'
-version = '0.2.1'
+version = '0.2.2'
 
 [tool.poetry.dependencies]
 APScheduler = '^3.10.4'
