@@ -103,7 +103,7 @@ def ping_pong(channel_size: int) -> None:
                     errors.append("!! Channel between tranche-ping to tranche-pong already opened.")
             elif container.name == "tranche-pong":
                 try:
-                    open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(
+                    open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # ignore[no-redef]
                         container.exec_run(
                             """
                             lncli
