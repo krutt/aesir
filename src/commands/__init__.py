@@ -12,11 +12,11 @@
 
 ### Local modules ###
 from src.commands.clean import clean
-from src.commands.cluster import cluster
+from src.commands.deploy import deploy
 from src.commands.flush import flush
 from src.commands.mine import mine
 from src.commands.nodekeys import nodekeys
 from src.commands.ping_pong import ping_pong
 from src.commands.setup import setup
 
-__all__ = ["clean", "cluster", "flush", "mine", "nodekeys", "ping_pong", "setup"]
+__all__ = ["clean", "deploy", "flush", "mine", "nodekeys", "ping_pong", "setup"]

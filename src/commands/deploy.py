@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/cluster.py
+# FILENAME:    ~~/src/commands/deploy.py
 # VERSION: 	   0.2.2
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -31,7 +31,7 @@ from src.schemas import MutexOption, NewAddress, Service, ServiceName
 @command
 @option("--duo", alternatives=["uno"], cls=MutexOption, is_flag=True, type=bool)
 @option("--uno", alternatives=["duo"], cls=MutexOption, is_flag=True, type=bool)
-def cluster(duo: bool, uno: bool) -> None:
+def deploy(duo: bool, uno: bool) -> None:
     """Deploy cluster, either with one or two LND nodes."""
     duo = duo or (not duo and not uno)  # defaults to duo network
     cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
@@ -81,4 +81,4 @@ def cluster(duo: bool, uno: bool) -> None:
             )
 
 
-__all__ = ["cluster"]
+__all__ = ["deploy"]

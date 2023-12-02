@@ -21,7 +21,7 @@ $ pip install tranche
 > ...
 > Installing collected packages: tranche
 > Successfully installed tranche-0.2.2
-$ tranche cluster
+$ tranche deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
 > Mine initial capital for parties:          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00

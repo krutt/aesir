@@ -14,7 +14,7 @@
 from click import group
 
 ### Local modules ###
-from src.commands import clean, cluster, flush, mine, nodekeys, ping_pong, setup
+from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
 
 
 @group
@@ -23,7 +23,7 @@ def cli() -> None:
 
 
 cli.add_command(clean, "clean")
-cli.add_command(cluster, "cluster")
+cli.add_command(deploy, "deploy")
 cli.add_command(flush, "flush")
 cli.add_command(mine, "mine")
 cli.add_command(nodekeys, "nodekeys")
