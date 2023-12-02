@@ -18,7 +18,7 @@ from typing import Dict, List
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError
+from docker.errors import APIError, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich.progress import track
@@ -71,7 +71,12 @@ def deploy(duo: bool, uno: bool) -> None:
                     ).output
                 )
                 mining_targets.append(new_address.address)
-        bitcoind: Container = client.containers.get("tranche-bitcoind")
+        bitcoind: Container
+        try:
+            bitcoind = client.containers.get("tranche-bitcoind")
+        except NotFound:
+            print('!! Unable to find "tranche-bitcoind" container.')
+            return
         for address in track(mining_targets, "Mine initial capital for parties:".ljust(42)):
             bitcoind.exec_run(
                 """

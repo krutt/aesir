@@ -17,6 +17,7 @@ from typing import Dict, List
 ### Third-party packages ###
 from click import argument, command
 from docker import DockerClient, from_env
+from docker.errors import NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter, ValidationError
 from rich.progress import track
@@ -32,13 +33,12 @@ def ping_pong(channel_size: int) -> None:
     client: DockerClient = from_env()
     if client.ping():
         containers: List[Container] = list(reversed(client.containers.list()))
-        bitcoinds: List[Container] = list(
-            filter(lambda container: match(r"tranche-bitcoind", container.name), containers)
-        )
-        if len(bitcoinds) == 0:
-            print("!! Invalid cluster")
+        bitcoind: Container
+        try:
+            bitcoind = client.containers.get("tranche-bitcoind")
+        except NotFound:
+            print('!! Unable to find "tranche-bitcoind" container.')
             return
-        bitcoind: Container = bitcoinds[0]
         paddles: List[Container] = list(
             filter(lambda c: match(r"tranche-ping|tranche-pong", c.name), containers)
         )
