@@ -34,7 +34,7 @@ def nodekeys() -> None:
         lnds: List[Container] = list(
             filter(lambda c: match(r"tranche-lnd|tranche-ping|tranche-pong", c.name), containers)
         )
-        nodekeys: List[str] = []
+        outputs: List[str] = []
         for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
             lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
                 container.exec_run(
@@ -47,8 +47,8 @@ def nodekeys() -> None:
                     """
                 ).output
             )
-            nodekeys.append(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
-        list(map(print, nodekeys))
+            outputs.append(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
+        list(map(print, outputs))
 
 
 __all__ = ["nodekeys"]
