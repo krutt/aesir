@@ -99,8 +99,7 @@ def ping_pong(channel_size: int) -> None:
                         """
                         % (6, mining_targets.get("tranche-ping", ""))
                     )
-                except ValidationError as err:
-                    print(err)
+                except ValidationError:
                     errors.append("!! Channel between tranche-ping to tranche-pong already opened.")
             elif container.name == "tranche-pong":
                 try:
@@ -125,8 +124,7 @@ def ping_pong(channel_size: int) -> None:
                         """
                         % (6, mining_targets.get("tranche-pong", ""))
                     )
-                except ValidationError as err:
-                    print(err)
+                except ValidationError:
                     errors.append("!! Channel between tranche-pong to tranche-ping already opened.")
         print(f"Funding transactions: { funding_txids }")
         for error in errors:
