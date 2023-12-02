@@ -21,7 +21,6 @@ from docker import DockerClient, from_env
 from docker.errors import NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
-from rich.json import JSON
 from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
