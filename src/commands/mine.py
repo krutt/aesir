@@ -94,7 +94,7 @@ def mine(blockcount: int, blocktime: int) -> None:
                 ),
             )
         )
-        with Live(pane, refresh_per_second=4, transient=True) as _:
+        with Live(pane, refresh_per_second=4, transient=True):
             pane["containers"].update(
                 Panel(Text("\n".join(tranche_containers)), title="containers")
             )
