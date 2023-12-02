@@ -12,10 +12,12 @@
 
 ### Standard packages ###
 from re import match
+from typing import List
 
 ### Third-party packages ###
 from click import command
 from docker import DockerClient, from_env
+from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich.progress import track
 
@@ -28,20 +30,25 @@ def nodekeys() -> None:
     """Fetch nodekeys from active LND containers."""
     client: DockerClient = from_env()
     if client.ping():
-        for container in track(client.containers.list(), "Fetch LND nodekeys:".ljust(42)):
-            if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
-                lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
-                    container.exec_run(
-                        """
-                        lncli
-                            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                            --rpcserver=localhost:10001
-                            --tlscertpath=/home/lnd/.lnd/tls.cert
-                        getinfo
-                        """
-                    ).output
-                )
-                print(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
+        containers: List[Container] = reversed(client.containers.list())  # ignore[assignment]
+        lnds: List[Container] = list(
+            filter(lambda c: match(r"tranche-lnd|tranche-ping|tranche-pong", c.name), containers)
+        )
+        nodekeys: List[str] = []
+        for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
+            lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+                container.exec_run(
+                    """
+                    lncli
+                        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                        --rpcserver=localhost:10001
+                        --tlscertpath=/home/lnd/.lnd/tls.cert
+                    getinfo
+                    """
+                ).output
+            )
+            nodekeys.append(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
+        list(map(print, nodekeys))
 
 
 __all__ = ["nodekeys"]
