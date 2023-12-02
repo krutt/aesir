@@ -18,6 +18,9 @@ ignore_missing_imports = true
 [tool.poetry]
 authors = ['Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>']
 description = 'Command line interface used for generating local Lightning test environment'
+include = [
+  {path='src/constants.yml', format=['sdist', 'wheel']}
+]
 license = 'MIT'
 name = 'tranche'
 packages = [
