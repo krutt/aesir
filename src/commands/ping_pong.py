@@ -32,13 +32,13 @@ def ping_pong(channel_size: int) -> None:
     """For "duo" cluster, create channels between LND nodes."""
     client: DockerClient = from_env()
     if client.ping():
-        containers: List[Container] = list(reversed(client.containers.list()))
         bitcoind: Container
         try:
             bitcoind = client.containers.get("tranche-bitcoind")
         except NotFound:
             print('!! Unable to find "tranche-bitcoind" container.')
             return
+        containers: List[Container] = list(reversed(client.containers.list()))
         paddles: List[Container] = list(
             filter(lambda c: match(r"tranche-ping|tranche-pong", c.name), containers)
         )
