@@ -73,8 +73,7 @@ def ping_pong(channel_size: int) -> None:
             mining_targets[container.name] = new_address.address
 
         ### Open channels ###
-        errors: List[str] = []
-        funding_txids: List[str] = []
+        outputs: List[str] = []
         for container in track(paddles, "Open channels:".ljust(42)):
             if container.name == "tranche-ping":
                 try:
@@ -92,7 +91,9 @@ def ping_pong(channel_size: int) -> None:
                             % (channel_size, nodekeys.get("tranche-pong", ""))
                         ).output
                     )
-                    funding_txids.append(open_channel.funding_txid)
+                    outputs.append(
+                        f"<Channel `tranche-ping --> tranche-pong` : { open_channel.funding_txid }>"
+                    )
                     bitcoind.exec_run(
                         """
                         bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress %d %s
@@ -100,7 +101,7 @@ def ping_pong(channel_size: int) -> None:
                         % (6, mining_targets.get("tranche-ping", ""))
                     )
                 except ValidationError:
-                    errors.append("!! Channel between tranche-ping to tranche-pong already opened.")
+                    outputs.append("!! Channel `tranche-ping` --> `tranche-pong` already opened.")
             elif container.name == "tranche-pong":
                 try:
                     open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # type: ignore[no-redef]
@@ -117,7 +118,9 @@ def ping_pong(channel_size: int) -> None:
                             % (channel_size, nodekeys.get("tranche-ping", ""))
                         ).output
                     )
-                    funding_txids.append(open_channel.funding_txid)
+                    outputs.append(
+                        f"<Channel `tranche-pong --> tranche-ping` : { open_channel.funding_txid }>"
+                    )
                     bitcoind.exec_run(
                         """
                         bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress %d %s
@@ -125,10 +128,8 @@ def ping_pong(channel_size: int) -> None:
                         % (6, mining_targets.get("tranche-pong", ""))
                     )
                 except ValidationError:
-                    errors.append("!! Channel between tranche-pong to tranche-ping already opened.")
-        print(f"Funding transactions: { funding_txids }")
-        for error in errors:
-            print(error)
+                    outputs.append("!! Channel `tranche-pong` --> `tranche-ping` already opened.")
+        list(map(print, outputs))
 
 
 __all__ = ["ping_pong"]
