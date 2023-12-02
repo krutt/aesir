@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Set
+from typing import List, Set
 
 ### Third-party packages ###
 from click import command
@@ -27,11 +27,13 @@ def flush() -> None:
     """Remove images deprecated by workspace."""
     client: DockerClient = from_env()
     if client.ping():
+        outputs: List[str] = []
         docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
         for registry_id in track(DEPRECATED, "Remove deprecated images:".ljust(42)):
             if registry_id in docker_images:
                 client.images.remove(registry_id)
-                print(f"<Image: '{ registry_id }'> removed.")
+                outputs.append(f"<Image: '{ registry_id }'> removed.")
+        list(map(print, outputs))
     else:
         print("!! Unable to connect to docker daemon.")
 
