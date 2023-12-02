@@ -25,6 +25,7 @@ from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.progress import track
+from rich.table import Table
 from rich.text import Text
 
 ### Local modules ###
@@ -107,9 +108,11 @@ def mine(blockcount: int, blocktime: int) -> None:
                         """
                     ).output
                 )
+                names: List[str] = []
                 lnd_infos: List[LNDInfo] = []
                 for container in client.containers.list():
                     if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+                        names.append(container.name)
                         lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
                             container.exec_run(
                                 """
@@ -124,6 +127,26 @@ def mine(blockcount: int, blocktime: int) -> None:
                         lnd_infos.append(lnd_info)
 
                 ### Draw ###
+                body_table: Table = Table(expand=True, show_lines=True)
+                body_table.add_column("Name", justify="left", style="green")
+                body_table.add_column("Nodekey", justify="left", style="cyan")
+                body_table.add_column("Channels")
+                body_table.add_column("Peers")
+                body_table.add_column("Height")
+                body_table.add_column("Synced?", justify="right")
+                for i, lnd_info in enumerate(lnd_infos):
+                    body_table.add_row(
+                        names[i],
+                        "\n".join(
+                            lnd_info.identity_pubkey[c : c + 11]
+                            for c in range(0, len(lnd_info.identity_pubkey), 11)
+                        ),
+                        f"{lnd_info.num_active_channels}",
+                        f"{lnd_info.num_peers}",
+                        f"{lnd_info.block_height}",
+                        ("[red]false", "[green]true")[lnd_info.synced_to_chain],
+                    )
+                pane["body"].update(body_table)
                 pane["footer"].update(
                     Panel(
                         Text.assemble(
