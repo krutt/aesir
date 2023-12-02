@@ -30,7 +30,7 @@ def nodekeys() -> None:
     """Fetch nodekeys from active LND containers."""
     client: DockerClient = from_env()
     if client.ping():
-        containers: List[Container] = reversed(client.containers.list())  # ignore[assignment]
+        containers: List[Container] = reversed(client.containers.list())  # type: ignore[assignment]
         lnds: List[Container] = list(
             filter(lambda c: match(r"tranche-lnd|tranche-ping|tranche-pong", c.name), containers)
         )
