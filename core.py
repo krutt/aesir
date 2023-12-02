@@ -14,7 +14,7 @@
 from click import group
 
 ### Local modules ###
-from src.commands import clean, cluster, mine, nodekeys, ping_pong, remove_deprecated, setup
+from src.commands import clean, cluster, flush, mine, nodekeys, ping_pong, setup
 
 
 @group
@@ -24,10 +24,10 @@ def cli() -> None:
 
 cli.add_command(clean, "clean")
 cli.add_command(cluster, "cluster")
+cli.add_command(flush, "flush")
 cli.add_command(mine, "mine")
 cli.add_command(nodekeys, "nodekeys")
 cli.add_command(ping_pong, "ping-pong")
-cli.add_command(remove_deprecated, "remove-deprecated")
 cli.add_command(setup, "setup")
 
 

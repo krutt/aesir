@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/remove_deprecated.py
+# FILENAME:    ~~/src/commands/flush.py
 # VERSION: 	   0.2.1
 # CREATED: 	   2023-12-01 06:24
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -23,7 +23,7 @@ from src.configs import DEPRECATED
 
 
 @command
-def remove_deprecated() -> None:
+def flush() -> None:
     """Remove images deprecated by workspace."""
     client: DockerClient = from_env()
     if client.ping():
@@ -36,4 +36,4 @@ def remove_deprecated() -> None:
         print("!! Unable to connect to docker daemon.")
 
 
-__all__ = ["remove_deprecated"]
+__all__ = ["flush"]

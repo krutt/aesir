@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Local modules ###
-from src.commands import clean, cluster, nodekeys
+from src.commands import clean, cluster, flush, mine, nodekeys, ping_pong, setup
 from src.schemas import (
     BlockchainInfo,
     ClusterEnum,
@@ -37,7 +37,11 @@ __all__ = [
     "ServiceName",
     "clean",
     "cluster",
+    "flush",
+    "mine",
     "nodekeys",
+    "ping_pong",
+    "setup",
 ]
 
 __version__ = "0.2.1"
