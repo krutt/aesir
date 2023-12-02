@@ -35,7 +35,7 @@ def ping_pong(channel_size: int) -> None:
         containers: List[Container] = client.containers.list()
 
         ### Fetch nodekeys ###
-        for container in track(containers, "Fetch LND nodekeys:".ljust(35)):
+        for container in track(containers, "Fetch LND nodekeys:".ljust(42)):
             if match(r"tranche-ping|tranche-pong", container.name) is not None:
                 lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
                     container.exec_run(
@@ -53,7 +53,7 @@ def ping_pong(channel_size: int) -> None:
         ### Open channels ###
         errors: List[str] = []
         funding_txids: List[str] = []
-        for container in track(containers, "Open channels:".ljust(35)):
+        for container in track(containers, "Open channels:".ljust(42)):
             if container.name == "tranche-ping":
                 try:
                     open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(

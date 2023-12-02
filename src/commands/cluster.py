@@ -41,7 +41,7 @@ def cluster(duo: bool, uno: bool) -> None:
             client.networks.create(NETWORK, check_duplicate=True)
         except APIError:
             pass
-        for name, service in track(cluster.items(), "Deploy specified local cluster:".ljust(35)):
+        for name, service in track(cluster.items(), "Deploy specified local cluster:".ljust(42)):
             image_name: str = IMAGES[service.alias]
             ports: Dict[str, str] = dict(
                 map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
@@ -57,7 +57,7 @@ def cluster(duo: bool, uno: bool) -> None:
             )
         sleep(3)  # wait until lnd ready
         mining_targets: List[str] = []
-        for container in track(client.containers.list(), "Generate addresses:".ljust(35)):
+        for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
             if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
                 new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                     container.exec_run(
@@ -72,7 +72,7 @@ def cluster(duo: bool, uno: bool) -> None:
                 )
                 mining_targets.append(new_address.address)
         bitcoind: Container = client.containers.get("tranche-bitcoind")
-        for address in track(mining_targets, "Mine initial capital for parties:".ljust(35)):
+        for address in track(mining_targets, "Mine initial capital for parties:".ljust(42)):
             bitcoind.exec_run(
                 """
                 bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress 101 %s

@@ -30,7 +30,7 @@ def clean(context: Context) -> None:
     """Remove all active "tranche-*" containers, drop network."""
     client: DockerClient = from_env()
     if client.ping():
-        for container in track(client.containers.list(), "Remove active containers:".ljust(35)):
+        for container in track(client.containers.list(), "Remove active containers:".ljust(42)):
             if match(r"tranche-*", container.name) is not None:
                 container.stop()
                 container.remove()
