@@ -100,7 +100,7 @@ def mine(blockcount: int, blocktime: int) -> None:
             )
             while True:
                 ### Update ###
-                info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
+                blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
                     bitcoind.exec_run(
                         """
                         bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche getblockchaininfo
@@ -113,13 +113,13 @@ def mine(blockcount: int, blocktime: int) -> None:
                     Panel(
                         Text.assemble(
                             ("Chain: ", "bright_magenta bold"),
-                            info.chain.ljust(9),
+                            blockchain_info.chain.ljust(9),
                             ("Blocks: ", "green bold"),
-                            f"{info.blocks}".ljust(8),
+                            f"{blockchain_info.blocks}".ljust(8),
                             ("Size: ", "blue bold"),
-                            f"{info.size_on_disk}".ljust(10),
+                            f"{blockchain_info.size_on_disk}".ljust(10),
                             ("Time: ", "cyan bold"),
-                            f"{info.time}".rjust(10),
+                            f"{blockchain_info.time}".rjust(10),
                         )
                     )
                 )
