@@ -77,14 +77,27 @@ def mine(blockcount: int, blocktime: int) -> None:
                 seconds=blocktime,
             )
         scheduler.start()
-        pane: Layout = Layout(name="pane")
-        sidebar: Layout = Layout(name="selector", ratio=3)
-        container: Layout = Layout(name="container", ratio=7)
-        body: Layout = Layout(name="body", minimum_size=4, ratio=8)
+        pane: Layout = Layout()
+        sidebar: Layout = Layout(size=30)
+        containers: Layout = Layout(name="containers", size=20)
+        main: Layout = Layout(size=70)
+        body: Layout = Layout(name="body", minimum_size=4, ratio=8, size=17)
         footer: Layout = Layout(name="footer", size=3)
-        pane.split_row(sidebar, container)
-        container.split_column(body, footer)
-        with Live(pane, refresh_per_second=4, transient=True) as live:
+        pane.split_row(sidebar, main)
+        main.split_column(body, footer)
+        sidebar.split_column(containers)
+        tranche_containers: List[str] = list(
+            map(
+                lambda container: container.name,
+                filter(
+                    lambda container: match(r"tranche-*", container.name), client.containers.list()
+                ),
+            )
+        )
+        with Live(pane, refresh_per_second=4, transient=True) as _:
+            pane["containers"].update(
+                Panel(Text("\n".join(tranche_containers)), title="containers")
+            )
             while True:
                 ### Update ###
                 info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
@@ -99,11 +112,14 @@ def mine(blockcount: int, blocktime: int) -> None:
                 pane["footer"].update(
                     Panel(
                         Text.assemble(
-                            ("Chain: ", "bright_magenta bold"), info.chain.ljust(10),
-                            ("Blocks: ", "green bold"), f"{info.blocks}".ljust(10),
-                            ("Size: ", "blue bold"), f"{info.size_on_disk}".ljust(10),
-                            ("Time: ", "cyan bold"), f"{info.time}".ljust(10)
-                            
+                            ("Chain: ", "bright_magenta bold"),
+                            info.chain.ljust(9),
+                            ("Blocks: ", "green bold"),
+                            f"{info.blocks}".ljust(8),
+                            ("Size: ", "blue bold"),
+                            f"{info.size_on_disk}".ljust(10),
+                            ("Time: ", "cyan bold"),
+                            f"{info.time}".rjust(10),
                         )
                     )
                 )
