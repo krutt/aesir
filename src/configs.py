@@ -27,7 +27,7 @@ IMAGES: Dict[ImageAlias, str]
 NETWORK: str
 
 file_path: Path = Path(__file__).resolve()
-with open(str(file_path).replace("configs.py", "constants.yaml"), "rb") as stream:
+with open(str(file_path).replace(__file__, "constants.yaml"), "rb") as stream:
     constants: Optional[Dict[str, Any]] = load(stream, Loader=Loader)
     if constants:
         CLUSTERS = TypeAdapter(Dict[ClusterEnum, Dict[ServiceName, Service]]).validate_python(
