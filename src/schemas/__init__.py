@@ -13,8 +13,8 @@
 ### Local modules ###
 from src.schemas.blockchain_info import BlockchainInfo
 from src.schemas.cluster_enum import ClusterEnum
-from src.schemas.mutex_option import MutexOption
 from src.schemas.image_alias import ImageAlias
+from src.schemas.mutex_option import MutexOption
 from src.schemas.new_address import NewAddress
 from src.schemas.node_info import NodeInfo
 from src.schemas.service import Service, ServiceName
@@ -24,8 +24,8 @@ __all__ = [
     "BlockchainInfo",
     "ClusterEnum",
     "ImageAlias",
-    "NewAddress",
     "MutexOption",
+    "NewAddress",
     "NodeInfo",
     "Service",
     "ServiceName",
