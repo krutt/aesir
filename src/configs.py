@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional
 
 ### Standard packages ###
 from pydantic import TypeAdapter
-from yaml import Loader, load, dump
+from yaml import Loader, load
 
 ### Local modules ###
 from src.schemas import ClusterEnum, ImageAlias, Service, ServiceName
