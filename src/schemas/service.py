@@ -17,7 +17,7 @@ from typing import List, Literal
 from pydantic import BaseModel, StrictStr
 
 ### Local modules ###
-from src.schemas.image_alias import ImageAlias
+from src.schemas.image import ImageAlias
 
 
 class Service(BaseModel):

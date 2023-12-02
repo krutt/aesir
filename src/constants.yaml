@@ -133,10 +133,12 @@ deprecated:
   - polarlightning/lnd:0.17.0-beta
   - polarlightning/lnd:0.17.1-beta
 images:
-  bitcoind: polarlightning/bitcoind:25.0
-  lnd: polarlightning/lnd:0.17.2-beta
-  postgres: postgres:latest
-  redis: redis:latest
+  optional:
+    postgres: postgres:latest
+    redis: redis:latest
+  required:
+    bitcoind: polarlightning/bitcoind:25.0
+    lnd: polarlightning/lnd:0.17.2-beta
 network: tranche
 peripherals:
   postgres:

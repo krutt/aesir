@@ -49,7 +49,7 @@ def deploy(duo: bool, uno: bool, postgres: bool, redis: bool) -> None:
         except APIError:
             pass
         for name, service in track(cluster.items(), "Deploy specified local cluster:".ljust(42)):
-            image_name: str = IMAGES[service.alias]
+            image_name: str = dict(**IMAGES["required"], **IMAGES["optional"])[service.alias]
             ports: Dict[str, str] = dict(
                 map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
             )
