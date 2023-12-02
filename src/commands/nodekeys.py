@@ -20,7 +20,7 @@ from pydantic import TypeAdapter
 from rich.progress import track
 
 ### Local modules ###
-from src.schemas import NodeInfo
+from src.schemas import LNDInfo
 
 
 @command
@@ -30,7 +30,7 @@ def nodekeys() -> None:
     if client.ping():
         for container in track(client.containers.list(), "Fetch LND nodekeys:".ljust(35)):
             if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
-                info: NodeInfo = TypeAdapter(NodeInfo).validate_json(
+                lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
                     container.exec_run(
                         """
                         lncli
@@ -41,7 +41,7 @@ def nodekeys() -> None:
                         """
                     ).output
                 )
-                print(f"<Nodekey: '{container.name}', '{info.identity_pubkey}'>")
+                print(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
 
 
 __all__ = ["nodekeys"]

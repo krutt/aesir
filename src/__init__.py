@@ -16,9 +16,9 @@ from src.schemas import (
     BlockchainInfo,
     ClusterEnum,
     ImageAlias,
+    LNDInfo,
     MutexOption,
     NewAddress,
-    NodeInfo,
     Service,
     ServiceName,
 )
@@ -27,10 +27,10 @@ from src.schemas import (
 __all__ = [
     "ClusterEnum",
     "BlockchainInfo",
+    "LNDInfo",
     "ImageAlias",
     "NewAddress",
     "MutexOption",
-    "NodeInfo",
     "Service",
     "ServiceName",
     "clean",

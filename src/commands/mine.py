@@ -28,7 +28,7 @@ from rich.progress import track
 from rich.text import Text
 
 ### Local modules ###
-from src.schemas import BlockchainInfo, NewAddress, NodeInfo
+from src.schemas import BlockchainInfo, LNDInfo, NewAddress
 
 
 @command
@@ -107,6 +107,21 @@ def mine(blockcount: int, blocktime: int) -> None:
                         """
                     ).output
                 )
+                lnd_infos: List[LNDInfo] = []
+                for container in client.containers.list():
+                    if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+                        lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+                            container.exec_run(
+                                """
+                                lncli
+                                    --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                                    --rpcserver=localhost:10001
+                                    --tlscertpath=/home/lnd/.lnd/tls.cert
+                                getinfo
+                                """
+                            ).output
+                        )
+                        lnd_infos.append(lnd_info)
 
                 ### Draw ###
                 pane["footer"].update(
@@ -123,22 +138,6 @@ def mine(blockcount: int, blocktime: int) -> None:
                         )
                     )
                 )
-                # node_infos: List[NodeInfo] = []
-                # for container in client.containers.list():
-                #     if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
-                #         node_info: NodeInfo = TypeAdapter(NodeInfo).validate_json(
-                #             container.exec_run(
-                #                 """
-                #                 lncli
-                #                     --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                #                     --rpcserver=localhost:10001
-                #                     --tlscertpath=/home/lnd/.lnd/tls.cert
-                #                 getinfo
-                #                 """
-                #             ).output
-                #         )
-                #         node_infos.append(node_info)
-                # if
 
 
 __all__ = ["mine"]
