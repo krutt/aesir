@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Set
+from typing import List, Set
 
 ### Third-party packages ###
 from click import command
@@ -27,14 +27,16 @@ def setup() -> None:
     """Download docker images used by command-line interface."""
     client: DockerClient = from_env()
     if client.ping():
+        outputs: List[str] = []
         docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
         for registry_id in track(IMAGES.values(), "Download required images:".ljust(42)):
             if registry_id in docker_images:
-                print(f"<Image: '{ registry_id }'> already exists in local docker images.")
+                outputs.append(f"<Image: '{ registry_id }'> already exists in local docker images.")
             else:
                 repository, tag = registry_id.split(":")
                 client.images.pull(repository=repository, tag=tag)
-                print(f"<Image: '{ registry_id }'> downloaded.")
+                outputs.append(f"<Image: '{ registry_id }'> downloaded.")
+        list(map(print, outputs))
     else:
         print("!! Unable to connect to docker daemon.")
 
