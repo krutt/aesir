@@ -19,6 +19,7 @@ from src.schemas import (
     LNDInfo,
     MutexOption,
     NewAddress,
+    OpenChannel,
     Service,
     ServiceName,
 )
@@ -29,8 +30,9 @@ __all__ = [
     "BlockchainInfo",
     "LNDInfo",
     "ImageAlias",
-    "NewAddress",
     "MutexOption",
+    "NewAddress",
+    "OpenChannel",
     "Service",
     "ServiceName",
     "clean",

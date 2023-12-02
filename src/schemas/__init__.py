@@ -17,6 +17,7 @@ from src.schemas.image_alias import ImageAlias
 from src.schemas.lnd_info import LNDInfo
 from src.schemas.mutex_option import MutexOption
 from src.schemas.new_address import NewAddress
+from src.schemas.open_channel import OpenChannel
 from src.schemas.service import Service, ServiceName
 
 
@@ -27,6 +28,7 @@ __all__ = [
     "LNDInfo",
     "MutexOption",
     "NewAddress",
+    "OpenChannel",
     "Service",
     "ServiceName",
 ]
