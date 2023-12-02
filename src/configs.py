@@ -19,12 +19,13 @@ from pydantic import TypeAdapter
 from yaml import Loader, load
 
 ### Local modules ###
-from src.schemas import ClusterEnum, ImageAlias, Service, ServiceName
+from src.schemas import ClusterEnum, ImageAlias, PeripheralEnum, Service, ServiceName
 
 CLUSTERS: Dict[ClusterEnum, Dict[ServiceName, Service]]
 DEPRECATED: List[str]
 IMAGES: Dict[ImageAlias, str]
 NETWORK: str
+PERIPHERALS: Dict[PeripheralEnum, Dict[ServiceName, Service]]
 
 file_path: Path = Path(__file__).resolve()
 with open(str(file_path).replace("configs.py", "constants.yaml"), "rb") as stream:
@@ -36,5 +37,8 @@ with open(str(file_path).replace("configs.py", "constants.yaml"), "rb") as strea
         DEPRECATED = constants.get("deprecated", [])
         IMAGES = TypeAdapter(Dict[ImageAlias, str]).validate_python(constants["images"])
         NETWORK = constants.get("network", "tranche")
+        PERIPHERALS = TypeAdapter(Dict[PeripheralEnum, Dict[ServiceName, Service]]).validate_python(
+            constants["peripherals"]
+        )
 
-__all__ = ["CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK"]
+__all__ = ["CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK", "PERIPHERALS"]

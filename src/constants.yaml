@@ -71,16 +71,6 @@ clusters:
         - --bitcoind.rpcpass=tranche
         - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
         - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
-    tranche-postgres:
-      alias: postgres
-      env_vars:
-        - POSTGRES_HOST_AUTH_METHOD=trust
-      ports:
-        - 5432:5432
-    tranche-redis:
-      alias: redis
-      ports:
-        - 6379:6379
   uno:
     tranche-bitcoind:
       alias: bitcoind
@@ -132,16 +122,6 @@ clusters:
       ports:
         - 9735:9735
         - 10001:10001
-    tranche-postgres:
-      alias: postgres
-      env_vars:
-        - POSTGRES_HOST_AUTH_METHOD=trust
-      ports:
-        - 5432:5432
-    tranche-redis:
-      alias: redis
-      ports:
-        - 6379:6379
 deprecated:
   - polarlightning/bitcoind:24.0
   - polarlightning/lnd:0.16.0-beta
@@ -158,3 +138,16 @@ images:
   postgres: postgres:latest
   redis: redis:latest
 network: tranche
+peripherals:
+  postgres:
+    tranche-postgres:
+      alias: postgres
+      env_vars:
+        - POSTGRES_HOST_AUTH_METHOD=trust
+      ports:
+        - 5432:5432
+  redis:
+    tranche-redis:
+      alias: redis
+      ports:
+        - 6379:6379
