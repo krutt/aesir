@@ -57,7 +57,7 @@ def cluster(duo: bool, uno: bool) -> None:
             )
         sleep(3)  # wait until lnd ready
         mining_targets: List[str] = []
-        for container in track(client.containers.list(),"Generate addresses:".ljust(35)):
+        for container in track(client.containers.list(), "Generate addresses:".ljust(35)):
             if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
                 new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                     container.exec_run(
