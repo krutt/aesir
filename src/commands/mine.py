@@ -26,6 +26,7 @@ from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.progress import track
+from rich.text import Text
 
 ### Local modules ###
 from src.schemas import BlockchainInfo, NewAddress, NodeInfo
@@ -77,13 +78,16 @@ def mine(blockcount: int, blocktime: int) -> None:
                 seconds=blocktime,
             )
         scheduler.start()
-        pane: Layout = Layout()
-        pane.split_row(
-            Layout(name="bitcoind", size=30),
-            Layout(name="lightning", size=70),
-        )
+        pane: Layout = Layout(name="pane")
+        sidebar: Layout = Layout(name="selector", ratio=3)
+        container: Layout = Layout(name="container", ratio=7)
+        body: Layout = Layout(name="body", minimum_size=4, ratio=8)
+        footer: Layout = Layout(name="footer", size=3)
+        pane.split_row(sidebar, container)
+        container.split_column(body, footer)
         with Live(pane, refresh_per_second=4, transient=True) as live:
             while True:
+                ### Update ###
                 info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
                     bitcoind.exec_run(
                         """
@@ -91,23 +95,34 @@ def mine(blockcount: int, blocktime: int) -> None:
                         """
                     ).output
                 )
-                pane["bitcoind"].update(Panel(JSON.from_data(info.model_dump()), title="bitcoind"))
 
-                node_infos: List[NodeInfo] = []
-                for container in client.containers.list():
-                    if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
-                        node_info: NodeInfo = TypeAdapter(NodeInfo).validate_json(
-                            container.exec_run(
-                                """
-                                lncli
-                                    --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                                    --rpcserver=localhost:10001
-                                    --tlscertpath=/home/lnd/.lnd/tls.cert
-                                getinfo
-                                """
-                            ).output
+                ### Draw ###
+                pane["footer"].update(
+                    Panel(
+                        Text.assemble(
+                            ("Chain: ", "bright_magenta bold"), info.chain.ljust(10),
+                            ("Blocks: ", "green bold"), f"{info.blocks}".ljust(10),
+                            ("Size: ", "blue bold"), f"{info.size_on_disk}".ljust(10),
+                            ("Time: ", "cyan bold"), f"{info.time}".ljust(10)
+                            
                         )
-                        node_infos.append(node_info)
+                    )
+                )
+                # node_infos: List[NodeInfo] = []
+                # for container in client.containers.list():
+                #     if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+                #         node_info: NodeInfo = TypeAdapter(NodeInfo).validate_json(
+                #             container.exec_run(
+                #                 """
+                #                 lncli
+                #                     --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                #                     --rpcserver=localhost:10001
+                #                     --tlscertpath=/home/lnd/.lnd/tls.cert
+                #                 getinfo
+                #                 """
+                #             ).output
+                #         )
+                #         node_infos.append(node_info)
                 # if
 
 
