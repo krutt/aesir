@@ -92,7 +92,7 @@ def ping_pong(channel_size: int) -> None:
                         ).output
                     )
                     outputs.append(
-                        f"<Channel `tranche-ping --> tranche-pong` : { open_channel.funding_txid }>"
+                        f"<Channel 'tranche-ping --> tranche-pong' : { open_channel.funding_txid }>"
                     )
                     bitcoind.exec_run(
                         """
@@ -101,7 +101,7 @@ def ping_pong(channel_size: int) -> None:
                         % (6, mining_targets.get("tranche-ping", ""))
                     )
                 except ValidationError:
-                    outputs.append("!! Channel `tranche-ping` --> `tranche-pong` already opened.")
+                    outputs.append("!! Channel 'tranche-ping --> tranche-pong' already opened.")
             elif container.name == "tranche-pong":
                 try:
                     open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # type: ignore[no-redef]
@@ -119,7 +119,7 @@ def ping_pong(channel_size: int) -> None:
                         ).output
                     )
                     outputs.append(
-                        f"<Channel `tranche-pong --> tranche-ping` : { open_channel.funding_txid }>"
+                        f"<Channel 'tranche-pong --> tranche-ping' : { open_channel.funding_txid }>"
                     )
                     bitcoind.exec_run(
                         """
@@ -128,7 +128,7 @@ def ping_pong(channel_size: int) -> None:
                         % (6, mining_targets.get("tranche-pong", ""))
                     )
                 except ValidationError:
-                    outputs.append("!! Channel `tranche-pong` --> `tranche-ping` already opened.")
+                    outputs.append("!! Channel 'tranche-pong --> tranche-ping' already opened.")
         list(map(print, outputs))
 
 
