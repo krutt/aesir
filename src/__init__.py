@@ -13,8 +13,8 @@
 ### Local modules ###
 from src.commands import clean, cluster, nodekeys
 from src.schemas import (
-    ClusterEnum,
     BlockchainInfo,
+    ClusterEnum,
     ImageAlias,
     MutexOption,
     NewAddress,

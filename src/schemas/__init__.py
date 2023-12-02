@@ -21,8 +21,8 @@ from src.schemas.service import Service, ServiceName
 
 
 __all__ = [
-    "ClusterEnum",
     "BlockchainInfo",
+    "ClusterEnum",
     "ImageAlias",
     "NewAddress",
     "MutexOption",
