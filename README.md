@@ -17,6 +17,19 @@
 You can use `tranche` simply by installing via `pip` on your Terminal.
 
 ```sh
+pip install tranche
+```
+
+And then you can begin deploying local cluster as such:
+
+```sh
+tranche deploy
+```
+
+The initial deployment may take some time at pulling required images from their respective
+repositories. Results may lock as such:
+
+```sh
 $ pip install tranche
 > ...
 > Installing collected packages: tranche
@@ -64,16 +77,9 @@ $ tranche mine
 Currently there are two supported cluster-types in this project. Specified by flags,
 `--duo` (default), or `--uno` with the following set-up:
 
-<style>
-  td, th {
-    border: none !important;
-  }
-</style>
-
 | Type | Description                                                                |
 | ---- | -------------------------------------------------------------------------- |
-|  duo | Contains two LND nodes named `tranche-ping` and `tranche-pong` unified by  |
-|      | one single `tranche-bitcoind` service.                                     |
+|  duo | Contains two LND nodes named `tranche-ping` and `tranche-pong` unified by <br> one single `tranche-bitcoind` service. 
 |  uno | Only has one LND node named `tranche-lnd` connected to `tranche-bitcoind`. |
 
 ### Peripheral containers
@@ -109,8 +115,16 @@ $ tranche mine
 
 ## Cleanup
 
+Use the following command to clean up active `tranche-*` containers:
+
 ```sh
-$ tranche clean                    > 
+tranche clean
+```
+
+🚧  This will resets the current test state, so use with care. Example below:
+
+```sh
+$ tranche clean
 > Remove active containers:                  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 ```
 
@@ -128,7 +142,13 @@ $ tranche clean                    >
 ## Contributions
 
 This project uses [poetry](https://python-poetry.org) package manager to keep track of dependencies.
-You can set up your local environment as such
+You can set up your local environment as such:
+
+```sh
+pip install --user poetry
+```
+
+And then you can install development dependencies like so:
 
 ```sh
 $ pip install --user poetry
