@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    tranche.py
+# FILENAME:    core.py
 # VERSION: 	   0.2.5
 # CREATED: 	   2023-12-01 02:20
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>

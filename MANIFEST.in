@@ -1,4 +1,4 @@
 include LICENSE
-include tranche.py
+include core.py
 include src/constants.yaml
 recursive-include src *.py
