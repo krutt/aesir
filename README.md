@@ -59,23 +59,110 @@ $ tranche mine
 > ╰──────────────────────╯╰──────────────────────────────────────────────────────────────────────╯
 ```
 
+### Cluster types
+
+Currently there are two supported cluster-types in this project. Specified by flags,
+`--duo` (default), or `--uno` with the following set-up:
+
+<style>
+  td, th {
+    border: none !important;
+  }
+</style>
+
+| Type | Description                                                                |
+| ---- | -------------------------------------------------------------------------- |
+|  duo | Contains two LND nodes named `tranche-ping` and `tranche-pong` unified by  |
+|      | one single `tranche-bitcoind` service.                                     |
+|  uno | Only has one LND node named `tranche-lnd` connected to `tranche-bitcoind`. |
+
+### Peripheral containers
+
+This project also helps you setup peripheral services to make development process easier, too.
+For example, if you want to deploy a duo-cluster with attached postgres database, run the following:
+
+```sh
+$ tranche deploy --postgres
+> ...
+$ tranche mine
+> ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
+> │ tranche-postgres     │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ tranche-pong         │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ tranche-ping         ││ tranche-pong  │ 3da33d3eb12  │ 2         │ 1      │ 216    │    true │
+> │ tranche-bitcoind     ││               │ deacf4e1a64  │           │        │        │         │
+> │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
+```
+
+Or run an uno-cluster with both attached postgres database and redis solid store cache like this:
+
+```sh
+$ tranche deploy --uno --postgres --redis
+> ...
+$ tranche mine
+> ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
+> │ tranche-postgres     │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ tranche-redis        │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ tranche-lnd          ││ tranche-lnd   │ c0ae6b158d0  │ 0         │ 0      │ 202    │    true │
+> │ tranche-bitcoind     ││               │ 4194459b8f3  │           │        │        │         │
+> │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
+```
+
 ## Cleanup
 
 ```sh
-$ tranche clean                                                                                                                                                                             > 
+$ tranche clean                    > 
 > Remove active containers:                  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 ```
 
+## Roadmap
+
+* Add `tranche-lnd-krub` peripheral service using [lnd-krub](https://github.com/krutt/lnd-krub)
+* Add `tranche-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
+* Write [click](https://click.palletsprojects.com) tests.
+* Make image versioning a little bit more intuitive.
+* Add `tranche-ord` peripheral service using [ord](https://github.com/ordinals/ord)
+* Add `tranche-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
+* Create and add some type of `ordapi` peripheral service.
+* Implement dashboard walkthrough a la [kylepollina/objexplore](https://github.com/kylepollina/objexplore)
+
+## Contributions
+
+This project uses [poetry](https://python-poetry.org) package manager to keep track of dependencies.
+You can set up your local environment as such
+
+```sh
+$ pip install --user poetry
+> ...
+$ poetry install --with dev  # install with development dependencies
+> Installing dependencies from lock file
+>
+> Package operations: 33 installs, 0 updates, 0 removals
+>
+>   • ...
+>   • ...
+>   • ...
+>   • ...
+>
+> Installing the current project: tranche (0.2.4)
+```
+
 ### Known issues
+
+You may run into this setback when first running this project. This is a
+[docker-py](https://github.com/docker/docker-py/issues/3059) issue widely known as of October 2022.
+
 ```python
-docker.errors.DockerException: Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))
+docker.errors.DockerException:
+  Error while fetching server API version: (
+    'Connection aborted.', FileNotFoundError(
+      2, 'No such file or directory'
+    )
+  )
 ```
 
 See the following issue for Mac OSX troubleshooting.
-
 [docker from_env and pull is broken on mac](https://github.com/docker/docker-py/issues/3059#issuecomment-1294369344)
-
-Recommneded fix is to run the following command:
+Recommended fix is to run the following command:
 
 ```sh
 sudo ln -s "$HOME/.docker/run/docker.sock" /var/run/docker.sock
