@@ -4,6 +4,10 @@
 [![LN](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
 [![Docker](https://img.shields.io/badge/docker-2496ED?&logo=docker&logoColor=white)](https://hub.docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Top](https://img.shields.io/github/languages/top/krutt/tranche)](.)
+[![Languages](https://img.shields.io/github/languages/count/krutt/tranche)](.)
+[![Size](https://img.shields.io/github/repo-size/krutt/tranche)](.)
+[![Last commit](https://img.shields.io/github/last-commit/krutt/tranche/master)](.)
 
 [![Tranche Banner](static/tranche-banner.svg)](static/tranche-banner.svg)
 
