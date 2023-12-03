@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/commands/flush.py
-# VERSION: 	   0.2.4
+# VERSION: 	   0.2.5
 # CREATED: 	   2023-12-01 06:24
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:

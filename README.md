@@ -20,7 +20,7 @@ You can use `tranche` simply by installing via `pip` on your Terminal.
 $ pip install tranche
 > ...
 > Installing collected packages: tranche
-> Successfully installed tranche-0.2.4
+> Successfully installed tranche-0.2.5
 $ tranche deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
@@ -143,7 +143,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: tranche (0.2.4)
+> Installing the current project: tranche (0.2.5)
 ```
 
 ### Known issues
