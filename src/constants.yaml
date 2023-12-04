@@ -5,7 +5,7 @@ clusters:
       command:
         - -server=1
         - -regtest=1
-        - -rpcauth=aesir:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
         - -debug=1
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
@@ -77,7 +77,7 @@ clusters:
       command:
         - -server=1
         - -regtest=1
-        - -rpcauth=aesir:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
         - -debug=1
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
