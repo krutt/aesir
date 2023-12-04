@@ -41,7 +41,7 @@ def mine(blockcount: int, blocktime: int) -> None:
     if client.ping():
         mining_targets: List[str] = []
         for container in track(client.containers.list(), "Generate mining treasuries:".ljust(42)):
-            if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+            if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
                 new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                     container.exec_run(
                         """
@@ -56,9 +56,9 @@ def mine(blockcount: int, blocktime: int) -> None:
                 mining_targets.append(new_address.address)
         bitcoind: Container
         try:
-            bitcoind = client.containers.get("tranche-bitcoind")
+            bitcoind = client.containers.get("aesir-bitcoind")
         except NotFound:
-            print('!! Unable to find "tranche-bitcoind" container.')
+            print('!! Unable to find "aesir-bitcoind" container.')
             return
         scheduler: BackgroundScheduler = BackgroundScheduler()
         for address in mining_targets:
@@ -69,8 +69,8 @@ def mine(blockcount: int, blocktime: int) -> None:
                     """
                     bitcoin-cli
                         -regtest
-                        -rpcuser=tranche
-                        -rpcpassword=tranche
+                        -rpcuser=aesir
+                        -rpcpassword=aesir
                     generatetoaddress %d %s
                     """
                     % (blockcount, address)
@@ -87,31 +87,31 @@ def mine(blockcount: int, blocktime: int) -> None:
         pane.split_row(sidebar, main)
         main.split_column(body, footer)
         sidebar.split_column(containers)
-        tranche_containers: List[str] = list(
+        aesir_containers: List[str] = list(
             map(
                 lambda container: container.name,
                 filter(
-                    lambda container: match(r"tranche-*", container.name), client.containers.list()
+                    lambda container: match(r"aesir-*", container.name), client.containers.list()
                 ),
             )
         )
         with Live(pane, refresh_per_second=4, transient=True):
             pane["containers"].update(
-                Panel(Text("\n".join(tranche_containers)), title="containers")
+                Panel(Text("\n".join(aesir_containers)), title="containers")
             )
             while True:
                 ### Update ###
                 blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
                     bitcoind.exec_run(
                         """
-                        bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche getblockchaininfo
+                        bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getblockchaininfo
                         """
                     ).output
                 )
                 names: List[str] = []
                 lnd_infos: List[LNDInfo] = []
                 for container in client.containers.list():
-                    if match("tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+                    if match("aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
                         names.append(container.name)
                         lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
                             container.exec_run(

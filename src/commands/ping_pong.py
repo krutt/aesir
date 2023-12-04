@@ -34,13 +34,13 @@ def ping_pong(channel_size: int) -> None:
     if client.ping():
         bitcoind: Container
         try:
-            bitcoind = client.containers.get("tranche-bitcoind")
+            bitcoind = client.containers.get("aesir-bitcoind")
         except NotFound:
-            print('!! Unable to find "tranche-bitcoind" container.')
+            print('!! Unable to find "aesir-bitcoind" container.')
             return
         containers: List[Container] = list(reversed(client.containers.list()))
         paddles: List[Container] = list(
-            filter(lambda c: match(r"tranche-ping|tranche-pong", c.name), containers)
+            filter(lambda c: match(r"aesir-ping|aesir-pong", c.name), containers)
         )
         mining_targets: Dict[str, str] = {}
         nodekeys: Dict[str, str] = {}
@@ -75,7 +75,7 @@ def ping_pong(channel_size: int) -> None:
         ### Open channels ###
         outputs: List[str] = []
         for container in track(paddles, "Open channels:".ljust(42)):
-            if container.name == "tranche-ping":
+            if container.name == "aesir-ping":
                 try:
                     open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(
                         container.exec_run(
@@ -86,23 +86,23 @@ def ping_pong(channel_size: int) -> None:
                                 --tlscertpath=/home/lnd/.lnd/tls.cert
                             openchannel %d
                                 --node_key %s
-                                --connect tranche-pong:9735
+                                --connect aesir-pong:9735
                             """
-                            % (channel_size, nodekeys.get("tranche-pong", ""))
+                            % (channel_size, nodekeys.get("aesir-pong", ""))
                         ).output
                     )
                     outputs.append(
-                        f"<Channel 'tranche-ping --> tranche-pong' : { open_channel.funding_txid }>"
+                        f"<Channel 'aesir-ping --> aesir-pong' : { open_channel.funding_txid }>"
                     )
                     bitcoind.exec_run(
                         """
-                        bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress %d %s
+                        bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
                         """
-                        % (6, mining_targets.get("tranche-ping", ""))
+                        % (6, mining_targets.get("aesir-ping", ""))
                     )
                 except ValidationError:
-                    outputs.append("!! Channel 'tranche-ping --> tranche-pong' already opened.")
-            elif container.name == "tranche-pong":
+                    outputs.append("!! Channel 'aesir-ping --> aesir-pong' already opened.")
+            elif container.name == "aesir-pong":
                 try:
                     open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # type: ignore[no-redef]
                         container.exec_run(
@@ -113,22 +113,22 @@ def ping_pong(channel_size: int) -> None:
                                 --tlscertpath=/home/lnd/.lnd/tls.cert
                             openchannel %d
                                 --node_key %s
-                                --connect tranche-ping:9735
+                                --connect aesir-ping:9735
                             """
-                            % (channel_size, nodekeys.get("tranche-ping", ""))
+                            % (channel_size, nodekeys.get("aesir-ping", ""))
                         ).output
                     )
                     outputs.append(
-                        f"<Channel 'tranche-pong --> tranche-ping' : { open_channel.funding_txid }>"
+                        f"<Channel 'aesir-pong --> aesir-ping' : { open_channel.funding_txid }>"
                     )
                     bitcoind.exec_run(
                         """
-                        bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress %d %s
+                        bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
                         """
-                        % (6, mining_targets.get("tranche-pong", ""))
+                        % (6, mining_targets.get("aesir-pong", ""))
                     )
                 except ValidationError:
-                    outputs.append("!! Channel 'tranche-pong --> tranche-ping' already opened.")
+                    outputs.append("!! Channel 'aesir-pong --> aesir-ping' already opened.")
         list(map(print, outputs))
 
 

@@ -1,15 +1,15 @@
-# Tranche
+# Aesir
 
 [![Bitcoin-only](https://img.shields.io/badge/bitcoin-only-FF9900?logo=bitcoin)](https://twentyone.world)
 [![LN](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
 [![Docker](https://img.shields.io/badge/docker-2496ED?&logo=docker&logoColor=white)](https://hub.docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Top](https://img.shields.io/github/languages/top/krutt/tranche)](.)
-[![Languages](https://img.shields.io/github/languages/count/krutt/tranche)](.)
-[![Size](https://img.shields.io/github/repo-size/krutt/tranche)](.)
-[![Last commit](https://img.shields.io/github/last-commit/krutt/tranche/master)](.)
+[![Top](https://img.shields.io/github/languages/top/krutt/aesir)](.)
+[![Languages](https://img.shields.io/github/languages/count/krutt/aesir)](.)
+[![Size](https://img.shields.io/github/repo-size/krutt/aesir)](.)
+[![Last commit](https://img.shields.io/github/last-commit/krutt/aesir/master)](.)
 
-[![Tranche Banner](static/tranche-banner.svg)](static/tranche-banner.svg)
+[![Aesir Banner](static/aesir-banner.svg)](static/aesir-banner.svg)
 
 ## Prerequisites
 
@@ -19,27 +19,27 @@
 
 ## Getting started
 
-You can use `tranche` simply by installing via `pip` on your Terminal.
+You can use `aesir` simply by installing via `pip` on your Terminal.
 
 ```sh
-pip install tranche
+pip install aesir
 ```
 
 And then you can begin deploying local cluster as such:
 
 ```sh
-tranche deploy
+aesir deploy
 ```
 
 The initial deployment may take some time at pulling required images from their respective
 repositories. Results may lock as such:
 
 ```sh
-$ pip install tranche
+$ pip install aesir
 > ...
-> Installing collected packages: tranche
-> Successfully installed tranche-0.2.5
-$ tranche deploy
+> Installing collected packages: aesir
+> Successfully installed aesir-0.2.5
+$ aesir deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
 > Mine initial capital for parties:          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
@@ -54,18 +54,18 @@ In order to properly test many functionalities, you will need to send mining com
 setup. You can achieve completely local and running environment with the following command:
 
 ```sh
-$ tranche mine
+$ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ tranche-redis        │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ tranche-postgres     │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ tranche-pong         ││ tranche-pong  │ 02fabeeaa9d  │ 2         │ 1      │ 216    │    true │
-> │ tranche-ping         ││               │ 3da33d3eb12  │           │        │        │         │
-> │ tranche-bitcoind     ││               │ 262e039d9b2  │           │        │        │         │
+> │ aesir-redis        │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ aesir-postgres     │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ aesir-pong         ││ aesir-pong  │ 02fabeeaa9d  │ 2         │ 1      │ 216    │    true │
+> │ aesir-ping         ││               │ 3da33d3eb12  │           │        │        │         │
+> │ aesir-bitcoind     ││               │ 262e039d9b2  │           │        │        │         │
 > │                      ││               │ 9d591f1b897  │           │        │        │         │
 > │                      ││               │ c0ae6b158d0  │           │        │        │         │
 > │                      ││               │ 5410d97efbc  │           │        │        │         │
 > │                      │├───────────────┼──────────────┼───────────┼────────┼────────┼─────────┤
-> │                      ││ tranche-ping  │ 02ac17a8d64  │ 2         │ 1      │ 216    │    true │
+> │                      ││ aesir-ping  │ 02ac17a8d64  │ 2         │ 1      │ 216    │    true │
 > │                      ││               │ 4194459b8f3  │           │        │        │         │
 > │                      ││               │ deacf4e1a64  │           │        │        │         │
 > │                      ││               │ 0fcbcdf9fbf  │           │        │        │         │
@@ -84,8 +84,8 @@ Currently there are two supported cluster-types in this project. Specified by fl
 
 | Type | Description                                                                |
 | ---- | -------------------------------------------------------------------------- |
-|  duo | Contains two LND nodes named `tranche-ping` and `tranche-pong` unified by <br> one single `tranche-bitcoind` service. 
-|  uno | Only has one LND node named `tranche-lnd` connected to `tranche-bitcoind`. |
+|  duo | Contains two LND nodes named `aesir-ping` and `aesir-pong` unified by <br> one single `aesir-bitcoind` service. 
+|  uno | Only has one LND node named `aesir-lnd` connected to `aesir-bitcoind`. |
 
 ### Peripheral containers
 
@@ -93,54 +93,54 @@ This project also helps you setup peripheral services to make development proces
 For example, if you want to deploy a duo-cluster with attached postgres database, run the following:
 
 ```sh
-$ tranche deploy --postgres
+$ aesir deploy --postgres
 > ...
-$ tranche mine
+$ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ tranche-postgres     │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ tranche-pong         │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ tranche-ping         ││ tranche-pong  │ 3da33d3eb12  │ 2         │ 1      │ 216    │    true │
-> │ tranche-bitcoind     ││               │ deacf4e1a64  │           │        │        │         │
+> │ aesir-postgres       │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ aesir-pong           │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ aesir-ping           ││ aesir-pong    │ 3da33d3eb12  │ 2         │ 1      │ 216    │    true │
+> │ aesir-bitcoind       ││               │ deacf4e1a64  │           │        │        │         │
 > │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
 ```
 
 Or run an uno-cluster with both attached postgres database and redis solid store cache like this:
 
 ```sh
-$ tranche deploy --uno --postgres --redis
+$ aesir deploy --uno --postgres --redis
 > ...
-$ tranche mine
+$ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ tranche-postgres     │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ tranche-redis        │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ tranche-lnd          ││ tranche-lnd   │ c0ae6b158d0  │ 0         │ 0      │ 202    │    true │
-> │ tranche-bitcoind     ││               │ 4194459b8f3  │           │        │        │         │
+> │ aesir-postgres       │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ aesir-redis          │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ aesir-lnd            ││ aesir-lnd     │ c0ae6b158d0  │ 0         │ 0      │ 202    │    true │
+> │ aesir-bitcoind       ││               │ 4194459b8f3  │           │        │        │         │
 > │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
 ```
 
 ## Cleanup
 
-Use the following command to clean up active `tranche-*` containers:
+Use the following command to clean up active `aesir-*` containers:
 
 ```sh
-tranche clean
+aesir clean
 ```
 
 🚧  This will resets the current test state, so use with care. Example below:
 
 ```sh
-$ tranche clean
+$ aesir clean
 > Remove active containers:                  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 ```
 
 ## Roadmap
 
-* Add `tranche-lnd-krub` peripheral service using [lnd-krub](https://github.com/krutt/lnd-krub)
-* Add `tranche-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
+* Add `aesir-lnd-krub` peripheral service using [lnd-krub](https://github.com/krutt/lnd-krub)
+* Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Write [click](https://click.palletsprojects.com) tests.
 * Make image versioning a little bit more intuitive.
-* Add `tranche-ord` peripheral service using [ord](https://github.com/ordinals/ord)
-* Add `tranche-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
+* Add `aesir-ord` peripheral service using [ord](https://github.com/ordinals/ord)
+* Add `aesir-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
 * Create and add some type of `ordapi` peripheral service.
 * Implement dashboard walkthrough a la [kylepollina/objexplore](https://github.com/kylepollina/objexplore)
 
@@ -168,7 +168,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: tranche (0.2.5)
+> Installing the current project: aesir (0.2.5)
 ```
 
 ### Known issues

@@ -22,7 +22,7 @@ include = [
   {path='src/constants.yml', format=['sdist', 'wheel']}
 ]
 license = 'MIT'
-name = 'tranche'
+name = 'aesir'
 packages = [
   {include='src'},
   {include='core.py'}
@@ -49,4 +49,4 @@ mypy = '^1.7.1'
 pytest = '^7.4.3'
 
 [tool.poetry.scripts]
-tranche = 'core:cli'
+aesir = 'core:cli'

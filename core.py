@@ -19,7 +19,7 @@ from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
 
 @group
 def cli() -> None:
-    """tranche"""
+    """aesir"""
 
 
 cli.add_command(clean, "clean")

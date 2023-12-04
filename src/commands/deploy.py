@@ -39,7 +39,7 @@ def deploy(duo: bool, uno: bool, postgres: bool, redis: bool) -> None:
     cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
     peripheral_select: Dict[str, bool] = {"postgres": postgres, "redis": redis}
     peripherals: Dict[ServiceName, Service] = {
-        f"tranche-{k}": v[f"tranche-{k}"] for k, v in PERIPHERALS.items() if peripheral_select[k]  # type: ignore[index, misc]
+        f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if peripheral_select[k]  # type: ignore[index, misc]
     }
     cluster.update(peripherals)
     client: DockerClient = from_env()
@@ -65,7 +65,7 @@ def deploy(duo: bool, uno: bool, postgres: bool, redis: bool) -> None:
         sleep(3)  # wait until lnd ready
         mining_targets: List[str] = []
         for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
-            if match(r"tranche-lnd|tranche-ping|tranche-pong", container.name) is not None:
+            if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
                 new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                     container.exec_run(
                         """
@@ -80,14 +80,14 @@ def deploy(duo: bool, uno: bool, postgres: bool, redis: bool) -> None:
                 mining_targets.append(new_address.address)
         bitcoind: Container
         try:
-            bitcoind = client.containers.get("tranche-bitcoind")
+            bitcoind = client.containers.get("aesir-bitcoind")
         except NotFound:
-            print('!! Unable to find "tranche-bitcoind" container.')
+            print('!! Unable to find "aesir-bitcoind" container.')
             return
         for address in track(mining_targets, "Mine initial capital for parties:".ljust(42)):
             bitcoind.exec_run(
                 """
-                bitcoin-cli -regtest -rpcuser=tranche -rpcpassword=tranche generatetoaddress 101 %s
+                bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
                 """
                 % address
             )

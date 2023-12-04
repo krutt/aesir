@@ -1,11 +1,11 @@
 clusters:
   duo:
-    tranche-bitcoind:
+    aesir-bitcoind:
       alias: bitcoind
       command:
         - -server=1
         - -regtest=1
-        - -rpcauth=tranche:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -rpcauth=aesir:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
         - -debug=1
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
@@ -29,28 +29,28 @@ clusters:
         - 18443:18443
         - 28334:28334
         - 28335:28335
-    tranche-ping:
+    aesir-ping:
       alias: lnd
       command:
         - --noseedbackup
         - --trickledelay=5000
-        - --externalip=tranche-ping
-        - --tlsextradomain=tranche-ping
+        - --externalip=aesir-ping
+        - --tlsextradomain=aesir-ping
         - --listen=0.0.0.0:9735
         - --rpclisten=0.0.0.0:10001
         - --restlisten=0.0.0.0:8080
         - --bitcoin.active
         - --bitcoin.regtest
         - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=tranche-bitcoind
-        - --bitcoind.rpcuser=tranche
-        - --bitcoind.rpcpass=tranche
-        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+        - --bitcoind.rpchost=aesir-bitcoind
+        - --bitcoind.rpcuser=aesir
+        - --bitcoind.rpcpass=aesir
+        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       ports:
         - 9735:9735
         - 10001:10001
-    tranche-pong:
+    aesir-pong:
       alias: lnd
       ports:
         - 9735:9736
@@ -58,26 +58,26 @@ clusters:
       command:
         - --noseedbackup
         - --trickledelay=5000
-        - --externalip=tranche-pong
-        - --tlsextradomain=tranche-pong
+        - --externalip=aesir-pong
+        - --tlsextradomain=aesir-pong
         - --listen=0.0.0.0:9735
         - --rpclisten=0.0.0.0:10001
         - --restlisten=0.0.0.0:8080
         - --bitcoin.active
         - --bitcoin.regtest
         - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=tranche-bitcoind
-        - --bitcoind.rpcuser=tranche
-        - --bitcoind.rpcpass=tranche
-        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+        - --bitcoind.rpchost=aesir-bitcoind
+        - --bitcoind.rpcuser=aesir
+        - --bitcoind.rpcpass=aesir
+        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
   uno:
-    tranche-bitcoind:
+    aesir-bitcoind:
       alias: bitcoind
       command:
         - -server=1
         - -regtest=1
-        - -rpcauth=tranche:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
+        - -rpcauth=aesir:79c479f35a9b741e66f2658870f86f25$9c299f4e7b2abdedb7ae64cbe5f9ab356ec7234573ba31495aa10f7ca116ab52
         - -debug=1
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
@@ -101,24 +101,24 @@ clusters:
         - 18443:18443
         - 28334:28334
         - 28335:28335
-    tranche-lnd:
+    aesir-lnd:
       alias: lnd
       command:
         - --noseedbackup
         - --trickledelay=5000
-        - --externalip=tranche-lnd
-        - --tlsextradomain=tranche-lnd
+        - --externalip=aesir-lnd
+        - --tlsextradomain=aesir-lnd
         - --listen=0.0.0.0:9735
         - --rpclisten=0.0.0.0:10001
         - --restlisten=0.0.0.0:8080
         - --bitcoin.active
         - --bitcoin.regtest
         - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=tranche-bitcoind
-        - --bitcoind.rpcuser=tranche
-        - --bitcoind.rpcpass=tranche
-        - --bitcoind.zmqpubrawblock=tcp://tranche-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://tranche-bitcoind:28335
+        - --bitcoind.rpchost=aesir-bitcoind
+        - --bitcoind.rpcuser=aesir
+        - --bitcoind.rpcpass=aesir
+        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
+        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       ports:
         - 9735:9735
         - 10001:10001
@@ -139,17 +139,17 @@ images:
   required:
     bitcoind: polarlightning/bitcoind:25.0
     lnd: polarlightning/lnd:0.17.2-beta
-network: tranche
+network: aesir
 peripherals:
   postgres:
-    tranche-postgres:
+    aesir-postgres:
       alias: postgres
       env_vars:
         - POSTGRES_HOST_AUTH_METHOD=trust
       ports:
         - 5432:5432
   redis:
-    tranche-redis:
+    aesir-redis:
       alias: redis
       ports:
         - 6379:6379

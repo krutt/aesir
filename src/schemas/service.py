@@ -28,12 +28,12 @@ class Service(BaseModel):
 
 
 ServiceName = Literal[
-    "tranche-bitcoind",
-    "tranche-lnd",
-    "tranche-ping",
-    "tranche-pong",
-    "tranche-postgres",
-    "tranche-redis",
+    "aesir-bitcoind",
+    "aesir-lnd",
+    "aesir-ping",
+    "aesir-pong",
+    "aesir-postgres",
+    "aesir-redis",
 ]
 
 __all__ = ["Service", "ServiceName"]

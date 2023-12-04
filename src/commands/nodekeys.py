@@ -32,7 +32,7 @@ def nodekeys() -> None:
     if client.ping():
         containers: List[Container] = reversed(client.containers.list())  # type: ignore[assignment]
         lnds: List[Container] = list(
-            filter(lambda c: match(r"tranche-lnd|tranche-ping|tranche-pong", c.name), containers)
+            filter(lambda c: match(r"aesir-lnd|aesir-ping|aesir-pong", c.name), containers)
         )
         outputs: List[str] = []
         for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):

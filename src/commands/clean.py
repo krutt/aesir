@@ -27,16 +27,16 @@ from src.configs import NETWORK
 @command
 @pass_context
 def clean(context: Context) -> None:
-    """Remove all active "tranche-*" containers, drop network."""
+    """Remove all active "aesir-*" containers, drop network."""
     client: DockerClient = from_env()
     if client.ping():
         for container in track(client.containers.list(), "Remove active containers:".ljust(42)):
-            if match(r"tranche-*", container.name) is not None:
+            if match(r"aesir-*", container.name) is not None:
                 container.stop()
                 container.remove()
         try:
-            tranche_network: Network = client.networks.get(NETWORK)
-            tranche_network.remove()
+            aesir_network: Network = client.networks.get(NETWORK)
+            aesir_network.remove()
         except NotFound:
             pass
 

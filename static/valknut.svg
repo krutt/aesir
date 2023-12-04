@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg
+  height="800"
+  version="1.1"
+  viewBox="0 2 800 800"
+  width="800"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:svgjs="http://svgjs.dev/svgjs"
+  >
+  <defs>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="sky-gradient">
+      <stop stop-color="hsl(162, 100%, 58%)" stop-opacity="1" offset="0%"/>
+      <stop stop-color="hsl(270, 73%, 53%)" stop-opacity="1" offset="100%"/>
+    </linearGradient>
+    <filter id="neon" x="-100%" y="-100%" width="400%" height="400%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="17 8" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" edgeMode="none" result="blur"></feGaussianBlur>
+    </filter>
+    <filter id="neon2" x="-100%" y="-100%" width="400%" height="400%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="10 17" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" edgeMode="none" result="blur"></feGaussianBlur>
+    </filter>
+    <linearGradient gradientTransform="rotate(-150, 0.5, 0.5)" x1="50%" y1="0%" x2="50%" y2="100%" id="gggrain-gradient2"><stop stop-color="hsla(34, 94%, 54%, 1.00)" stop-opacity="1" offset="-0%"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="100%"/></linearGradient><linearGradient gradientTransform="rotate(150, 0.5, 0.5)" x1="50%" y1="0%" x2="50%" y2="100%" id="gggrain-gradient3"><stop stop-color="hsl(88, 92%, 24%)" stop-opacity="1"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="100%"/></linearGradient><filter id="gggrain-filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"></feTurbulence>
+  <feColorMatrix type="saturate" values="0" x="0%" y="0%" width="100%" height="100%" in="turbulence" result="colormatrix"></feColorMatrix>
+  <feComponentTransfer x="0%" y="0%" width="100%" height="100%" in="colormatrix" result="componentTransfer">
+    <feFuncR type="linear" slope="3"></feFuncR>
+    <feFuncG type="linear" slope="3"></feFuncG>
+    <feFuncB type="linear" slope="3"></feFuncB>
+  </feComponentTransfer>
+  <feColorMatrix x="0%" y="0%" width="100%" height="100%" in="componentTransfer" result="colormatrix2" type="matrix" values="1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0 0 0 19 -11"></feColorMatrix>
+  </filter>
+  </defs>
+  <g id='backdrop'>
+    <rect
+      id='backdrop-fill'
+      width="100%"
+      height="100%"
+      fill="hsl(0, 0%, 27%)"
+      />
+    <rect
+      id='backdrop-gradient'
+      width="100%" height="100%"
+      fill="url(#gggrain-gradient3)"
+      />
+    <rect id='backdrop-grain'
+      width="100%" height="100%"
+      fill="url(#gggrain-gradient2)"
+      />
+    <rect id='backdrop-softlight'
+      width="100%" height="100%" fill="transparent"
+      filter="url(#gggrain-filter)" opacity="1" style="mix-blend-mode: soft-light"
+      />
+  </g>
+  <g
+    id='valknut' 
+    fill='url(#sky-gradient)'
+    transform='translate(50, 50)'>
+  <path id='outer-bottom'
+    d="
+      M19.5029,656.329
+      H569.11
+      L480.396,504.189
+      H399.972
+      L444.412,585.031
+      H145.661
+      L188.856,504.189
+      H105.782Z
+      "
+    />
+  <use xlink:href='#outer-bottom' filter='url(#neon)' transform='translate(0, -10)' opacity='0.25'/>
+  <use xlink:href='#outer-bottom' filter='url(#neon2)' transform='translate(0, -20)' opacity='0.5'/>
+  <path id='outer-left'
+    d="
+      M19.6543,494.568
+      H195.586
+      L235.73,423.863
+      H143.757
+      L293.602,164.479
+      L340.068,241.734
+      L381.741,169.869
+      L293.602,19.5791Z
+    "
+    />
+  <use xlink:href='#outer-left' filter='url(#neon)' transform='translate(0, -10)' opacity='0.25'/>
+<use xlink:href='#outer-left' filter='url(#neon2)' transform='translate(0, -20)' opacity='0.5'/>
+  <path id='inner-left'
+    d="
+      M159.778,414.447
+      H241.317
+      L293.602,325.824
+      L346.277,414.447
+      H427.501
+      L293.602,183.811Z
+    "/>
+
+  <path id='inner-bottom'
+    d="
+      M162.142,575.714
+      H428.897
+      L388.89,504.189
+      H284.518
+      L335.293,414.447
+      L293.602,344.062Z
+    "/>
+
+  <path id='inner-right'
+    d="
+      M300.604,494.568
+      H566.603
+      L433.378,261.951
+      L391.708,332.126
+      L443.005,423.863
+      H340.345Z
+    "/>
+  <path id='outer-right'
+    d="
+      M345.934,252.893
+      L386.214,322.502
+      L433.378,243.743
+      L583.604,504.189
+      H492.989
+      L534.392,575.714
+      H708.421
+      L433.378,100.098Z
+    "
+    />
+  <use xlink:href='#outer-right' filter='url(#neon)' transform='translate(0, -10)' opacity='0.25'/>
+  <use xlink:href='#outer-right' filter='url(#neon2)' transform='translate(0, -20)' opacity='0.5'/>
+  </g>
+</svg>

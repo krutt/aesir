@@ -38,7 +38,7 @@ with open(str(file_path).replace("configs.py", "constants.yaml"), "rb") as strea
         IMAGES = TypeAdapter(Dict[ImageEnum, Dict[ImageAlias, str]]).validate_python(
             constants["images"]
         )
-        NETWORK = constants.get("network", "tranche")
+        NETWORK = constants.get("network", "aesir")
         PERIPHERALS = TypeAdapter(Dict[PeripheralEnum, Dict[ServiceName, Service]]).validate_python(
             constants["peripherals"]
         )
