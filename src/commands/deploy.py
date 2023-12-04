@@ -30,14 +30,14 @@ from src.schemas import MutexOption, NewAddress, Service, ServiceName
 
 @command
 @option("--duo", alternatives=["uno"], cls=MutexOption, is_flag=True, type=bool)
-@option("--postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
-@option("--redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
 @option("--uno", alternatives=["duo"], cls=MutexOption, is_flag=True, type=bool)
-def deploy(duo: bool, uno: bool, postgres: bool, redis: bool) -> None:
+@option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
+@option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
+def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
     """Deploy cluster, either with one or two LND nodes."""
     duo = duo or (not duo and not uno)  # defaults to duo network
     cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
-    peripheral_select: Dict[str, bool] = {"postgres": postgres, "redis": redis}
+    peripheral_select: Dict[str, bool] = {"postgres": with_postgres, "redis": with_redis}
     peripherals: Dict[ServiceName, Service] = {
         f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if peripheral_select[k]  # type: ignore[index, misc]
     }

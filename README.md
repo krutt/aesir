@@ -93,7 +93,7 @@ This project also helps you setup peripheral services to make development proces
 For example, if you want to deploy a duo-cluster with attached postgres database, run the following:
 
 ```sh
-$ aesir deploy --postgres
+$ aesir deploy --with-postgres
 > ...
 $ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
@@ -107,7 +107,7 @@ $ aesir mine
 Or run an uno-cluster with both attached postgres database and redis solid store cache like this:
 
 ```sh
-$ aesir deploy --uno --postgres --redis
+$ aesir deploy --uno --with-postgres --with-redis
 > ...
 $ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
