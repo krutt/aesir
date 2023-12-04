@@ -38,7 +38,7 @@ repositories. Results may lock as such:
 $ pip install aesir
 > ...
 > Installing collected packages: aesir
-> Successfully installed aesir-0.2.7
+> Successfully installed aesir-0.2.8
 $ aesir deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
@@ -168,7 +168,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.2.7)
+> Installing the current project: aesir (0.2.8)
 ```
 
 ### Known issues
