@@ -96,9 +96,7 @@ def mine(blockcount: int, blocktime: int) -> None:
             )
         )
         with Live(pane, refresh_per_second=4, transient=True):
-            pane["containers"].update(
-                Panel(Text("\n".join(aesir_containers)), title="containers")
-            )
+            pane["containers"].update(Panel(Text("\n".join(aesir_containers)), title="containers"))
             while True:
                 ### Update ###
                 blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
