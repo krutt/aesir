@@ -52,7 +52,7 @@ def ping_pong(channel_size: int) -> None:
     paddles: List[Container] = list(
         filter(lambda c: match(r"aesir-ping|aesir-pong", c.name), containers)
     )
-    mining_targets: Dict[str, str] = {}
+    treasuries: Dict[str, str] = {}
     nodekeys: Dict[str, str] = {}
 
     ### Fetch nodekeys ###
@@ -80,7 +80,7 @@ def ping_pong(channel_size: int) -> None:
                 """
             ).output
         )
-        mining_targets[container.name] = new_address.address
+        treasuries[container.name] = new_address.address
 
     ### Open channels ###
     outputs: List[str] = []
@@ -108,7 +108,7 @@ def ping_pong(channel_size: int) -> None:
                     """
                     bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
                     """
-                    % (6, mining_targets.get("aesir-ping", ""))
+                    % (6, treasuries.get("aesir-ping", ""))
                 )
             except ValidationError:
                 outputs.append("!! Channel 'aesir-ping --> aesir-pong' already opened.")
@@ -135,7 +135,7 @@ def ping_pong(channel_size: int) -> None:
                     """
                     bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
                     """
-                    % (6, mining_targets.get("aesir-pong", ""))
+                    % (6, treasuries.get("aesir-pong", ""))
                 )
             except ValidationError:
                 outputs.append("!! Channel 'aesir-pong --> aesir-ping' already opened.")
