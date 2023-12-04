@@ -34,6 +34,7 @@ def flush() -> None:
             raise DockerException
     except DockerException:
         rich_print("[red bold]Unable to connect to docker daemon.")
+        return
     outputs: List[str] = []
     docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
     for registry_id in track(DEPRECATED, "Remove deprecated images:".ljust(42)):
