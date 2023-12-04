@@ -44,7 +44,7 @@ def clean(inactive: bool) -> None:
     containers: List[Container] = client.containers.list(all=inactive)
     for container in track(containers, "Remove active containers:".ljust(42)):
         if match(r"aesir-*", container.name) is not None:
-            # container.stop()
+            container.stop()
             container.remove()
             outputs.append(f"<Container '{ container.name }'> removed.")
     try:
