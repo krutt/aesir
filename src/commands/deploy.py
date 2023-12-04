@@ -80,7 +80,7 @@ def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
     sleep(3)
 
     ### Mine starting capital ###
-    mining_targets: List[str] = []
+    treasuries: List[str] = []
     for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
         if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
             new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
@@ -94,7 +94,7 @@ def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
                     """
                 ).output
             )
-            mining_targets.append(new_address.address)
+            treasuries.append(new_address.address)
 
     ### Retrieve bitcoind container ###
     bitcoind: Container
@@ -103,7 +103,7 @@ def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
     except NotFound:
         rich_print('!! Unable to find "aesir-bitcoind" container.')
         return
-    for address in track(mining_targets, "Mine initial capital for parties:".ljust(42)):
+    for address in track(treasuries, "Mine initial capital for parties:".ljust(42)):
         bitcoind.exec_run(
             """
             bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
