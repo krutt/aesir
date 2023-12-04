@@ -27,8 +27,9 @@ from src.configs import DEPRECATED
 @command
 def flush() -> None:
     """Remove images deprecated by workspace."""
+    client: DockerClient
     try:
-        client: DockerClient = from_env()
+        client = from_env()
         if not client.ping():
             raise DockerException
     except DockerException:
