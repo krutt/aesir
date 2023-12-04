@@ -17,8 +17,10 @@ from typing import List
 ### Third-party packages ###
 from click import command
 from docker import DockerClient, from_env
+from docker.errors import DockerException
 from docker.models.containers import Container
 from pydantic import TypeAdapter
+from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
@@ -28,27 +30,36 @@ from src.schemas import LNDInfo
 @command
 def nodekeys() -> None:
     """Fetch nodekeys from active LND containers."""
-    client: DockerClient = from_env()
-    if client.ping():
-        containers: List[Container] = reversed(client.containers.list())  # type: ignore[assignment]
-        lnds: List[Container] = list(
-            filter(lambda c: match(r"aesir-lnd|aesir-ping|aesir-pong", c.name), containers)
+    client: DockerClient
+    try:
+        client = from_env()
+        if not client.ping():
+            raise DockerException
+    except DockerException:
+        rich_print("[red bold]Unable to connect to docker daemon.")
+        return
+
+    lnds: List[Container] = list(
+        filter(
+            lambda container: match(r"aesir-lnd|aesir-ping|aesir-pong", container.name),
+            reversed(client.containers.list()),
         )
-        outputs: List[str] = []
-        for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
-            lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
-                container.exec_run(
-                    """
-                    lncli
-                        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                        --rpcserver=localhost:10001
-                        --tlscertpath=/home/lnd/.lnd/tls.cert
-                    getinfo
-                    """
-                ).output
-            )
-            outputs.append(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
-        list(map(print, outputs))
+    )
+    outputs: List[str] = []
+    for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
+        lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+            container.exec_run(
+                """
+                lncli
+                    --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                    --rpcserver=localhost:10001
+                    --tlscertpath=/home/lnd/.lnd/tls.cert
+                getinfo
+                """
+            ).output
+        )
+        outputs.append(f"<Nodekey: '{ container.name }', '{ lnd_info.identity_pubkey }'>")
+    list(map(rich_print, outputs))
 
 
 __all__ = ["nodekeys"]
