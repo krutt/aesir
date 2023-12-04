@@ -12,12 +12,15 @@
 
 ### Standard packages ###
 from re import match
+from typing import List
 
 ### Third-party packages ###
-from click import Context, command, pass_context
+from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import NotFound
+from docker.errors import DockerException, NotFound
+from docker.models.containers import Container
 from docker.models.networks import Network
+from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
@@ -25,20 +28,32 @@ from src.configs import NETWORK
 
 
 @command
-@pass_context
-def clean(context: Context) -> None:
+@option("--inactive", help="Query inactive containers for removal.", is_flag=True, type=bool)
+def clean(inactive: bool) -> None:
     """Remove all active "aesir-*" containers, drop network."""
-    client: DockerClient = from_env()
-    if client.ping():
-        for container in track(client.containers.list(), "Remove active containers:".ljust(42)):
-            if match(r"aesir-*", container.name) is not None:
-                container.stop()
-                container.remove()
-        try:
-            aesir_network: Network = client.networks.get(NETWORK)
-            aesir_network.remove()
-        except NotFound:
-            pass
+    client: DockerClient
+    try:
+        client = from_env()
+        if not client.ping():
+            raise DockerException
+    except DockerException:
+        rich_print("[red bold]Unable to connect to docker daemon.")
+        return
+
+    outputs: List[str] = []
+    containers: List[Container] = client.containers.list(all=inactive)
+    for container in track(containers, "Remove active containers:".ljust(42)):
+        if match(r"aesir-*", container.name) is not None:
+            # container.stop()
+            container.remove()
+            outputs.append(f"<Container '{ container.name }'> removed.")
+    try:
+        network: Network = client.networks.get(NETWORK)
+        network.remove()
+        outputs.append(f"<Network '{ NETWORK }'> removed.")
+    except NotFound:
+        pass
+    list(map(rich_print, outputs))
 
 
 __all__ = ["clean"]
