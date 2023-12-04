@@ -44,7 +44,7 @@ def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
     except DockerException:
         rich_print("[red bold]Unable to connect to docker daemon.")
         return
-    
+
     ### Defaults to duo network; Derive cluster information from parameters ###
     duo = duo or (not duo and not uno)  # defaults to duo network
     cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
