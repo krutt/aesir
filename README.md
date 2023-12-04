@@ -3,13 +3,13 @@
 [![Bitcoin-only](https://img.shields.io/badge/bitcoin-only-FF9900?logo=bitcoin)](https://twentyone.world)
 [![LN](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
 [![Docker](https://img.shields.io/badge/docker-2496ED?&logo=docker&logoColor=white)](https://hub.docker.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Top](https://img.shields.io/github/languages/top/krutt/aesir)](.)
-[![Languages](https://img.shields.io/github/languages/count/krutt/aesir)](.)
-[![Size](https://img.shields.io/github/repo-size/krutt/aesir)](.)
-[![Last commit](https://img.shields.io/github/last-commit/krutt/aesir/master)](.)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/krutt/aesir/blob/master/LICENSE)
+[![Top](https://img.shields.io/github/languages/top/krutt/aesir)](https://github.com/krutt/aesir)
+[![Languages](https://img.shields.io/github/languages/count/krutt/aesir)](https://github.com/krutt/aesir)
+[![Size](https://img.shields.io/github/repo-size/krutt/aesir)](https://github.com/krutt/aesir)
+[![Last commit](https://img.shields.io/github/last-commit/krutt/aesir/master)](https://github.com/krutt/aesir)
 
-[![Aesir Banner](static/aesir-banner.svg)](static/aesir-banner.svg)
+[![Aesir Banner](https://github.com/krutt/aesir/blob/master/static/aesir-banner.svg)](https://github.com/krutt/aesir/blob/master/static/aesir-banner.svg)
 
 ## Prerequisites
 
@@ -56,16 +56,16 @@ setup. You can achieve completely local and running environment with the followi
 ```sh
 $ aesir mine
 > ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ aesir-redis        │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ aesir-postgres     │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ aesir-pong         ││ aesir-pong  │ 02fabeeaa9d  │ 2         │ 1      │ 216    │    true │
-> │ aesir-ping         ││               │ 3da33d3eb12  │           │        │        │         │
-> │ aesir-bitcoind     ││               │ 262e039d9b2  │           │        │        │         │
+> │ aesir-redis          │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
+> │ aesir-postgres       │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+> │ aesir-pong           ││ aesir-pong    │ 02fabeeaa9d  │ 2         │ 1      │ 216    │    true │
+> │ aesir-ping           ││               │ 3da33d3eb12  │           │        │        │         │
+> │ aesir-bitcoind       ││               │ 262e039d9b2  │           │        │        │         │
 > │                      ││               │ 9d591f1b897  │           │        │        │         │
 > │                      ││               │ c0ae6b158d0  │           │        │        │         │
 > │                      ││               │ 5410d97efbc  │           │        │        │         │
 > │                      │├───────────────┼──────────────┼───────────┼────────┼────────┼─────────┤
-> │                      ││ aesir-ping  │ 02ac17a8d64  │ 2         │ 1      │ 216    │    true │
+> │                      ││ aesir-ping    │ 02ac17a8d64  │ 2         │ 1      │ 216    │    true │
 > │                      ││               │ 4194459b8f3  │           │        │        │         │
 > │                      ││               │ deacf4e1a64  │           │        │        │         │
 > │                      ││               │ 0fcbcdf9fbf  │           │        │        │         │
