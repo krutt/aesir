@@ -48,9 +48,11 @@ def ping_pong(channel_size: int) -> None:
         rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
         return
 
-    containers: List[Container] = list(reversed(client.containers.list()))
     paddles: List[Container] = list(
-        filter(lambda c: match(r"aesir-ping|aesir-pong", c.name), containers)
+        filter(
+            lambda container: match(r"aesir-ping|aesir-pong", container.name),
+            reversed(client.containers.list()),
+        )
     )
     treasuries: Dict[str, str] = {}
     nodekeys: Dict[str, str] = {}
