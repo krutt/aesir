@@ -56,12 +56,12 @@ def mine(blockcount: int, blocktime: int) -> None:
         return
 
     ### Retrieve other containers ###
-    aesir_containers: List[str] = list(
+    aesir_containers: List[Container] = list(
         filter(
             lambda container: match(r"aesir-*", container.name), reversed(client.containers.list())
         )
     )
-    container_names: List[str] = map(lambda container: container.name, aesir_containers)
+    container_names: List[str] = list(map(lambda container: container.name, aesir_containers))
     lnd_containers: List[Container] = list(
         filter(
             lambda container: match(r"aesir-lnd|aesir-ping|aesir-pong", container.name),
