@@ -9,7 +9,7 @@
 [![Size](https://img.shields.io/github/repo-size/krutt/aesir)](https://github.com/krutt/aesir)
 [![Last commit](https://img.shields.io/github/last-commit/krutt/aesir/master)](https://github.com/krutt/aesir)
 
-[![Aesir Banner](https://github.com/krutt/aesir/blob/master/static/aesir-banner.svg)](https://github.com/krutt/aesir/blob/master/static/aesir-banner.svg)
+[![Aesir banner](https://github.com/krutt/aesir/blob/master/static/aesir-banner.svg)](static/aesir-banner.svg)
 
 ## Prerequisites
 
