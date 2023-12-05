@@ -32,7 +32,7 @@ aesir deploy
 ```
 
 The initial deployment may take some time at pulling required images from their respective
-repositories. Results may lock as such:
+repositories. Results may look as such:
 
 ```sh
 $ pip install aesir
