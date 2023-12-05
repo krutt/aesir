@@ -105,7 +105,7 @@ def ping_pong(channel_size: int) -> None:
                     ).output
                 )
                 outputs.append(
-                    f"<Channel 'aesir-ping --> aesir-pong' : { open_channel.funding_txid }>"
+                    f"<Channel 'aesir-ping --> aesir-pong' : txid='{ open_channel.funding_txid }'>"
                 )
                 bitcoind.exec_run(
                     """
@@ -132,7 +132,7 @@ def ping_pong(channel_size: int) -> None:
                     ).output
                 )
                 outputs.append(
-                    f"<Channel 'aesir-pong --> aesir-ping' : { open_channel.funding_txid }>"
+                    f"<Channel 'aesir-pong --> aesir-ping' : txid='{ open_channel.funding_txid }'>"
                 )
                 bitcoind.exec_run(
                     """
