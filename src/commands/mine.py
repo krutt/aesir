@@ -69,7 +69,7 @@ def mine(blockcount: int, blocktime: int) -> None:
     try:
         bitcoind = client.containers.get("aesir-bitcoind")
     except NotFound:
-        print('!! Unable to find "aesir-bitcoind" container.')
+        rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
         return
 
     ### Set up mining schedule using command arguments ###
