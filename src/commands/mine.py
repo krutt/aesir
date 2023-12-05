@@ -1,10 +1,10 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/mine.py
-# VERSION: 	   0.2.8
-# CREATED: 	   2023-12-01 05:31
-# AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
+# FILENAME:     ~~/src/commands/mine.py
+# VERSION: 	    0.2.8
+# CREATED: 	    2023-12-01 05:31
+# AUTHOR:       Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
 #
 # HISTORY:
@@ -47,6 +47,29 @@ def mine(blockcount: int, blocktime: int) -> None:
         rich_print("[red bold]Unable to connect to daemon.")
         return
 
+    ### Retrieve bitcoind container ###
+    bitcoind: Container
+    try:
+        bitcoind = client.containers.get("aesir-bitcoind")
+    except NotFound:
+        rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
+        return
+
+    ### Retrieve other containers ###
+    aesir_containers: List[str] = list(
+        filter(
+            lambda container: match(r"aesir-*", container.name),
+            reversed(client.containers.list())
+        )
+    )
+    container_names: List[str] = map(lambda container: container.name, aesir_containers)
+    lnd_containers: List[Container] = list(
+        filter(
+            lambda container: match(r"aesir-lnd|aesir-ping|aesir-pong", container.name),
+            aesir_containers
+        )
+    )
+
     ### Generate treasury addresses as mining destinations ###
     treasuries: List[str] = []
     for container in track(client.containers.list(), "Generate mining treasuries:".ljust(42)):
@@ -63,14 +86,6 @@ def mine(blockcount: int, blocktime: int) -> None:
                 ).output
             )
             treasuries.append(new_address.address)
-
-    ### Retrieve bitcoind container ###
-    bitcoind: Container
-    try:
-        bitcoind = client.containers.get("aesir-bitcoind")
-    except NotFound:
-        rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
-        return
 
     ### Set up mining schedule using command arguments ###
     scheduler: BackgroundScheduler = BackgroundScheduler()
@@ -98,15 +113,9 @@ def mine(blockcount: int, blocktime: int) -> None:
     pane.split_row(sidebar, main)
     main.split_column(body, footer)
     sidebar.split_column(containers)
-    aesir_containers: List[str] = list(
-        map(
-            lambda container: container.name,
-            filter(lambda container: match(r"aesir-*", container.name), client.containers.list()),
-        )
-    )
 
     with Live(pane, refresh_per_second=4, transient=True):
-        pane["containers"].update(Panel(Text("\n".join(aesir_containers)), title="containers"))
+        pane["containers"].update(Panel(Text("\n".join(container_names)), title="containers"))
         while True:
             ### Update ###
             blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
@@ -116,23 +125,26 @@ def mine(blockcount: int, blocktime: int) -> None:
                     """
                 ).output
             )
-            names: List[str] = []
+
+            ### Initiate parameters ###
             lnd_infos: List[LNDInfo] = []
-            for container in client.containers.list():
-                if match("aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
-                    names.append(container.name)
-                    lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
-                        container.exec_run(
-                            """
-                            lncli
-                                --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                                --rpcserver=localhost:10001
-                                --tlscertpath=/home/lnd/.lnd/tls.cert
-                            getinfo
-                            """
-                        ).output
-                    )
-                    lnd_infos.append(lnd_info)
+            lnd_names: List[str] = []
+
+            ## Fetch LNDInfo from LND containers ###
+            for container in lnd_containers:
+                lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+                    container.exec_run(
+                        """
+                        lncli
+                            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                            --rpcserver=localhost:10001
+                            --tlscertpath=/home/lnd/.lnd/tls.cert
+                        getinfo
+                        """
+                    ).output
+                )
+                lnd_infos.append(lnd_info)
+                lnd_names.append(container.name)
 
             ### Draw ###
             body_table: Table = Table(expand=True, show_lines=True)
@@ -144,7 +156,7 @@ def mine(blockcount: int, blocktime: int) -> None:
             body_table.add_column("Synced?", justify="right")
             for i, lnd_info in enumerate(lnd_infos):
                 body_table.add_row(
-                    names[i],
+                    lnd_names[i],
                     "\n".join(
                         lnd_info.identity_pubkey[c : c + 11]
                         for c in range(0, len(lnd_info.identity_pubkey), 11)
