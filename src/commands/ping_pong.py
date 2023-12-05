@@ -114,7 +114,7 @@ def ping_pong(channel_size: int) -> None:
                     % (6, treasuries.get("aesir-ping", ""))
                 )
             except ValidationError:
-                outputs.append("!! Channel 'aesir-ping --> aesir-pong' already opened.")
+                outputs.append("[dim yellow1]Unable to open 'aesir-pong --> aesir-ping' channel.")
         elif container.name == "aesir-pong":
             try:
                 open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # type: ignore[no-redef]
@@ -141,7 +141,7 @@ def ping_pong(channel_size: int) -> None:
                     % (6, treasuries.get("aesir-pong", ""))
                 )
             except ValidationError:
-                outputs.append("!! Channel 'aesir-pong --> aesir-ping' already opened.")
+                outputs.append("[dim yellow1]Unable to open 'aesir-pong --> aesir-ping' channel.")
     list(map(rich_print, outputs))
 
 

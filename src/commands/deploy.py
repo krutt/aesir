@@ -101,7 +101,7 @@ def deploy(duo: bool, uno: bool, with_postgres: bool, with_redis: bool) -> None:
     try:
         bitcoind = client.containers.get("aesir-bitcoind")
     except NotFound:
-        rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
+        rich_print('[dim yellow1]Unable to find "aesir-bitcoind"; initial capital not yet mined.')
         return
     for address in track(treasuries, "Mine initial capital for parties:".ljust(42)):
         bitcoind.exec_run(
