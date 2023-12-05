@@ -56,7 +56,7 @@ def ping_pong(channel_size: int) -> None:
             reversed(client.containers.list()),
         )
     )
-    treasuries: Dict[str, str] = {}    
+    treasuries: Dict[str, str] = {}
 
     ### Fetch nodekeys ###
     for container in track(paddles, "Fetch LND nodekeys:".ljust(42)):
