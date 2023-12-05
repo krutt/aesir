@@ -71,20 +71,19 @@ def mine(blockcount: int, blocktime: int) -> None:
 
     ### Generate treasury addresses as mining destinations ###
     treasuries: List[str] = []
-    for container in track(client.containers.list(), "Generate mining treasuries:".ljust(42)):
-        if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
-            new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
-                container.exec_run(
-                    """
-                    lncli
-                        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                        --rpcserver=localhost:10001
-                        --tlscertpath=/home/lnd/.lnd/tls.cert
-                    newaddress p2wkh
-                    """
-                ).output
-            )
-            treasuries.append(new_address.address)
+    for container in track(lnd_containers, "Generate mining treasuries:".ljust(42)):
+        new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
+            container.exec_run(
+                """
+                lncli
+                    --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                    --rpcserver=localhost:10001
+                    --tlscertpath=/home/lnd/.lnd/tls.cert
+                newaddress p2wkh
+                """
+            ).output
+        )
+        treasuries.append(new_address.address)
 
     ### Set up mining schedule using command arguments ###
     scheduler: BackgroundScheduler = BackgroundScheduler()
