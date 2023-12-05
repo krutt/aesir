@@ -14,6 +14,8 @@
 from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
 from src.schemas import (
     BlockchainInfo,
+    Build,
+    BuildEnum,
     ClusterEnum,
     ImageAlias,
     ImageEnum,
@@ -28,6 +30,8 @@ from src.schemas import (
 
 __all__ = [
     "BlockchainInfo",
+    "Build",
+    "BuildEnum",
     "ClusterEnum",
     "ImageAlias",
     "ImageEnum",

@@ -12,6 +12,7 @@
 
 ### Local modules ###
 from src.schemas.blockchain_info import BlockchainInfo
+from src.schemas.build import Build, BuildEnum
 from src.schemas.cluster_enum import ClusterEnum
 from src.schemas.image import ImageAlias, ImageEnum
 from src.schemas.lnd_info import LNDInfo
@@ -24,6 +25,8 @@ from src.schemas.service import Service, ServiceName
 
 __all__ = [
     "BlockchainInfo",
+    "Build",
+    "BuildEnum",
     "ClusterEnum",
     "ImageAlias",
     "ImageEnum",

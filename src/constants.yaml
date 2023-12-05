@@ -1,3 +1,25 @@
+builds:
+  lnd-krub:
+    instructions:
+      - FROM node:18-bullseye AS builder
+      - WORKDIR /usr/src
+      - RUN apt-get install -y ca-certificates git
+      - RUN git clone --branch master --depth=1 https://github.com/krutt/lnd-krub.git
+      - RUN mv lnd-krub/* ./
+      - RUN yarn --frozen-lockfile
+      - RUN yarn prisma:generate
+      - RUN yarn build
+      - RUN yarn --prod --ignore-scripts
+      - FROM node:18-bullseye-slim AS runner
+      - WORKDIR /usr/app
+      - COPY --from=builder /usr/src/dist /usr/app/dist
+      - COPY --from=builder /usr/src/node_modules /usr/app/node_modules
+      - COPY --from=builder /usr/src/prisma /usr/app/prisma
+      - COPY --from=builder /usr/src/package.json /usr/app/package.json
+      - EXPOSE 3000
+      - ENV NODE_ENV production
+      - CMD dist/index.js
+    platform: linux/amd64
 clusters:
   duo:
     aesir-bitcoind:
