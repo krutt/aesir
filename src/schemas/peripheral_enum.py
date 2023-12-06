@@ -13,6 +13,6 @@
 ### Standard packages ###
 from typing import Literal
 
-PeripheralEnum = Literal["postgres", "redis"]
+PeripheralEnum = Literal["lnd-krub", "postgres", "redis"]
 
 __all__ = ["PeripheralEnum"]

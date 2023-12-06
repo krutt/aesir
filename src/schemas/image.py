@@ -13,7 +13,7 @@
 ### Standard packages ###
 from typing import Literal
 
-ImageAlias = Literal["bitcoind", "lnd", "postgres", "redis"]
+ImageAlias = Literal["bitcoind", "lnd", "lnd-krub", "postgres", "redis"]
 ImageEnum = Literal["optional", "required"]
 
 __all__ = ["ImageAlias", "ImageEnum"]

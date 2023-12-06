@@ -16,9 +16,11 @@ builds:
       - COPY --from=builder /usr/src/node_modules /usr/app/node_modules
       - COPY --from=builder /usr/src/prisma /usr/app/prisma
       - COPY --from=builder /usr/src/package.json /usr/app/package.json
-      - EXPOSE 3000
+      - ARG MACAROON
+      - ARG TLSCERT
       - ENV NODE_ENV production
-      - CMD dist/index.js
+      - EXPOSE 3000
+      - CMD printf $MACAROON > krub.macaroon && printf $TLSCERT > tls.cert && node dist/index.js
     platform: linux/amd64
 clusters:
   duo:
@@ -163,6 +165,22 @@ images:
     lnd: polarlightning/lnd:0.17.2-beta
 network: aesir
 peripherals:
+  lnd-krub:
+    aesir-lnd-krub:
+      alias: lnd-krub
+      env_vars:
+        - BITCOIND_RPC_URL=http://aesir:aesir@aesir-bitcoind:18443
+        - COOKIE_SECRET=RdnYShthFMcAjLpmzaVjABQrWTzeFwzf
+        - CSRF_SECRET=EJnBsZoSbQmrRzSVRiDlFUzmGvsNPmNh
+        - DATABASE_URL=postgresql://aesir-postgres:5432/aesir
+        - LND_MACAROON_PATH=krub.macaroon
+        - LND_SERVICE_HOST=aesir-ping
+        - LND_SERVICE_PORT=10001
+        - LND_TLSCERT_PATH=tls.cert
+        - PROD_FAUCET=true
+        - REDIS_HOST=aesir-redis
+      ports:
+        - 3000:3000
   postgres:
     aesir-postgres:
       alias: postgres
