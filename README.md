@@ -138,6 +138,7 @@ $ aesir clean
 * Add `aesir-lnd-krub` peripheral service using [lnd-krub](https://github.com/krutt/lnd-krub)
 * Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Write [click](https://click.palletsprojects.com) tests.
+* Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
 * Make image versioning a little bit more intuitive.
 * Add `aesir-ord` peripheral service using [ord](https://github.com/ordinals/ord)
 * Add `aesir-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
