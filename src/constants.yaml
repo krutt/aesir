@@ -185,7 +185,8 @@ peripherals:
     aesir-postgres:
       alias: postgres
       env_vars:
-        - POSTGRES_HOST_AUTH_METHOD=trust
+        - POSTGRES_USER=aesir
+        - POSTGRES_PASSWORD=aesir
       ports:
         - 5432:5432
   redis:
