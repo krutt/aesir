@@ -45,7 +45,7 @@ def clean(inactive: bool) -> None:
     for container in track(containers, f"Clean {('active','all')[inactive]} containers:".ljust(42)):
         if match(r"aesir-*", container.name) is not None:
             container.stop()
-            container.remove()
+            container.remove(v=True)  # if `v` is true, remove associated volume
             outputs.append(f"<Container '{ container.name }'> removed.")
     try:
         network: Network = client.networks.get(NETWORK)
