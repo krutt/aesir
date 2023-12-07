@@ -157,12 +157,12 @@ def deploy(
     except NotFound:
         rich_print('[dim yellow1]Unable to find "aesir-bitcoind"; initial capital not yet mined.')
         return
-    for address, _, _ in track(lnds.values(), "Mine initial capital for parties:".ljust(42)):
+    for lnd in track([v for _,v in lnds.items()], "Mine initial capital for parties:".ljust(42)):
         bitcoind.exec_run(
             """
             bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
             """
-            % address
+            % lnd["address"]
         )
 
 
