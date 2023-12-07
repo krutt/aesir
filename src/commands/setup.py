@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/commands/setup.py
-# VERSION: 	   0.2.9
+# VERSION: 	   0.3.0
 # CREATED: 	   2023-12-01 06:18
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:

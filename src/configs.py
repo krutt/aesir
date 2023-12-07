@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/configs.py
-# VERSION: 	   0.2.9
+# VERSION: 	   0.3.0
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
