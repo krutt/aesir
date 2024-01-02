@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/schemas/image.py
+# FILENAME:    ~~/src/types/blockchain_info.py
 # VERSION: 	   0.3.1
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -10,10 +10,15 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Literal
+### Third-party packages ###
+from pydantic import BaseModel, StrictInt, StrictStr
 
-ImageAlias = Literal["bitcoind", "lnd", "lnd-krub", "postgres", "redis"]
-ImageEnum = Literal["optional", "required"]
 
-__all__ = ["ImageAlias", "ImageEnum"]
+class BlockchainInfo(BaseModel):
+    blocks: StrictInt
+    chain: StrictStr
+    size_on_disk: StrictInt
+    time: StrictInt
+
+
+__all__ = ["BlockchainInfo"]

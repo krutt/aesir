@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/schemas/new_address.py
+# FILENAME:    ~~/src/types/cluster_enum.py
 # VERSION: 	   0.3.1
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -10,12 +10,9 @@
 # HISTORY:
 # *************************************************************
 
-### Third-party packages ###
-from pydantic import BaseModel, StrictStr
+### Standard packages ###
+from typing import Literal
 
+ClusterEnum = Literal["duo", "uno"]
 
-class NewAddress(BaseModel):
-    address: StrictStr
-
-
-__all__ = ["NewAddress"]
+__all__ = ["ClusterEnum"]

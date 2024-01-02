@@ -1,9 +1,9 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/schemas/blockchain_info.py
+# FILENAME:    ~~/src/types/open_channel.py
 # VERSION: 	   0.3.1
-# CREATED: 	   2023-12-01 05:31
+# CREATED: 	   2023-12-02 20:50
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
 #
@@ -11,14 +11,11 @@
 # *************************************************************
 
 ### Third-party packages ###
-from pydantic import BaseModel, StrictInt, StrictStr
+from pydantic import BaseModel, StrictStr
 
 
-class BlockchainInfo(BaseModel):
-    blocks: StrictInt
-    chain: StrictStr
-    size_on_disk: StrictInt
-    time: StrictInt
+class OpenChannel(BaseModel):
+    funding_txid: StrictStr
 
 
-__all__ = ["BlockchainInfo"]
+__all__ = ["OpenChannel"]

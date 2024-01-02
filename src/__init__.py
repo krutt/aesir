@@ -12,7 +12,7 @@
 
 ### Local modules ###
 from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
-from src.schemas import (
+from src.types import (
     BlockchainInfo,
     Build,
     BuildEnum,

@@ -26,7 +26,7 @@ from rich.progress import track
 
 ### Local modules ###
 from src.configs import CLUSTERS, IMAGES, NETWORK, PERIPHERALS
-from src.schemas import MutexOption, NewAddress, Service, ServiceName
+from src.types import MutexOption, NewAddress, Service, ServiceName
 
 
 @command

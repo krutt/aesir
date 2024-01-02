@@ -24,7 +24,7 @@ from rich.progress import track
 
 ### Local modules ###
 from src.configs import BUILDS, IMAGES
-from src.schemas import Build
+from src.types import Build
 
 
 @command

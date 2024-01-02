@@ -1,9 +1,9 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/schemas/open_channel.py
+# FILENAME:    ~~/src/types/new_address.py
 # VERSION: 	   0.3.1
-# CREATED: 	   2023-12-02 20:50
+# CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
 #
@@ -14,8 +14,8 @@
 from pydantic import BaseModel, StrictStr
 
 
-class OpenChannel(BaseModel):
-    funding_txid: StrictStr
+class NewAddress(BaseModel):
+    address: StrictStr
 
 
-__all__ = ["OpenChannel"]
+__all__ = ["NewAddress"]

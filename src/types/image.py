@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/schemas/cluster_enum.py
+# FILENAME:    ~~/src/types/image.py
 # VERSION: 	   0.3.1
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -13,6 +13,7 @@
 ### Standard packages ###
 from typing import Literal
 
-ClusterEnum = Literal["duo", "uno"]
+ImageAlias = Literal["bitcoind", "lnd", "lnd-krub", "postgres", "redis"]
+ImageEnum = Literal["optional", "required"]
 
-__all__ = ["ClusterEnum"]
+__all__ = ["ImageAlias", "ImageEnum"]

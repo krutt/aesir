@@ -24,7 +24,7 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from src.schemas import LNDInfo
+from src.types import LNDInfo
 
 
 @command

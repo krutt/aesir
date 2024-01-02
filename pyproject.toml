@@ -19,7 +19,7 @@ ignore_missing_imports = true
 authors = ['Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>']
 description = 'Command line interface used for generating local Lightning test environment'
 include = [
-  {path='src/constants.yml', format=['sdist', 'wheel']}
+  {path='src/schema.yml', format=['sdist', 'wheel']}
 ]
 license = 'MIT'
 name = 'aesir'

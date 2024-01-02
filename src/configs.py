@@ -19,7 +19,7 @@ from pydantic import TypeAdapter
 from yaml import Loader, load
 
 ### Local modules ###
-from src.schemas import (
+from src.types import (
     Build,
     BuildEnum,
     ClusterEnum,
@@ -38,20 +38,20 @@ NETWORK: str
 PERIPHERALS: Dict[PeripheralEnum, Dict[ServiceName, Service]]
 
 file_path: Path = Path(__file__).resolve()
-with open(str(file_path).replace("configs.py", "constants.yaml"), "rb") as stream:
-    constants: Optional[Dict[str, Any]] = load(stream, Loader=Loader)
-    if constants:
-        BUILDS = TypeAdapter(Dict[BuildEnum, Build]).validate_python(constants["builds"])
+with open(str(file_path).replace("configs.py", "schema.yaml"), "rb") as stream:
+    schema: Optional[Dict[str, Any]] = load(stream, Loader=Loader)
+    if schema:
+        BUILDS = TypeAdapter(Dict[BuildEnum, Build]).validate_python(schema["builds"])
         CLUSTERS = TypeAdapter(Dict[ClusterEnum, Dict[ServiceName, Service]]).validate_python(
-            constants["clusters"]
+            schema["clusters"]
         )
-        DEPRECATED = constants.get("deprecated", [])
+        DEPRECATED = schema.get("deprecated", [])
         IMAGES = TypeAdapter(Dict[ImageEnum, Dict[ImageAlias, str]]).validate_python(
-            constants["images"]
+            schema["images"]
         )
-        NETWORK = constants.get("network", "aesir")
+        NETWORK = schema.get("network", "aesir")
         PERIPHERALS = TypeAdapter(Dict[PeripheralEnum, Dict[ServiceName, Service]]).validate_python(
-            constants["peripherals"]
+            schema["peripherals"]
         )
 
 __all__ = ["BUILDS", "CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK", "PERIPHERALS"]

@@ -1,4 +1,4 @@
 include LICENSE
 include core.py
-include src/constants.yaml
+include src/schema.yaml
 recursive-include src *.py
