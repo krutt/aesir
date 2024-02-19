@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/types/open_channel.py
-# VERSION: 	   0.3.1
+# VERSION: 	   0.3.2
 # CREATED: 	   2023-12-02 20:50
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
