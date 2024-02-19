@@ -28,12 +28,17 @@ from src.types import Build
 
 
 @command
+@option("--with-cashu-mint", is_flag=True, help="Build cashu-mint optional image", type=bool)
 @option("--with-lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
 @option("--with-postgres", is_flag=True, help="Pull postgres optional image", type=bool)
 @option("--with-redis", is_flag=True, help="Pull redis optional image", type=bool)
 @option("--with-tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
 def setup(
-    with_lnd_krub: bool, with_postgres: bool, with_redis: bool, with_tesla_ball: bool
+    with_cashu_mint: bool,
+    with_lnd_krub: bool,
+    with_postgres: bool,
+    with_redis: bool,
+    with_tesla_ball: bool,
 ) -> None:
     """Download docker images used by command-line interface."""
     client: DockerClient
@@ -74,7 +79,11 @@ def setup(
         list(map(rich_print, outputs))
 
     ### Build optional images ###
-    build_select: Dict[str, bool] = {"lnd-krub": with_lnd_krub, "tesla-ball": with_tesla_ball}
+    build_select: Dict[str, bool] = {
+        "cashu-mint": with_cashu_mint,
+        "lnd-krub": with_lnd_krub,
+        "tesla-ball": with_tesla_ball,
+    }
     builds: Dict[str, Build] = {tag: build for tag, build in BUILDS.items() if build_select[tag]}
     if len(builds.keys()) != 0:
         outputs = []
