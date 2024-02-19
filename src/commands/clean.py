@@ -30,30 +30,30 @@ from src.configs import NETWORK
 @command
 @option("--inactive", help="Query inactive containers for removal.", is_flag=True, type=bool)
 def clean(inactive: bool) -> None:
-    """Remove all active "aesir-*" containers, drop network."""
-    client: DockerClient
-    try:
-        client = from_env()
-        if not client.ping():
-            raise DockerException
-    except DockerException:
-        rich_print("[red bold]Unable to connect to docker daemon.")
-        return
+  """Remove all active "aesir-*" containers, drop network."""
+  client: DockerClient
+  try:
+    client = from_env()
+    if not client.ping():
+      raise DockerException
+  except DockerException:
+    rich_print("[red bold]Unable to connect to docker daemon.")
+    return
 
-    outputs: List[str] = []
-    containers: List[Container] = client.containers.list(all=inactive)
-    for container in track(containers, f"Clean {('active','all')[inactive]} containers:".ljust(42)):
-        if match(r"aesir-*", container.name) is not None:
-            container.stop()
-            container.remove(v=True)  # if `v` is true, remove associated volume
-            outputs.append(f"<Container '{ container.name }'> removed.")
-    try:
-        network: Network = client.networks.get(NETWORK)
-        network.remove()
-        outputs.append(f"<Network '{ NETWORK }'> removed.")
-    except NotFound:
-        pass
-    list(map(rich_print, outputs))
+  outputs: List[str] = []
+  containers: List[Container] = client.containers.list(all=inactive)
+  for container in track(containers, f"Clean {('active','all')[inactive]} containers:".ljust(42)):
+    if match(r"aesir-*", container.name) is not None:
+      container.stop()
+      container.remove(v=True)  # if `v` is true, remove associated volume
+      outputs.append(f"<Container '{ container.name }'> removed.")
+  try:
+    network: Network = client.networks.get(NETWORK)
+    network.remove()
+    outputs.append(f"<Network '{ NETWORK }'> removed.")
+  except NotFound:
+    pass
+  list(map(rich_print, outputs))
 
 
 __all__ = ["clean"]

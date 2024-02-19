@@ -19,7 +19,7 @@ from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
 
 @group
 def cli() -> None:
-    """aesir"""
+  """aesir"""
 
 
 cli.add_command(clean, "clean")
@@ -32,4 +32,4 @@ cli.add_command(setup, "setup")
 
 
 if __name__ == "__main__":
-    cli()
+  cli()

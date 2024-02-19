@@ -15,7 +15,7 @@ from pydantic import BaseModel, StrictStr
 
 
 class OpenChannel(BaseModel):
-    funding_txid: StrictStr
+  funding_txid: StrictStr
 
 
 __all__ = ["OpenChannel"]

@@ -21,21 +21,21 @@ from src.types.image import ImageAlias
 
 
 class Service(BaseModel):
-    alias: ImageAlias
-    command: List[StrictStr] = []
-    env_vars: List[StrictStr] = []
-    ports: List[StrictStr]
+  alias: ImageAlias
+  command: List[StrictStr] = []
+  env_vars: List[StrictStr] = []
+  ports: List[StrictStr]
 
 
 ServiceName = Literal[
-    "aesir-bitcoind",
-    "aesir-cashu-mint",
-    "aesir-lnd",
-    "aesir-lnd-krub",
-    "aesir-ping",
-    "aesir-pong",
-    "aesir-postgres",
-    "aesir-redis",
+  "aesir-bitcoind",
+  "aesir-cashu-mint",
+  "aesir-lnd",
+  "aesir-lnd-krub",
+  "aesir-ping",
+  "aesir-pong",
+  "aesir-postgres",
+  "aesir-redis",
 ]
 
 __all__ = ["Service", "ServiceName"]

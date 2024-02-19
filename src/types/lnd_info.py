@@ -15,11 +15,11 @@ from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 
 
 class LNDInfo(BaseModel):
-    block_height: StrictInt
-    identity_pubkey: StrictStr
-    num_active_channels: StrictInt
-    num_peers: StrictInt
-    synced_to_chain: StrictBool
+  block_height: StrictInt
+  identity_pubkey: StrictStr
+  num_active_channels: StrictInt
+  num_peers: StrictInt
+  synced_to_chain: StrictBool
 
 
 __all__ = ["LNDInfo"]

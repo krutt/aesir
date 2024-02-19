@@ -15,7 +15,7 @@ from pydantic import BaseModel, StrictStr
 
 
 class NewAddress(BaseModel):
-    address: StrictStr
+  address: StrictStr
 
 
 __all__ = ["NewAddress"]

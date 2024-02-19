@@ -26,22 +26,22 @@ from src.configs import DEPRECATED
 
 @command
 def flush() -> None:
-    """Remove images deprecated by workspace."""
-    client: DockerClient
-    try:
-        client = from_env()
-        if not client.ping():
-            raise DockerException
-    except DockerException:
-        rich_print("[red bold]Unable to connect to docker daemon.")
-        return
-    outputs: List[str] = []
-    docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
-    for registry_id in track(DEPRECATED, "Remove deprecated images:".ljust(42)):
-        if registry_id in docker_images:
-            client.images.remove(registry_id)
-            outputs.append(f"<Image: '{ registry_id }'> removed.")
-    list(map(rich_print, outputs))
+  """Remove images deprecated by workspace."""
+  client: DockerClient
+  try:
+    client = from_env()
+    if not client.ping():
+      raise DockerException
+  except DockerException:
+    rich_print("[red bold]Unable to connect to docker daemon.")
+    return
+  outputs: List[str] = []
+  docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
+  for registry_id in track(DEPRECATED, "Remove deprecated images:".ljust(42)):
+    if registry_id in docker_images:
+      client.images.remove(registry_id)
+      outputs.append(f"<Image: '{ registry_id }'> removed.")
+  list(map(rich_print, outputs))
 
 
 __all__ = ["flush"]

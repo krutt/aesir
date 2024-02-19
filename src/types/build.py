@@ -17,8 +17,8 @@ from pydantic import BaseModel, StrictStr
 
 
 class Build(BaseModel):
-    instructions: List[StrictStr]
-    platform: StrictStr = "linux/amd64"
+  instructions: List[StrictStr]
+  platform: StrictStr = "linux/amd64"
 
 
 BuildEnum = Literal["cashu-mint", "lnd-krub", "tesla-ball"]

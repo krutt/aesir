@@ -15,10 +15,10 @@ from pydantic import BaseModel, StrictInt, StrictStr
 
 
 class BlockchainInfo(BaseModel):
-    blocks: StrictInt
-    chain: StrictStr
-    size_on_disk: StrictInt
-    time: StrictInt
+  blocks: StrictInt
+  chain: StrictStr
+  size_on_disk: StrictInt
+  time: StrictInt
 
 
 __all__ = ["BlockchainInfo"]
