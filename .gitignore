@@ -48,6 +48,10 @@ pypi-token.pypi
 dmypy.json
 
 
+### Ruff ###
+.ruff_cache
+
+
 ### Workspace settings ###
 .idea
 .vscode
