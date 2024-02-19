@@ -4,9 +4,9 @@ build-backend = 'poetry.core.masonry.api'
 
 
 [tool.mypy]
+disallow_incomplete_defs = true
 disallow_untyped_calls = true
 disallow_untyped_defs = true
-disallow_incomplete_defs = true
 ignore_missing_imports = true
 
 
