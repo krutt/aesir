@@ -13,7 +13,7 @@
 ### Standard packages ###
 from re import match
 from time import sleep
-from typing import Dict, Literal
+from typing import Dict, List
 
 ### Third-party packages ###
 from click import command, option
@@ -93,33 +93,9 @@ def deploy(
     sleep(3)
 
     ### Mine starting capital ###
-    lnds: Dict[ServiceName, Literal["address", "certificate", "macaroon"]] = {}
+    treasuries: List[str] = []
     for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
         if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
-            certificate: str = (
-                container.exec_run(
-                    """
-                cat /home/lnd/.lnd/tls.cert
-                """
-                )
-                .output.decode("utf-8")
-                .replace("\n", "\\n")
-            )
-            # macaroon: str = container.exec_run(
-            #     """
-            #     cat /home/lnd/.lnd/data/chain/bitcoin/regtest/invoices.macaroon
-            #     """
-            # ).output.decode("iso-8859-1").replace("\n", "\\n")
-            # macaroon: str = container.exec_run(
-            #     """
-            #     lncli
-            #         --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-            #         --rpcserver=localhost:10001
-            #         --tlscertpath=/home/lnd/.lnd/tls.cert
-            #     bakemacaroon invoices:read invoices:write
-            #     """
-            # ).output.decode("utf-8").replace("\n", "\\n")
-            macaroon: str = ""
             new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
                 container.exec_run(
                     """
@@ -131,11 +107,7 @@ def deploy(
                     """
                 ).output
             )
-            lnds[container.name] = {
-                "address": new_address.address,
-                "certificate": certificate,
-                "macaroon": macaroon,
-            }
+            treasuries.append(new_address.address)
 
     if with_cashu_mint:
         service: Service = PERIPHERALS["cashu-mint"]["aesir-cashu-mint"]
@@ -154,8 +126,6 @@ def deploy(
         )
     if with_lnd_krub:
         service: Service = PERIPHERALS["lnd-krub"]["aesir-lnd-krub"]
-        macaroon: str = lnds["aesir-ping"]["macaroon"]  # .decode("utf-8")
-        tlscert: str = lnds["aesir-ping"]["certificate"]  # .decode("utf-8")
         ports: Dict[str, str] = dict(  # type: ignore[no-redef]
             map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
         )
@@ -163,7 +133,6 @@ def deploy(
             "lnd-krub",
             command=[],
             detach=True,
-            environment=service.env_vars + [f"MACAROON={macaroon}", f"TLSCERT={tlscert}"],
             name="aesir-lnd-krub",
             network=NETWORK,
             ports=ports,
@@ -176,12 +145,12 @@ def deploy(
     except NotFound:
         rich_print('[dim yellow1]Unable to find "aesir-bitcoind"; initial capital not yet mined.')
         return
-    for lnd in track([v for _, v in lnds.items()], "Mine initial capital for parties:".ljust(42)):
+    for address in track(treasuries, "Mine initial capital for parties:".ljust(42)):
         bitcoind.exec_run(
             """
             bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
             """
-            % lnd["address"]
+            % address
         )
 
 
