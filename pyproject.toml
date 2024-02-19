@@ -18,6 +18,30 @@ ignore_missing_imports = true
 
 [tool.poetry]
 authors = ['Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>']
+classifiers = [
+  'Development Status :: 3 - Alpha',
+  'Environment :: Console',
+  'Intended Audience :: Developers',
+  'Intended Audience :: Financial and Insurance Industry',
+  'License :: OSI Approved :: MIT License',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+  'Programming Language :: Python :: 3.13',
+  'Programming Language :: Python :: 3 :: Only',
+  'Operating System :: MacOS',
+  'Operating System :: MacOS :: MacOS 9',
+  'Operating System :: MacOS :: MacOS X',
+  'Operating System :: OS Independent',
+  'Operating System :: Unix',
+  'Topic :: Office/Business :: Financial',
+  'Topic :: Office/Business :: Financial :: Investment',
+  'Topic :: Other/Nonlisted Topic',
+  'Topic :: Security :: Cryptography',
+]
 description = 'Command line interface used for generating local Lightning test environment'
 include = [
   {path='src/schema.yml', format=['sdist', 'wheel']}
