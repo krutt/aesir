@@ -37,9 +37,11 @@ classifiers = [
   'Topic :: Security :: Cryptography',
 ]
 description = 'Command line interface used for generating local Lightning test environment'
+homepage = 'https://github.com/krutt/aesir'
 include = [
   {path='src/schema.yml', format=['sdist', 'wheel']}
 ]
+keywords = ['anonymous', 'bitcoin', 'cashu', 'chaum', 'chaumian', 'cli', 'ecash', 'lightning']
 license = 'MIT'
 name = 'aesir'
 packages = [
@@ -47,6 +49,7 @@ packages = [
   {include='core.py'}
 ]
 readme = 'README.md'
+repository = 'https://github.com/krutt/aesir'
 version = '0.3.2'
 
 
@@ -68,7 +71,7 @@ optional = true
 [tool.poetry.group.dev.dependencies]
 mypy = '^1.7.1'
 pytest = '^7.4.3'
-ruff = "^0.2.2"
+ruff = '^0.2.2'
 
 
 [tool.poetry.scripts]
