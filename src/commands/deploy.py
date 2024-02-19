@@ -121,6 +121,9 @@ def deploy(
             ports=ports,
         )
 
+    ### Wait until lnd(s) ready ###
+    sleep(2)
+
     ### Mine starting capital ###
     treasuries: List[str] = []
     for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
