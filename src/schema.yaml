@@ -203,10 +203,10 @@ peripherals:
         - COOKIE_SECRET=RdnYShthFMcAjLpmzaVjABQrWTzeFwzf
         - CSRF_SECRET=EJnBsZoSbQmrRzSVRiDlFUzmGvsNPmNh
         - DATABASE_URL=postgresql://aesir-postgres:5432/aesir
-        - LND_MACAROON_PATH=krub.macaroon
+        - LND_MACAROON_PATH=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
         - LND_SERVICE_HOST=aesir-ping
         - LND_SERVICE_PORT=10001
-        - LND_TLSCERT_PATH=tls.cert
+        - LND_TLSCERT_PATH=/home/lnd/.lnd/tls.cert
         - PROD_FAUCET=true
         - REDIS_HOST=aesir-redis
       ports:

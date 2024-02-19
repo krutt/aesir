@@ -137,6 +137,7 @@ def deploy(
             name="aesir-lnd-krub",
             network=NETWORK,
             ports=ports,
+            volumes_from=["aesir-ping" if duo else "aesir-lnd"]
         )
 
     ### Retrieve bitcoind container ###
