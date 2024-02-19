@@ -131,8 +131,6 @@ def deploy(
                 "macaroon": macaroon,
             }
 
-    # print(lnds)
-    # return
     if with_lnd_krub:
         service: Service = PERIPHERALS["lnd-krub"]["aesir-lnd-krub"]
         macaroon: str = lnds["aesir-ping"]["macaroon"]  # .decode("utf-8")
