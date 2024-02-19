@@ -29,6 +29,7 @@ class Service(BaseModel):
 
 ServiceName = Literal[
     "aesir-bitcoind",
+    "aesir-cashu-mint",
     "aesir-lnd",
     "aesir-lnd-krub",
     "aesir-ping",

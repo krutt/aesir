@@ -186,9 +186,13 @@ peripherals:
     aesir-cashu-mint:
       alias: cashu-mint
       env_vars:
-        - MINT_LIGHTNING_BACKEND=FakeWallet
+        - MINT_LIGHTNING_BACKEND=LndRestWallet
         - MINT_LISTEN_HOST=0.0.0.0
         - MINT_LISTEN_PORT=3338
+        - MINT_LND_REST_CERT=/home/lnd/.lnd/tls.cert
+        - MINT_LND_REST_ENDPOINT=aesir-ping:8080
+        - MINT_LND_REST_MACAROON=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+        - MINT_PRIVATE_KEY=aesir
       ports:
         - 3338:3338
   lnd-krub:

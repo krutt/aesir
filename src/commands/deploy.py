@@ -32,11 +32,16 @@ from src.types import MutexOption, NewAddress, Service, ServiceName
 @command
 @option("--duo", alternatives=["uno"], cls=MutexOption, is_flag=True, type=bool)
 @option("--uno", alternatives=["duo"], cls=MutexOption, is_flag=True, type=bool)
+@option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
 @option("--with-lnd-krub", is_flag=True, help="Deploy lnd-krub peripheral service", type=bool)
 @option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
 def deploy(
-    duo: bool, uno: bool, with_lnd_krub: bool, with_postgres: bool, with_redis: bool
+    duo: bool, uno: bool,
+    with_cashu_mint: bool,
+    with_lnd_krub: bool,
+    with_postgres: bool,
+    with_redis: bool,
 ) -> None:
     """Deploy cluster, either with one or two LND nodes."""
     client: DockerClient
@@ -52,6 +57,7 @@ def deploy(
     duo = duo or (not duo and not uno)  # defaults to duo network
     cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
     peripheral_select: Dict[str, bool] = {
+        "cashu-mint": False,
         "lnd-krub": False,
         "postgres": with_postgres,
         "redis": with_redis,
@@ -131,6 +137,21 @@ def deploy(
                 "macaroon": macaroon,
             }
 
+    if with_cashu_mint:
+        service: Service = PERIPHERALS["cashu-mint"]["aesir-cashu-mint"]
+        ports: Dict[str, str] = dict(  # type: ignore[no-redef]
+            map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
+        )
+        client.containers.run(
+            "cashu-mint",
+            command=service.command,
+            detach=True,
+            environment=service.env_vars,
+            name="aesir-cashu-mint",
+            network=NETWORK,
+            ports=ports,
+            volumes_from=["aesir-ping" if duo else "aesir-lnd"]
+        )
     if with_lnd_krub:
         service: Service = PERIPHERALS["lnd-krub"]["aesir-lnd-krub"]
         macaroon: str = lnds["aesir-ping"]["macaroon"]  # .decode("utf-8")
