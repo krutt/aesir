@@ -126,6 +126,7 @@ def deploy(
             volumes_from=["aesir-ping" if duo else "aesir-lnd"]
         )
     if with_lnd_krub:
+        # TODO: raises IOError if `--with-postgres` and `--with-redis` are not flagged
         service: Service = PERIPHERALS["lnd-krub"]["aesir-lnd-krub"]
         ports: Dict[str, str] = dict(  # type: ignore[no-redef]
             map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
@@ -134,6 +135,7 @@ def deploy(
             "lnd-krub",
             command=[],
             detach=True,
+            environment=service.env_vars,
             name="aesir-lnd-krub",
             network=NETWORK,
             ports=ports,
