@@ -3,12 +3,6 @@ requires = ['poetry-core']
 build-backend = 'poetry.core.masonry.api'
 
 
-[tool.black]
-include = '\.pyi?$'
-line-length = 100
-target-version = ['py38', 'py39', 'py310', 'py311']
-
-
 [tool.mypy]
 disallow_untyped_calls = true
 disallow_untyped_defs = true
@@ -72,7 +66,6 @@ optional = true
 
 
 [tool.poetry.group.dev.dependencies]
-black = '^23.11.0'
 mypy = '^1.7.1'
 pytest = '^7.4.3'
 
