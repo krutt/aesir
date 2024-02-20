@@ -57,16 +57,16 @@ def deploy(
   ### Defaults to duo network; Derive cluster information from parameters ###
   duo = duo or (not duo and not uno)  # defaults to duo network
   cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
-  peripheral_select: Dict[str, bool] = {
+  selector: Dict[str, bool] = {
     "cashu-mint": False,
     "lnd-krub": False,
     "postgres": with_postgres,
     "redis": with_redis,
   }
   peripherals: Dict[ServiceName, Service] = {
-    f"aesir-{k}": v[f"aesir-{k}"]
-    for k, v in PERIPHERALS.items()
-    if peripheral_select[k]  # type: ignore[index, misc]
+    f"aesir-{key}": value[f"aesir-{key}"]  # type: ignore[index, misc]
+    for key, value in PERIPHERALS.items()
+    if selector[key]
   }
   cluster.update(peripherals)
 
@@ -112,36 +112,26 @@ def deploy(
       )
       treasuries.append(new_address.address)
 
-  if with_cashu_mint:
-    service: Service = PERIPHERALS["cashu-mint"]["aesir-cashu-mint"]
-    ports: Dict[str, str] = dict(  # type: ignore[no-redef]
-      map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
-    )
+  ### Deploy shared volume peripherals ###
+  selector = {
+    "cashu-mint": with_cashu_mint,
+    "lnd-krub": with_lnd_krub and with_postgres and with_redis,
+    "postgres": False,
+    "redis": False,
+  }
+  peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if selector[k]}  # type: ignore[index, misc]
+  volume_target: str = "aesir-ping" if duo else "aesir-lnd"
+  for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
+    ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     client.containers.run(
-      "cashu-mint",
+      service.alias,
       command=service.command,
       detach=True,
       environment=service.env_vars,
-      name="aesir-cashu-mint",
+      name=name,
       network=NETWORK,
       ports=ports,
-      volumes_from=["aesir-ping" if duo else "aesir-lnd"],
-    )
-  if with_lnd_krub:
-    # TODO: raises IOError if `--with-postgres` and `--with-redis` are not flagged
-    service: Service = PERIPHERALS["lnd-krub"]["aesir-lnd-krub"]
-    ports: Dict[str, str] = dict(  # type: ignore[no-redef]
-      map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
-    )
-    client.containers.run(
-      "lnd-krub",
-      command=[],
-      detach=True,
-      environment=service.env_vars,
-      name="aesir-lnd-krub",
-      network=NETWORK,
-      ports=ports,
-      volumes_from=["aesir-ping" if duo else "aesir-lnd"],
+      volumes_from=[volume_target],
     )
 
   ### Retrieve bitcoind container ###
@@ -158,6 +148,12 @@ def deploy(
       """
       % address
     )
+
+  ### Show warnings ###
+  warnings: List[str] = []
+  if with_lnd_krub and (not with_postgres or not with_redis):
+    warnings.append("[dim yellow1]LNDKrub needs to be launched in tandem with Postgres and Redis.")
+  list(map(rich_print, warnings))
 
 
 __all__ = ["deploy"]
