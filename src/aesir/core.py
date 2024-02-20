@@ -14,7 +14,7 @@
 from click import group
 
 ### Local modules ###
-from src.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
+from aesir.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
 
 
 @group

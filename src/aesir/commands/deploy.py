@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/deploy.py
+# FILENAME:    ~~/src/aesir/commands/deploy.py
 # VERSION: 	   0.3.4
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -26,8 +26,8 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from src.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
-from src.types import Build, MutexOption, NewAddress, Service, ServiceName
+from aesir.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
+from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 
 
 @command

@@ -30,7 +30,7 @@ from rich.table import Table
 from rich.text import Text
 
 ### Local modules ###
-from src.types import BlockchainInfo, LNDInfo, NewAddress
+from aesir.types import BlockchainInfo, LNDInfo, NewAddress
 
 
 @command

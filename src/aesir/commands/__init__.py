@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/__init__.py
+# FILENAME:    ~~/src/aesir/commands/__init__.py
 # VERSION: 	   0.3.4
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -11,12 +11,12 @@
 # *************************************************************
 
 ### Local modules ###
-from src.commands.clean import clean
-from src.commands.deploy import deploy
-from src.commands.flush import flush
-from src.commands.mine import mine
-from src.commands.nodekeys import nodekeys
-from src.commands.ping_pong import ping_pong
-from src.commands.setup import setup
+from aesir.commands.clean import clean
+from aesir.commands.deploy import deploy
+from aesir.commands.flush import flush
+from aesir.commands.mine import mine
+from aesir.commands.nodekeys import nodekeys
+from aesir.commands.ping_pong import ping_pong
+from aesir.commands.setup import setup
 
 __all__ = ["clean", "deploy", "flush", "mine", "nodekeys", "ping_pong", "setup"]

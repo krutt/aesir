@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/commands/clean.py
+# FILENAME:    ~~/src/aesir/commands/clean.py
 # VERSION: 	   0.3.4
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -24,7 +24,7 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from src.configs import NETWORK
+from aesir.configs import NETWORK
 
 
 @command

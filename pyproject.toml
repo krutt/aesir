@@ -39,15 +39,12 @@ classifiers = [
 description = 'Command line interface used for generating local Lightning test environment'
 homepage = 'https://github.com/krutt/aesir'
 include = [
-  {path='src/schema.yml', format=['sdist', 'wheel']}
+  {path='src/aesir/schema.yml', format=['sdist', 'wheel']}
 ]
 keywords = ['anonymous', 'bitcoin', 'cashu', 'chaum', 'chaumian', 'cli', 'ecash', 'lightning']
 license = 'MIT'
 name = 'aesir'
-packages = [
-  {include='src'},
-  {include='core.py'}
-]
+packages = [{from='src', include='aesir'}]
 readme = 'README.md'
 repository = 'https://github.com/krutt/aesir'
 version = '0.3.4'
@@ -75,7 +72,7 @@ ruff = '^0.2.2'
 
 
 [tool.poetry.scripts]
-aesir = 'core:cli'
+aesir = 'aesir.core:cli'
 
 
 [tool.ruff]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/types/service.py
+# FILENAME:    ~~/src/aesir/types/service.py
 # VERSION: 	   0.3.4
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -17,7 +17,7 @@ from typing import List, Literal
 from pydantic import BaseModel, StrictStr
 
 ### Local modules ###
-from src.types.image import ImageAlias
+from aesir.types.image import ImageAlias
 
 
 class Service(BaseModel):

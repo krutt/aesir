@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/configs.py
+# FILENAME:    ~~/src/aesir/configs.py
 # VERSION: 	   0.3.4
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -19,7 +19,7 @@ from pydantic import TypeAdapter
 from yaml import Loader, load
 
 ### Local modules ###
-from src.types import (
+from aesir.types import (
   Build,
   BuildEnum,
   ClusterEnum,
