@@ -47,7 +47,7 @@ name = 'aesir'
 packages = [{from='src', include='aesir'}]
 readme = 'README.md'
 repository = 'https://github.com/krutt/aesir'
-version = '0.3.4'
+version = '0.3.5'
 
 
 [tool.poetry.dependencies]

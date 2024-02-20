@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
 # FILENAME:    ~~/src/aesir/__init__.py
-# VERSION: 	   0.3.4
+# VERSION: 	   0.3.5
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION: https://www.w3docs.com/snippets/python/what-is-init-py-for.html
@@ -50,4 +50,4 @@ __all__ = [
   "setup",
 ]
 
-__version__ = "0.3.4"
+__version__ = "0.3.5"
