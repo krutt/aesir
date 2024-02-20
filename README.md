@@ -38,7 +38,7 @@ repositories. Results may look as such:
 $ pip install aesir
 > ...
 > Installing collected packages: aesir
-> Successfully installed aesir-0.3.3
+> Successfully installed aesir-0.3.4
 $ aesir deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
@@ -169,7 +169,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.3.3)
+> Installing the current project: aesir (0.3.4)
 ```
 
 ### Known issues

@@ -50,7 +50,7 @@ packages = [
 ]
 readme = 'README.md'
 repository = 'https://github.com/krutt/aesir'
-version = '0.3.3'
+version = '0.3.4'
 
 
 [tool.poetry.dependencies]
