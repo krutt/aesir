@@ -5,7 +5,7 @@
 # VERSION: 	   0.3.2
 # CREATED: 	   2023-12-01 05:31
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
-# DESCRIPTION:
+# DESCRIPTION: https://www.w3docs.com/snippets/python/what-is-init-py-for.html
 #
 # HISTORY:
 # *************************************************************
