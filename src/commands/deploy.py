@@ -11,6 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
+from io import BytesIO
 from re import match
 from time import sleep
 from typing import Dict, List
@@ -18,15 +19,15 @@ from typing import Dict, List
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, DockerException, NotFound
+from docker.errors import APIError, BuildError, DockerException, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from src.configs import CLUSTERS, IMAGES, NETWORK, PERIPHERALS
-from src.types import MutexOption, NewAddress, Service, ServiceName
+from src.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
+from src.types import Build, MutexOption, NewAddress, Service, ServiceName
 
 
 @command
@@ -112,13 +113,36 @@ def deploy(
       )
       treasuries.append(new_address.address)
 
-  ### Deploy shared volume peripherals ###
+  ### Define selection for shared-volume peripherals ###
   selector = {
     "cashu-mint": with_cashu_mint,
     "lnd-krub": with_lnd_krub and with_postgres and with_redis,
     "postgres": False,
     "redis": False,
   }
+
+  ### Build missing images if any for shared-volume peripherals ###
+  outputs: List[str] = []
+  image_names: List[str] = list(
+    map(
+      lambda image: image.tags[0].split(":")[0],
+      filter(lambda image: len(image.tags) != 0, client.images.list()),
+    )
+  )
+  builds: Dict[str, Build] = {
+    tag: build for tag, build in BUILDS.items() if selector[tag] and tag not in image_names
+  }
+  if len(builds.keys()) != 0:
+    for tag, build in track(builds.items(), description="Build missing peripherals:".ljust(42)):
+      with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
+        try:
+          client.images.build(fileobj=fileobj, platform=build.platform, tag=tag)
+        except BuildError:
+          outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
+  list(map(rich_print, outputs))
+  outputs = []
+
+  ### Deploy shared volume peripherals ###
   peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if selector[k]}  # type: ignore[index, misc]
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
