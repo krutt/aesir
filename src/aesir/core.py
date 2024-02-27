@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2024 All rights reserved.
-# FILENAME:    core.py
-# VERSION: 	   0.3.5
+# FILENAME:    ~~/src/aesir/core.py
+# VERSION: 	   0.3.6
 # CREATED: 	   2023-12-01 02:20
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:

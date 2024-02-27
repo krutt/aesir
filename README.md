@@ -140,6 +140,7 @@ $ aesir clean
 * **0.3.3** Drop `black` and use [ruff](https://github.com/astral-sh/ruff) formatter and linter
 * **0.3.4** Simplify deployment workflows and 
 * **0.3.5** Restructure project so that when installed, `src` folder will not be created
+* **0.3.6** Breakdown "setup" command into "build" and "pull"
 
 ## Roadmap
 
@@ -176,7 +177,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.3.5)
+> Installing the current project: aesir (0.3.6)
 ```
 
 ### Known issues
