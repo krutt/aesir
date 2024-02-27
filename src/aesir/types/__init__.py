@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
-# Copyright (C) 2022-2023 All rights reserved.
+# Copyright (C) 2022-2024 All rights reserved.
 # FILENAME:   ~~/src/types/__init__.py
 # VERSION: 	   0.3.5
 # CREATED: 	   2023-12-01 05:31
