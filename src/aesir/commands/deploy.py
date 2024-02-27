@@ -35,6 +35,7 @@ from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 @option("--uno", alternatives=["duo"], cls=MutexOption, is_flag=True, type=bool)
 @option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
 @option("--with-lnd-krub", is_flag=True, help="Deploy lnd-krub peripheral service", type=bool)
+@option("--with-ord", is_flag=True, help="Deploy ord peripheral service", type=bool)
 @option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
 def deploy(
@@ -42,6 +43,7 @@ def deploy(
   uno: bool,
   with_cashu_mint: bool,
   with_lnd_krub: bool,
+  with_ord: bool,
   with_postgres: bool,
   with_redis: bool,
 ) -> None:
@@ -61,6 +63,7 @@ def deploy(
   selector: Dict[str, bool] = {
     "cashu-mint": False,
     "lnd-krub": False,
+    "ord": False,
     "postgres": with_postgres,
     "redis": with_redis,
   }
@@ -117,6 +120,7 @@ def deploy(
   selector = {
     "cashu-mint": with_cashu_mint,
     "lnd-krub": with_lnd_krub and with_postgres and with_redis,
+    "ord": with_ord,
     "postgres": False,
     "redis": False,
   }
@@ -147,6 +151,7 @@ def deploy(
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
+    volume_target = "aesir-bitcoind" if name == "aesir-ord" else volume_target
     client.containers.run(
       service.alias,
       command=service.command,

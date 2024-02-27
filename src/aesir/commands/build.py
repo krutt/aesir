@@ -29,8 +29,9 @@ from aesir.types import Build
 @command
 @option("--cashu-mint", is_flag=True, help="Build cashu-mint optional image", type=bool)
 @option("--lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
+@option("--ord", is_flag=True, help="Build ord optional image", type=bool)
 @option("--tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
-def build(cashu_mint: bool, lnd_krub: bool, tesla_ball: bool) -> None:
+def build(cashu_mint: bool, lnd_krub: bool, ord: bool, tesla_ball: bool) -> None:
   """Build peripheral images for the desired cluster."""
   client: DockerClient
   try:
@@ -51,6 +52,7 @@ def build(cashu_mint: bool, lnd_krub: bool, tesla_ball: bool) -> None:
   build_select: Dict[str, bool] = {
     "cashu-mint": cashu_mint,
     "lnd-krub": lnd_krub,
+    "ord": ord,
     "tesla-ball": tesla_ball,
   }
 

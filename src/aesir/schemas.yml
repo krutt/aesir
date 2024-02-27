@@ -39,6 +39,20 @@ builds:
       - EXPOSE 3000
       - CMD printf $MACAROON > krub.macaroon && printf $TLSCERT > tls.cert && node dist/index.js
     platform: linux/amd64
+  ord:
+    instructions:
+      - FROM rust:1.75.0-bookworm AS builder
+      - WORKDIR /usr/src/ord
+      - RUN apt-get install -y git
+      - RUN git clone --branch master --depth=1 https://github.com/ordinals/ord.git
+      - RUN mv ord/* ./ && rm -rf ord
+      - RUN cargo build --bin ord --release
+      - FROM debian:bookworm-slim AS runner
+      - COPY --from=builder /usr/src/ord/target/release/ord /usr/local/bin
+      - RUN apt-get update && apt-get install -y openssl
+      - ENV RUST_BACKTRACE=1
+      - ENV RUST_LOG=info
+      - CMD ord --chain regtest --cookie-file /home/bitcoin/.bitcoin/regtest --rpc-url aesir-bitcoind:18443 server --http-port 8080
 clusters:
   duo:
     aesir-bitcoind:
@@ -211,6 +225,14 @@ peripherals:
         - REDIS_HOST=aesir-redis
       ports:
         - 3000:3000
+  ord:
+    aesir-ord:
+      alias: ord
+      env_vars:
+        - ORD_BITCOIN_RPC_PASS=aesir
+        - ORD_BITCOIN_RPC_USER=aesir
+      ports:
+        - 8080:8081
   postgres:
     aesir-postgres:
       alias: postgres
