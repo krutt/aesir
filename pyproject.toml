@@ -39,7 +39,7 @@ classifiers = [
 description = 'Command line interface used for generating local Lightning test environment'
 homepage = 'https://github.com/krutt/aesir'
 include = [
-  {path='src/aesir/schema.yml', format=['sdist', 'wheel']}
+  {path='src/aesir/schemas.yml', format=['sdist', 'wheel']}
 ]
 keywords = ['anonymous', 'bitcoin', 'cashu', 'chaum', 'chaumian', 'cli', 'ecash', 'lightning']
 license = 'MIT'

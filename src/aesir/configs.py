@@ -38,7 +38,7 @@ NETWORK: str
 PERIPHERALS: Dict[PeripheralEnum, Dict[ServiceName, Service]]
 
 file_path: Path = Path(__file__).resolve()
-with open(str(file_path).replace("configs.py", "schema.yaml"), "rb") as stream:
+with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
   schema: Optional[Dict[str, Any]] = load(stream, Loader=Loader)
   if schema:
     BUILDS = TypeAdapter(Dict[BuildEnum, Build]).validate_python(schema["builds"])
