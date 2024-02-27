@@ -141,10 +141,10 @@ $ aesir clean
 * **0.3.4** Simplify deployment workflows and 
 * **0.3.5** Restructure project so that when installed, `src` folder will not be created
 * **0.3.6** Breakdown "setup" command into "build" and "pull"
+* **0.3.7** Lightning cluster now with [ord](https://github.com/ordinals/ord)
 
 ## Roadmap
 
-* Add `aesir-ord` peripheral service using [ord](https://github.com/ordinals/ord)
 * Make image versioning a little bit more intuitive.
 * Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Write [click](https://click.palletsprojects.com) tests.
@@ -177,7 +177,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.3.6)
+> Installing the current project: aesir (0.3.7)
 ```
 
 ### Known issues
