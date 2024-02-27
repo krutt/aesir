@@ -28,7 +28,7 @@ from aesir.configs import IMAGES
 @option("--postgres", is_flag=True, help="Pull postgres optional image", type=bool)
 @option("--redis", is_flag=True, help="Pull redis optional image", type=bool)
 def pull(postgres: bool, redis: bool) -> None:
-  """Download docker images used by command-line interface."""
+  """Download required and flagged optional docker images from hub."""
   client: DockerClient
   try:
     client = from_env()
