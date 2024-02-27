@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Local modules ###
-from aesir.commands import clean, deploy, flush, mine, nodekeys, ping_pong, setup
+from aesir.commands import build, clean, deploy, flush, mine, nodekeys, ping_pong, pull
 from aesir.types import (
   BlockchainInfo,
   Build,
@@ -41,13 +41,14 @@ __all__ = [
   "OpenChannel",
   "Service",
   "ServiceName",
+  "build",
   "clean",
   "deploy",
   "flush",
   "mine",
   "nodekeys",
   "ping_pong",
-  "setup",
+  "pull",
 ]
 
 __version__ = "0.3.5"

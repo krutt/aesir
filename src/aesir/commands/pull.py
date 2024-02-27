@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2023 All rights reserved.
-# FILENAME:    ~~/src/aesir/commands/setup.py
+# FILENAME:    ~~/src/aesir/commands/pull.py
 # VERSION: 	   0.3.5
 # CREATED: 	   2023-12-01 06:18
 # AUTHOR: 	   Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -11,34 +11,23 @@
 # *************************************************************
 
 ### Standard packages ###
-from io import BytesIO
 from typing import Dict, List, Set
 
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import BuildError, DockerException
+from docker.errors import DockerException
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import BUILDS, IMAGES
-from aesir.types import Build
+from aesir.configs import IMAGES
 
 
 @command
-@option("--with-cashu-mint", is_flag=True, help="Build cashu-mint optional image", type=bool)
-@option("--with-lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
-@option("--with-postgres", is_flag=True, help="Pull postgres optional image", type=bool)
-@option("--with-redis", is_flag=True, help="Pull redis optional image", type=bool)
-@option("--with-tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
-def setup(
-  with_cashu_mint: bool,
-  with_lnd_krub: bool,
-  with_postgres: bool,
-  with_redis: bool,
-  with_tesla_ball: bool,
-) -> None:
+@option("--postgres", is_flag=True, help="Pull postgres optional image", type=bool)
+@option("--redis", is_flag=True, help="Pull redis optional image", type=bool)
+def pull(postgres: bool, redis: bool) -> None:
   """Download docker images used by command-line interface."""
   client: DockerClient
   try:
@@ -62,7 +51,7 @@ def setup(
   list(map(rich_print, outputs))
 
   ### Pull optional images ###
-  optional_select: Dict[str, bool] = {"postgres": with_postgres, "redis": with_redis}
+  optional_select: Dict[str, bool] = {"postgres": postgres, "redis": redis}
   optionals: List[str] = [
     registry for alias, registry in IMAGES["optional"].items() if optional_select[alias]
   ]
@@ -77,30 +66,5 @@ def setup(
         outputs.append(f"<Image: '{ registry_id }'> downloaded.")
     list(map(rich_print, outputs))
 
-  ### Build optional images ###
-  image_names: List[str] = list(
-    map(
-      lambda image: image.tags[0].split(":")[0],
-      filter(lambda image: len(image.tags) != 0, client.images.list()),
-    )
-  )
-  build_select: Dict[str, bool] = {
-    "cashu-mint": with_cashu_mint,
-    "lnd-krub": with_lnd_krub,
-    "tesla-ball": with_tesla_ball,
-  }
-  builds: Dict[str, Build] = {
-    tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
-  }
-  if len(builds.keys()) != 0:
-    outputs = []
-    for tag, build in track(builds.items(), description="Build optional images:".ljust(42)):
-      with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
-        try:
-          client.images.build(fileobj=fileobj, platform=build.platform, tag=tag)
-        except BuildError:
-          outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
-    list(map(rich_print, outputs))
 
-
-__all__ = ["setup"]
+__all__ = ["pull"]

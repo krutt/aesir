@@ -11,12 +11,13 @@
 # *************************************************************
 
 ### Local modules ###
+from aesir.commands.build import build
 from aesir.commands.clean import clean
 from aesir.commands.deploy import deploy
 from aesir.commands.flush import flush
 from aesir.commands.mine import mine
 from aesir.commands.nodekeys import nodekeys
 from aesir.commands.ping_pong import ping_pong
-from aesir.commands.setup import setup
+from aesir.commands.pull import pull
 
-__all__ = ["clean", "deploy", "flush", "mine", "nodekeys", "ping_pong", "setup"]
+__all__ = ["build", "clean", "deploy", "flush", "mine", "nodekeys", "ping_pong", "pull"]
