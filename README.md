@@ -133,14 +133,21 @@ $ aesir clean
 > Remove active containers:                  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 ```
 
+## Change-logs
+
+* **0.3.1** Add `aesir-cashu-mint` & `aesir-lnd-krub` image setups and deployments w/ shared volumes
+* **0.3.2** Define classifiers on `pyproject.toml` for PyPI metadata
+* **0.3.3** Drop `black` and use [ruff](https://github.com/astral-sh/ruff) formatter and linter
+* **0.3.4** Simplify deployment workflows and 
+* **0.3.5** Restructure project so that when installed, `src` folder will not be created
+
 ## Roadmap
 
-* Add `aesir-lnd-krub` peripheral service using [lnd-krub](https://github.com/krutt/lnd-krub)
+* Add `aesir-ord` peripheral service using [ord](https://github.com/ordinals/ord)
+* Make image versioning a little bit more intuitive.
 * Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Write [click](https://click.palletsprojects.com) tests.
 * Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
-* Make image versioning a little bit more intuitive.
-* Add `aesir-ord` peripheral service using [ord](https://github.com/ordinals/ord)
 * Add `aesir-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
 * Create and add some type of `ordapi` peripheral service.
 * Implement dashboard walkthrough a la [kylepollina/objexplore](https://github.com/kylepollina/objexplore)
