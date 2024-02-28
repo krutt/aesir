@@ -32,7 +32,7 @@ ServiceName = Literal[
   "aesir-cashu-mint",
   "aesir-lnd",
   "aesir-lnd-krub",
-  "aesir-ord",
+  "aesir-ord-server",
   "aesir-ping",
   "aesir-pong",
   "aesir-postgres",

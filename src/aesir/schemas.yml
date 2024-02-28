@@ -39,7 +39,7 @@ builds:
       - EXPOSE 3000
       - CMD printf $MACAROON > krub.macaroon && printf $TLSCERT > tls.cert && node dist/index.js
     platform: linux/amd64
-  ord:
+  ord-server:
     instructions:
       - FROM rust:1.75.0-bookworm AS builder
       - WORKDIR /usr/src/ord
@@ -225,9 +225,9 @@ peripherals:
         - REDIS_HOST=aesir-redis
       ports:
         - 3000:3000
-  ord:
-    aesir-ord:
-      alias: ord
+  ord-server:
+    aesir-ord-server:
+      alias: ord-server
       env_vars:
         - ORD_BITCOIN_RPC_PASS=aesir
         - ORD_BITCOIN_RPC_USER=aesir
