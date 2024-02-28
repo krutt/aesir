@@ -143,6 +143,7 @@ $ aesir clean
 * **0.3.6** Breakdown "setup" command into "build" and "pull"
 * **0.3.7** Lightning cluster now with [ord](https://github.com/ordinals/ord)
 * **0.3.8** Rename "ord" to "ord-server" to avoid confusion with cli
+* **0.3.9** Remove intermediate containers
 
 ## Roadmap
 
@@ -178,7 +179,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.3.7)
+> Installing the current project: aesir (0.3.9)
 ```
 
 ### Known issues
