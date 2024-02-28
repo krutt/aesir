@@ -142,6 +142,7 @@ $ aesir clean
 * **0.3.5** Restructure project so that when installed, `src` folder will not be created
 * **0.3.6** Breakdown "setup" command into "build" and "pull"
 * **0.3.7** Lightning cluster now with [ord](https://github.com/ordinals/ord)
+* **0.3.8** Rename "ord" to "ord-server" to avoid confusion with cli
 
 ## Roadmap
 
