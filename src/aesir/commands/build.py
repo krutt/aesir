@@ -69,7 +69,7 @@ def build(cashu_mint: bool, lnd_krub: bool, ord_server: bool, tesla_ball: bool) 
     for tag, build in track(builds.items(), description="Build optional images:".ljust(42)):
       with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
         try:
-          client.images.build(fileobj=fileobj, platform=build.platform, tag=tag)
+          client.images.build(fileobj=fileobj, platform=build.platform, rm=True, tag=tag)
         except BuildError:
           outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
     list(map(rich_print, outputs))
