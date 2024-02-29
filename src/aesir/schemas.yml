@@ -126,6 +126,36 @@ clusters:
         - --bitcoind.rpcpass=aesir
         - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
         - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+  ohm:
+    aesir-bitcoind:
+      alias: bitcoind
+      command:
+        - -server=1
+        - -regtest=1
+        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
+        - -debug=1
+        - -zmqpubrawblock=tcp://0.0.0.0:28334
+        - -zmqpubrawtx=tcp://0.0.0.0:28335
+        - -zmqpubhashblock=tcp://0.0.0.0:28336
+        - -txindex=0
+        - -dnsseed=0
+        - -upnp=0
+        - -rpcbind=0.0.0.0
+        - -rpcallowip=0.0.0.0/0
+        - -rpcport=18443
+        - -rpcworkqueue=128
+        - -rest
+        - -listen=1
+        - -listenonion=0
+        - -fallbackfee=0.0002
+        - -blockfilterindex=1
+        - -peerblockfilters=1
+        - -datadir=/home/bitcoin/.bitcoin
+        - -prune=600
+      ports:
+        - 18443:18443
+        - 28334:28334
+        - 28335:28335
   uno:
     aesir-bitcoind:
       alias: bitcoind

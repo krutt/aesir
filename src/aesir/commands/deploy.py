@@ -31,8 +31,9 @@ from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 
 
 @command
-@option("--duo", alternatives=["uno"], cls=MutexOption, is_flag=True, type=bool)
-@option("--uno", alternatives=["duo"], cls=MutexOption, is_flag=True, type=bool)
+@option("--duo", alternatives=["ohm", "uno"], cls=MutexOption, is_flag=True, type=bool)
+@option("--ohm", alternatives=["duo", "uno"], cls=MutexOption, is_flag=True, type=bool)
+@option("--uno", alternatives=["duo", "ohm"], cls=MutexOption, is_flag=True, type=bool)
 @option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
 @option("--with-lnd-krub", is_flag=True, help="Deploy lnd-krub peripheral service", type=bool)
 @option("--with-ord-server", is_flag=True, help="Deploy ord-server peripheral service", type=bool)
@@ -40,6 +41,7 @@ from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
 def deploy(
   duo: bool,
+  ohm: bool,
   uno: bool,
   with_cashu_mint: bool,
   with_lnd_krub: bool,
@@ -58,9 +60,14 @@ def deploy(
     return
 
   ### Defaults to duo network; Derive cluster information from parameters ###
-  duo = duo or (not duo and not uno)  # defaults to duo network
-  cluster: Dict[ServiceName, Service] = (CLUSTERS["duo"], CLUSTERS["uno"])[uno]
-  selector: Dict[str, bool] = {
+  selector: Dict[ServiceName, bool] = {"duo": duo, "ohm": ohm, "uno": uno}
+  cluster_name: ServiceName = "duo"
+  try:
+    cluster_name = next(filter(lambda value: value[1], selector.items()))[0]
+  except StopIteration:
+    pass
+  cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
+  selector= {
     "cashu-mint": False,
     "lnd-krub": False,
     "ord-server": False,
@@ -81,7 +88,7 @@ def deploy(
     pass
 
   ### Deploy specified cluster ###
-  for name, service in track(cluster.items(), f"Deploy {('duo', 'uno')[uno]} cluster:".ljust(42)):
+  for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
     image_name: str = dict(**IMAGES["required"], **IMAGES["optional"])[service.alias]
     ports: Dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
@@ -96,25 +103,26 @@ def deploy(
       ports=ports,
     )
 
-  ### Wait until lnd(s) ready ###
-  sleep(3)
-
-  ### Mine starting capital ###
   treasuries: List[str] = []
-  for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
-    if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
-      new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
-        container.exec_run(
-          """
-          lncli
-            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-            --rpcserver=localhost:10001
-            --tlscertpath=/home/lnd/.lnd/tls.cert
-          newaddress p2wkh
-          """
-        ).output
-      )
-      treasuries.append(new_address.address)
+  if duo or uno:
+    ### Wait until lnd(s) ready ###
+    sleep(3)
+
+    ### Mine starting capital ###
+    for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
+      if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
+        new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
+          container.exec_run(
+            """
+            lncli
+              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+              --rpcserver=localhost:10001
+              --tlscertpath=/home/lnd/.lnd/tls.cert
+            newaddress p2wkh
+            """
+          ).output
+        )
+        treasuries.append(new_address.address)
 
   ### Define selection for shared-volume peripherals ###
   selector = {
@@ -163,20 +171,21 @@ def deploy(
       volumes_from=[volume_target],
     )
 
-  ### Retrieve bitcoind container ###
-  bitcoind: Container
-  try:
-    bitcoind = client.containers.get("aesir-bitcoind")
-  except NotFound:
-    rich_print('[dim yellow1]Unable to find "aesir-bitcoind"; initial capital not yet mined.')
-    return
-  for address in track(treasuries, "Mine initial capital for parties:".ljust(42)):
-    bitcoind.exec_run(
-      """
-      bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
-      """
-      % address
-    )
+  if len(treasuries) != 0:
+    ### Retrieve bitcoind container ###
+    bitcoind: Container
+    try:
+      bitcoind = client.containers.get("aesir-bitcoind")
+    except NotFound:
+      rich_print('[dim yellow1]Unable to find "aesir-bitcoind"; initial capital not yet mined.')
+      return
+    for address in track(treasuries, "Mine initial capital for parties:".ljust(42)):
+      bitcoind.exec_run(
+        """
+        bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress 101 %s
+        """
+        % address
+      )
 
   ### Show warnings ###
   warnings: List[str] = []

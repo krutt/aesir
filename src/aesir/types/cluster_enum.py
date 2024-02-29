@@ -13,6 +13,6 @@
 ### Standard packages ###
 from typing import Literal
 
-ClusterEnum = Literal["duo", "uno"]
+ClusterEnum = Literal["duo", "ohm", "uno"]
 
 __all__ = ["ClusterEnum"]
