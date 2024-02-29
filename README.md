@@ -85,6 +85,7 @@ Currently there are two supported cluster-types in this project. Specified by fl
 | Type | Description                                                                |
 | ---- | -------------------------------------------------------------------------- |
 |  duo | Contains two LND nodes named `aesir-ping` and `aesir-pong` unified by <br> one single `aesir-bitcoind` service. 
+|  ohm | Only has `aesir-bitcoind` without any Lightning nodes. |
 |  uno | Only has one LND node named `aesir-lnd` connected to `aesir-bitcoind`. |
 
 ### Peripheral containers
