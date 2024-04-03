@@ -146,6 +146,7 @@ $ aesir clean
 * **0.3.8** Rename "ord" to "ord-server" to avoid confusion with cli
 * **0.3.9** Remove intermediate containers
 * **0.4.0** Resist electricity with "ohm" mode
+* **0.4.1** Remove Ordinals' spiked ball
 
 ## Roadmap
 
@@ -181,7 +182,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.4.0)
+> Installing the current project: aesir (0.4.1)
 ```
 
 ### Known issues
