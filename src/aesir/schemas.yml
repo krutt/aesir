@@ -79,7 +79,6 @@ clusters:
         - -blockfilterindex=1
         - -peerblockfilters=1
         - -datadir=/home/bitcoin/.bitcoin
-        - -prune=600
       ports:
         - 18443:18443
         - 28334:28334
@@ -151,7 +150,6 @@ clusters:
         - -blockfilterindex=1
         - -peerblockfilters=1
         - -datadir=/home/bitcoin/.bitcoin
-        - -prune=600
       ports:
         - 18443:18443
         - 28334:28334
@@ -181,7 +179,6 @@ clusters:
         - -blockfilterindex=1
         - -peerblockfilters=1
         - -datadir=/home/bitcoin/.bitcoin
-        - -prune=600
       ports:
         - 18443:18443
         - 28334:28334
