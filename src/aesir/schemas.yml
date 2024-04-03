@@ -65,7 +65,7 @@ clusters:
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
         - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=0
+        - -txindex=1
         - -dnsseed=0
         - -upnp=0
         - -rpcbind=0.0.0.0
@@ -137,7 +137,7 @@ clusters:
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
         - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=0
+        - -txindex=1
         - -dnsseed=0
         - -upnp=0
         - -rpcbind=0.0.0.0
@@ -167,7 +167,7 @@ clusters:
         - -zmqpubrawblock=tcp://0.0.0.0:28334
         - -zmqpubrawtx=tcp://0.0.0.0:28335
         - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=0
+        - -txindex=1
         - -dnsseed=0
         - -upnp=0
         - -rpcbind=0.0.0.0
