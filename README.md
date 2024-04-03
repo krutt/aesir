@@ -147,6 +147,7 @@ $ aesir clean
 * **0.3.9** Remove intermediate containers
 * **0.4.0** Resist electricity with "ohm" mode
 * **0.4.1** Remove Ordinals' spiked ball
+* **0.4.2** Disable bitcoind prune mode
 
 ## Roadmap
 
@@ -182,7 +183,7 @@ $ poetry install --with dev  # install with development dependencies
 >   • ...
 >   • ...
 >
-> Installing the current project: aesir (0.4.1)
+> Installing the current project: aesir (0.4.2)
 ```
 
 ### Known issues
