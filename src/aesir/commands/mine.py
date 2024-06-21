@@ -62,7 +62,9 @@ def mine(blockcount: int, blocktime: int) -> None:
     filter(lambda container: match(r"aesir-*", container.name), reversed(client.containers.list()))
   )
   container_names: List[str] = list(map(lambda container: container.name, aesir_containers))
-  lnd_containers: List[Container] = list(filter(lambda container: match(r"aesir-(lnd|ping|pong)", container.name), aesir_containers))
+  lnd_containers: List[Container] = list(
+    filter(lambda container: match(r"aesir-(lnd|ping|pong)", container.name), aesir_containers)
+  )
 
   ### Generate treasury addresses as mining destinations ###
   treasuries: List[str] = []
@@ -111,11 +113,13 @@ def mine(blockcount: int, blocktime: int) -> None:
   sidebar.split_column(containers)
 
   container_index: int = 0
-  with terminal.cbreak(), terminal.hidden_cursor(), Live(pane, refresh_per_second=4, transient=True):
+  with terminal.cbreak(), terminal.hidden_cursor(), Live(
+    pane, refresh_per_second=4, transient=True
+  ):
     try:
       while True:
         ### Process input key ###
-        keystroke: Keystroke = terminal.inkey(timeout=.25)
+        keystroke: Keystroke = terminal.inkey(timeout=0.25)
         if keystroke.code == terminal.KEY_UP and container_index > 0:
           container_index -= 1
         elif keystroke.code == terminal.KEY_DOWN and container_index < len(container_names) - 1:
