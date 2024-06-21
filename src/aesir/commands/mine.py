@@ -16,6 +16,8 @@ from typing import List
 
 ### Third-party packages ###
 from apscheduler.schedulers.background import BackgroundScheduler
+from blessed import Terminal
+from blessed.keyboard import Keystroke
 from click import argument, command
 from docker import DockerClient, from_env
 from docker.errors import DockerException, NotFound
@@ -99,6 +101,9 @@ def mine(blockcount: int, blocktime: int) -> None:
     )
   scheduler.start()
 
+  ### Initiate Terminal instance ###
+  terminal: Terminal = Terminal()
+
   ### Set up dashboard layout ###
   pane: Layout = Layout()
   sidebar: Layout = Layout(size=24)
@@ -110,73 +115,107 @@ def mine(blockcount: int, blocktime: int) -> None:
   main.split_column(body, footer)
   sidebar.split_column(containers)
 
-  with Live(pane, refresh_per_second=4, transient=True):
-    pane["containers"].update(Panel(Text("\n".join(container_names)), title="containers"))
-    while True:
-      ### Update ###
-      blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
-        bitcoind.exec_run(
-          """
-          bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getblockchaininfo
-          """
-        ).output
-      )
+  container_index: int = 0
+  with terminal.cbreak(), terminal.hidden_cursor(), Live(pane, refresh_per_second=4, transient=True):
+    try:
+      while True:
+        ### Process input key ###
+        keystroke: Keystroke = terminal.inkey()
+        if keystroke.code == terminal.KEY_UP and container_index > 0:
+          container_index -= 1
+        elif keystroke.code == terminal.KEY_DOWN and container_index < len(container_names) - 1:
+          container_index += 1
+        elif keystroke in {"Q", "q"}:
+          raise StopIteration
 
-      ### Initiate parameters ###
-      lnd_infos: List[LNDInfo] = []
-      lnd_names: List[str] = []
-
-      ## Fetch LNDInfo from LND containers ###
-      for container in lnd_containers:
-        lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
-          container.exec_run(
+        container_rows: str = ""
+        if container_index > 0:
+          container_rows = "\n".join(container_names[:container_index])
+          container_rows += f"\n[reverse]{container_names[container_index]}[reset]\n"
+        else:
+          container_rows = f"[reverse]{container_names[container_index]}[reset]\n"
+        if container_index < len(container_names) - 1:
+          container_rows += "\n".join(container_names[container_index+1:])
+        pane["containers"].update(Panel(container_rows, title="containers"))
+        ### Update ###
+        blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
+          bitcoind.exec_run(
             """
-            lncli
-              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-              --rpcserver=localhost:10001
-              --tlscertpath=/home/lnd/.lnd/tls.cert
-            getinfo
+            bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getblockchaininfo
             """
           ).output
         )
-        lnd_infos.append(lnd_info)
-        lnd_names.append(container.name)
 
-      ### Draw ###
-      body_table: Table = Table(expand=True, show_lines=True)
-      body_table.add_column("Name", justify="left", style="green")
-      body_table.add_column("Nodekey", justify="left", style="cyan")
-      body_table.add_column("Channels")
-      body_table.add_column("Peers")
-      body_table.add_column("Height")
-      body_table.add_column("Synced?", justify="right")
-      for i, lnd_info in enumerate(lnd_infos):
-        body_table.add_row(
-          lnd_names[i],
-          "\n".join(
-            lnd_info.identity_pubkey[c : c + 11]
-            for c in range(0, len(lnd_info.identity_pubkey), 11)
-          ),
-          f"{lnd_info.num_active_channels}",
-          f"{lnd_info.num_peers}",
-          f"{lnd_info.block_height}",
-          ("[red]false", "[green]true")[lnd_info.synced_to_chain],
-        )
-      pane["body"].update(body_table)
-      pane["footer"].update(
-        Panel(
-          Text.assemble(
-            ("Chain: ", "bright_magenta bold"),
-            blockchain_info.chain.ljust(9),
-            ("Blocks: ", "green bold"),
-            f"{blockchain_info.blocks}".ljust(8),
-            ("Size: ", "blue bold"),
-            f"{blockchain_info.size_on_disk}".ljust(10),
-            ("Time: ", "cyan bold"),
-            f"{blockchain_info.time}".rjust(10),
+        ### Initiate parameters ###
+        lnd_infos: List[LNDInfo] = []
+        lnd_names: List[str] = []
+
+        ## Fetch LNDInfo from LND containers ###
+        for container in lnd_containers:
+          lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+            container.exec_run(
+              """
+              lncli
+                --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                --rpcserver=localhost:10001
+                --tlscertpath=/home/lnd/.lnd/tls.cert
+              getinfo
+              """
+            ).output
+          )
+          lnd_infos.append(lnd_info)
+          lnd_names.append(container.name)
+
+        ### Draw ###
+        body_table: Table = Table(expand=True, show_lines=True)
+        body_table.add_column("Logo", justify="left", style="green")
+        # body_table.add_column("Name", justify="left", style="green")
+        # body_table.add_column("Nodekey", justify="left", style="cyan")
+        # body_table.add_column("Channels")
+        # body_table.add_column("Peers")
+        # body_table.add_column("Height")
+        # body_table.add_column("Synced?", justify="right")
+        # for i, lnd_info in enumerate(lnd_infos):
+        #   body_table.add_row(
+        #     lnd_names[i],
+        #     "\n".join(
+        #       lnd_info.identity_pubkey[c : c + 11]
+        #       for c in range(0, len(lnd_info.identity_pubkey), 11)
+        #     ),
+        #     f"{lnd_info.num_active_channels}",
+        #     f"{lnd_info.num_peers}",
+        #     f"{lnd_info.block_height}",
+        #     ("[red]false", "[green]true")[lnd_info.synced_to_chain],
+        #   )
+        body_table.add_column("Container name", justify="left", style="green")
+        body_table.add_row(container_names[container_index])
+        body_table.add_row("""
+                       △
+                      △▼△ △
+                     △▼△△△▼△
+                    △▼▼△△△△▼△
+                   △△△△△▲△△▼▼△
+                    △▼△△△△△△△△△
+                   △▼▼▼△△△△
+                  △△△△△△△△△△
+        """)
+        pane["body"].update(body_table)
+        pane["footer"].update(
+          Panel(
+            Text.assemble(
+              ("Chain: ", "bright_magenta bold"),
+              blockchain_info.chain.ljust(9),
+              ("Blocks: ", "green bold"),
+              f"{blockchain_info.blocks}".ljust(8),
+              ("Size: ", "blue bold"),
+              f"{blockchain_info.size_on_disk}".ljust(10),
+              ("Time: ", "cyan bold"),
+              f"{blockchain_info.time}".rjust(10),
+            )
           )
         )
-      )
+    except StopIteration:
+      print("Valhalla!")
 
 
 __all__ = ["mine"]
