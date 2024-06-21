@@ -67,7 +67,7 @@ def deploy(
   except StopIteration:
     pass
   cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
-  selector= {
+  selector = {
     "cashu-mint": False,
     "lnd-krub": False,
     "ord-server": False,
