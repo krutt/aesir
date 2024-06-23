@@ -38,7 +38,7 @@ repositories. Results may look as such:
 $ pip install aesir
 > ...
 > Installing collected packages: aesir
-> Successfully installed aesir-0.3.5
+> Successfully installed aesir-0.4.3
 $ aesir deploy
 > Deploy specified local cluster:            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
 > Generate addresses:                        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
@@ -148,6 +148,7 @@ $ aesir clean
 * **0.4.0** Resist electricity with "ohm" mode
 * **0.4.1** Remove Ordinals' spiked ball
 * **0.4.2** Disable bitcoind prune mode
+* **0.4.3** Implement dashboard walkthrough using [blessed](https://github.com/chj/blessed)
 
 ## Roadmap
 
@@ -155,9 +156,7 @@ $ aesir clean
 * Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Write [click](https://click.palletsprojects.com) tests.
 * Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
-* Add `aesir-bitvm` peripheral service using [BitVM](https://github.com/BitVM/BitVM)
 * Create and add some type of `ordapi` peripheral service.
-* Implement dashboard walkthrough a la [kylepollina/objexplore](https://github.com/kylepollina/objexplore)
 
 ## Contributions
 
