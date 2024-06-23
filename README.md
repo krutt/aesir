@@ -58,10 +58,11 @@ setup. You can achieve completely local and running environment with the followi
 ### Cluster types
 
 Currently there are two supported cluster-types in this project. Specified by flags,
-`--duo` (default), or `--uno` with the following set-up:
+`--duo` (default), or `--cat`, `--ohm`, `--uno` with the following set-up:
 
 | Type | Description                                                                |
 | ---- | -------------------------------------------------------------------------- |
+|  cat | Customized `aesir-bitcoind-cat` node that has OP_CAT enabled for experiments |
 |  duo | Contains two LND nodes named `aesir-ping` and `aesir-pong` unified by <br> one single `aesir-bitcoind` service. |
 |  ohm | Only has `aesir-bitcoind` without any Lightning nodes. |
 |  uno | Only has one LND node named `aesir-lnd` connected to `aesir-bitcoind`. |
