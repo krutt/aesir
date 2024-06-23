@@ -37,7 +37,7 @@ class MempoolInfo(BaseModel):
   usage: StrictInt = Field(description="Total memory usage for mempool")
   unbroadcast_count: StrictInt = Field(
     alias="unbroadcastcount",
-    description="Number of transactions that have not passed initial broadcast"
+    description="Number of transactions that have not passed initial broadcast",
   )
 
 

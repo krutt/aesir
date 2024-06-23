@@ -19,7 +19,7 @@ from click import command, option
 from docker import DockerClient, from_env
 from docker.errors import BuildError, DockerException
 from rich import print as rich_print
-from rich.progress import track
+from rich.progress import Progress
 
 ### Local modules ###
 from aesir.configs import BUILDS
@@ -32,7 +32,9 @@ from aesir.types import Build
 @option("--lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
 @option("--ord-server", is_flag=True, help="Build ord-server optional image", type=bool)
 @option("--tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
-def build(bitcoind_cat: bool, cashu_mint: bool, lnd_krub: bool, ord_server: bool, tesla_ball: bool) -> None:
+def build(
+  bitcoind_cat: bool, cashu_mint: bool, lnd_krub: bool, ord_server: bool, tesla_ball: bool
+) -> None:
   """Build peripheral images for the desired cluster."""
   client: DockerClient
   try:
@@ -68,12 +70,24 @@ def build(bitcoind_cat: bool, cashu_mint: bool, lnd_krub: bool, ord_server: bool
     tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
   }
   if len(builds.keys()) != 0:
-    for tag, build in track(builds.items(), description="Build optional images:".ljust(42)):
-      with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
-        try:
-          client.images.build(fileobj=fileobj, platform=build.platform, rm=True, tag=tag)
-        except BuildError:
-          outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
+    with Progress() as progress:
+      builds_items = builds.items()
+      task = progress.add_task("Build optional images:".ljust(42), total=len(builds_items))
+      for tag, build in builds_items:
+        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
+          try:
+            stream = client.api.build(
+              decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
+            )
+            for line in stream:
+              with progress.console.pager(styles=True):
+                if "stream" in line:
+                  progress.console.print(line.pop("stream").strip(), style="green bold")
+                elif "error" in line:
+                  progress.console.print(line.pop("error").strip(), style="red bold")
+          except BuildError:
+            outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
+      progress.update(task, description="[blue]Complete", advance=100)
     list(map(rich_print, outputs))
 
 
