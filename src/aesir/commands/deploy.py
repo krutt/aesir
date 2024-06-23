@@ -91,10 +91,7 @@ def deploy(
 
   ### Deploy specified cluster ###
   for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
-
     image_name: str = dict(**IMAGES["required"], **IMAGES["optional"])[service.alias]
-    rich_print(image_name)
-    rich_print(service.command)
     ports: Dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
