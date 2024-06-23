@@ -82,7 +82,7 @@ def build(
             for line in stream:
               with progress.console.pager(styles=True):
                 if "stream" in line:
-                  progress.console.print(line.pop("stream").strip(), style="green bold")
+                  progress.console.print(line.pop("stream").strip(), style="grey50")
                 elif "error" in line:
                   progress.console.print(line.pop("error").strip(), style="red bold")
           except BuildError:
