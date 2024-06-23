@@ -31,15 +31,17 @@ from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 
 
 @command
-@option("--duo", alternatives=["ohm", "uno"], cls=MutexOption, is_flag=True, type=bool)
-@option("--ohm", alternatives=["duo", "uno"], cls=MutexOption, is_flag=True, type=bool)
-@option("--uno", alternatives=["duo", "ohm"], cls=MutexOption, is_flag=True, type=bool)
+@option("--cat", alternatives=["duo", "ohm", "uno"], cls=MutexOption, is_flag=True, type=bool)
+@option("--duo", alternatives=["cat", "ohm", "uno"], cls=MutexOption, is_flag=True, type=bool)
+@option("--ohm", alternatives=["cat", "duo", "uno"], cls=MutexOption, is_flag=True, type=bool)
+@option("--uno", alternatives=["cat", "duo", "ohm"], cls=MutexOption, is_flag=True, type=bool)
 @option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
 @option("--with-lnd-krub", is_flag=True, help="Deploy lnd-krub peripheral service", type=bool)
 @option("--with-ord-server", is_flag=True, help="Deploy ord-server peripheral service", type=bool)
 @option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
 def deploy(
+  cat: bool,
   duo: bool,
   ohm: bool,
   uno: bool,
@@ -60,7 +62,7 @@ def deploy(
     return
 
   ### Defaults to duo network; Derive cluster information from parameters ###
-  selector: Dict[ServiceName, bool] = {"duo": duo, "ohm": ohm, "uno": uno}
+  selector: Dict[ServiceName, bool] = {"cat": cat, "duo": duo, "ohm": ohm, "uno": uno}
   cluster_name: ServiceName = "duo"
   try:
     cluster_name = next(filter(lambda value: value[1], selector.items()))[0]
@@ -89,7 +91,10 @@ def deploy(
 
   ### Deploy specified cluster ###
   for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
+
     image_name: str = dict(**IMAGES["required"], **IMAGES["optional"])[service.alias]
+    rich_print(image_name)
+    rich_print(service.command)
     ports: Dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
@@ -126,6 +131,7 @@ def deploy(
 
   ### Define selection for shared-volume peripherals ###
   selector = {
+    "bitcoind-cat": False,
     "cashu-mint": with_cashu_mint,
     "lnd-krub": with_lnd_krub and with_postgres and with_redis,
     "ord-server": with_ord_server,

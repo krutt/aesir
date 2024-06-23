@@ -1,4 +1,23 @@
 builds:
+  bitcoind-cat:
+    instructions:
+      - FROM debian:stable-slim AS builder
+      - RUN apt-get update
+      - RUN apt-get install -y autoconf bsdmainutils build-essential git libboost-all-dev libtool pkg-config
+      - WORKDIR /usr
+      - RUN git clone --depth 1 --branch dont-success-cat https://github.com/rot13maxi/bitcoin.git
+      - RUN cd bitcoin && ./autogen.sh && ./configure && make -j4
+      - FROM debian:stable-slim AS runner
+      - WORKDIR /usr/app
+      - RUN apt-get update
+      - RUN apt-get install -y libevent-dev
+      - COPY --from=builder /usr/bitcoin/src/bitcoind /usr/app/bitcoind
+      - COPY --from=builder /usr/bitcoin/src/bitcoin-cli /usr/app/bitcoin-cli
+      - ENV PATH=$PATH:/usr/app
+      - RUN mkdir -p /home/bitcoin/.bitcoin
+      - VOLUME ["/home/bitcoin/.bitcoin"]
+      - EXPOSE 18443 18444 28334 28335
+      - ENTRYPOINT ["/usr/app/bitcoind"]
   cashu-mint:
     instructions:
       - FROM python:3.10-slim
@@ -54,6 +73,35 @@ builds:
       - ENV RUST_LOG=info
       - CMD ord --chain regtest --cookie-file /home/bitcoin/.bitcoin/regtest --rpc-url aesir-bitcoind:18443 server --http-port 8080
 clusters:
+  cat:
+    aesir-bitcoind-cat:
+      alias: bitcoind-cat
+      command:
+        - -server=1
+        - -regtest=1
+        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
+        - -debug=1
+        - -zmqpubrawblock=tcp://0.0.0.0:28334
+        - -zmqpubrawtx=tcp://0.0.0.0:28335
+        - -zmqpubhashblock=tcp://0.0.0.0:28336
+        - -txindex=1
+        - -dnsseed=0
+        - -upnp=0
+        - -rpcbind=0.0.0.0
+        - -rpcallowip=0.0.0.0/0
+        - -rpcport=18443
+        - -rpcworkqueue=128
+        - -rest
+        - -listen=1
+        - -listenonion=0
+        - -fallbackfee=0.0002
+        - -blockfilterindex=1
+        - -peerblockfilters=1
+        - -datadir=/home/bitcoin/.bitcoin
+      ports:
+        - 18443:18443
+        - 28334:28334
+        - 28335:28335
   duo:
     aesir-bitcoind:
       alias: bitcoind
@@ -216,6 +264,7 @@ deprecated:
   - polarlightning/lnd:0.17.1-beta
 images:
   optional:
+    bitcoind-cat: bitcoind-cat
     postgres: postgres:latest
     redis: redis:latest
   required:

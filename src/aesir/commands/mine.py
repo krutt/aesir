@@ -54,8 +54,11 @@ def mine(blockcount: int, blocktime: int) -> None:
   try:
     bitcoind = client.containers.get("aesir-bitcoind")
   except NotFound:
-    rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
-    return
+    try:
+      bitcoind = client.containers.get("aesir-bitcoind-cat")
+    except NotFound:
+      rich_print('[red bold]Unable to find "aesir-bitcoind" container.')
+      return
 
   ### Retrieve other containers ###
   aesir_containers: List[Container] = list(
