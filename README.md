@@ -53,29 +53,7 @@ environment applications you are developing.
 In order to properly test many functionalities, you will need to send mining commands to local
 setup. You can achieve completely local and running environment with the following command:
 
-```sh
-$ aesir mine
-> ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ aesir-redis          │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ aesir-postgres       │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ aesir-pong           ││ aesir-pong    │ 02fabeeaa9d  │ 2         │ 1      │ 216    │    true │
-> │ aesir-ping           ││               │ 3da33d3eb12  │           │        │        │         │
-> │ aesir-bitcoind       ││               │ 262e039d9b2  │           │        │        │         │
-> │                      ││               │ 9d591f1b897  │           │        │        │         │
-> │                      ││               │ c0ae6b158d0  │           │        │        │         │
-> │                      ││               │ 5410d97efbc  │           │        │        │         │
-> │                      │├───────────────┼──────────────┼───────────┼────────┼────────┼─────────┤
-> │                      ││ aesir-ping    │ 02ac17a8d64  │ 2         │ 1      │ 216    │    true │
-> │                      ││               │ 4194459b8f3  │           │        │        │         │
-> │                      ││               │ deacf4e1a64  │           │        │        │         │
-> │                      ││               │ 0fcbcdf9fbf  │           │        │        │         │
-> │                      ││               │ 39e8423dfdc  │           │        │        │         │
-> │                      ││               │ 3ffa2f7367f  │           │        │        │         │
-> │                      │└───────────────┴──────────────┴───────────┴────────┴────────┴─────────┘
-> │                      │╭──────────────────────────────────────────────────────────────────────╮
-> │                      ││ Chain: regtest  Blocks: 216     Size: 65259     Time: 1701528030     │
-> ╰──────────────────────╯╰──────────────────────────────────────────────────────────────────────╯
-```
+[![Demonstration](static/demo.gif)](https://github.com/krutt/aesir/blob/master/static/demo.gif)
 
 ### Cluster types
 
