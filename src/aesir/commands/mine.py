@@ -32,7 +32,7 @@ from rich.table import Table
 from rich.text import Text
 
 ### Local modules ###
-from aesir.types import BlockchainInfo, LNDInfo, NewAddress
+from aesir.types import BlockchainInfo, LNDInfo, NewAddress, MempoolInfo
 
 
 @command
@@ -148,9 +148,16 @@ def mine(blockcount: int, blocktime: int) -> None:
               """
             ).output
           )
+          mempool_info: MempoolInfo = TypeAdapter(MempoolInfo).validate_json(
+            bitcoind.exec_run(
+              """
+              bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getmempoolinfo
+              """
+            ).output
+          )
           body_table.add_row(
             Text.assemble(
-              "\n\n\n\n\n\n",
+              f"\n{ 'Blockchain information:'.ljust(20) }\n",
               ("Chain: ", "bright_magenta bold"),
               blockchain_info.chain.ljust(9),
               ("Blocks: ", "green bold"),
@@ -159,7 +166,29 @@ def mine(blockcount: int, blocktime: int) -> None:
               f"{blockchain_info.size_on_disk}".ljust(10),
               ("Time: ", "cyan bold"),
               f"{blockchain_info.time}".rjust(10),
-              "\n\n\n\n\n\n",
+              "\n",
+            )
+          )
+          body_table.add_row(
+            Text.assemble(
+              "\n",
+              ("Mempool information".ljust(19), "bold"),
+              "\n".ljust(19),
+              ("Fees:".ljust(15), "green bold"),
+              f"{mempool_info.total_fee}".rjust(15),
+              "\n".ljust(19),
+              ("Transactions:".ljust(15), "cyan bold"),
+              f"{mempool_info.txn_count}".rjust(15),
+              "\n".ljust(19),
+              ("Size:".ljust(15), "blue bold"),
+              f"{mempool_info.txn_bytes}".rjust(15),
+              "\n".ljust(19),
+              ("Loaded?:".ljust(15), "bright_magenta bold"),
+              ("true".rjust(15), "green") if mempool_info.loaded else ("false".rjust(15), "red"),
+              "\n".ljust(19),
+              ("Usage:".ljust(15), "light_coral bold"),
+              f"{mempool_info.usage}".rjust(15),
+              "\n",
             )
           )
         elif match(r"aesir-(lnd|ping|pong)", container_name):

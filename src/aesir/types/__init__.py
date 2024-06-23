@@ -16,6 +16,7 @@ from aesir.types.build import Build, BuildEnum
 from aesir.types.cluster_enum import ClusterEnum
 from aesir.types.image import ImageAlias, ImageEnum
 from aesir.types.lnd_info import LNDInfo
+from aesir.types.mempool_info import MempoolInfo
 from aesir.types.mutex_option import MutexOption
 from aesir.types.new_address import NewAddress
 from aesir.types.open_channel import OpenChannel
@@ -31,6 +32,7 @@ __all__ = [
   "ImageAlias",
   "ImageEnum",
   "LNDInfo",
+  "MempoolInfo",
   "MutexOption",
   "NewAddress",
   "OpenChannel",
