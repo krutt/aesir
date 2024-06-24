@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2024 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/service.py
-# VERSION:     0.4.3
+# VERSION:     0.4.4
 # CREATED:     2023-12-01 05:31
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
