@@ -12,6 +12,8 @@
 
 ### Standard packages ###
 from io import BytesIO
+from math import floor
+from re import search
 from typing import Dict, List, Set
 
 ### Third-party packages ###
@@ -74,6 +76,7 @@ def build(
       builds_items = builds.items()
       task = yggdrasil.add_task("Build optional images:".ljust(42), total=len(builds_items))
       for tag, build in builds_items:
+        build_task = yggdrasil.add_task(f"Building { tag }...".ljust(42), total=100)
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
             stream = client.api.build(
@@ -81,12 +84,20 @@ def build(
             )
             for line in stream:
               if "stream" in line:
-                yggdrasil.update_table(line.pop("stream").strip())
+                stream: str = line.pop("stream").strip()
+                step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+                if step is not None:
+                  divided: int = int(step.group("divided"))
+                  divisor: int = int(step.group("divisor"))
+                  yggdrasil.update(build_task, completed=floor(divided / divisor * 100))
+                yggdrasil.update_table(stream)
               elif "error" in line:
                 yggdrasil.update_table(line.pop("error").strip())
           except BuildError:
             outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
-      yggdrasil.update(task, description="[blue]Complete", advance=100)
+          yggdrasil.update(build_task, completed=100, description="[blue]Built successfully")
+          yggdrasil.update(task, advance=1)
+      yggdrasil.update(task, completed=len(builds_items), description="[blue]Complete")
     list(map(rich_print, outputs))
 
 
