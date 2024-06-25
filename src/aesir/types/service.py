@@ -40,4 +40,4 @@ ServiceName = Literal[
   "aesir-redis",
 ]
 
-__all__ = ["Service", "ServiceName"]
+__all__ = ("Service", "ServiceName")

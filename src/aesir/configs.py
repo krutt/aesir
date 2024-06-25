@@ -52,4 +52,4 @@ with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
       schema["peripherals"]
     )
 
-__all__ = ["BUILDS", "CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK", "PERIPHERALS"]
+__all__ = ("BUILDS", "CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK", "PERIPHERALS")

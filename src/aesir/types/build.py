@@ -24,4 +24,4 @@ class Build(BaseModel):
 BuildEnum = Literal["bitcoind-cat", "cashu-mint", "lnd-krub", "ord-server", "tesla-ball"]
 
 
-__all__ = ["Build", "BuildEnum"]
+__all__ = ("Build", "BuildEnum")

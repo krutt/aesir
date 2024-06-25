@@ -91,4 +91,4 @@ def build(
     list(map(rich_print, outputs))
 
 
-__all__ = ["build"]
+__all__ = ("build",)

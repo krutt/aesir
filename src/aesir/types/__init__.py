@@ -24,7 +24,7 @@ from aesir.types.peripheral_enum import PeripheralEnum
 from aesir.types.service import Service, ServiceName
 
 
-__all__ = [
+__all__ = (
   "BlockchainInfo",
   "Build",
   "BuildEnum",
@@ -39,4 +39,4 @@ __all__ = [
   "PeripheralEnum",
   "Service",
   "ServiceName",
-]
+)

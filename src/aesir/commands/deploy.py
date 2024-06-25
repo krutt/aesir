@@ -197,4 +197,4 @@ def deploy(
   list(map(rich_print, warnings))
 
 
-__all__ = ["deploy"]
+__all__ = ("deploy",)

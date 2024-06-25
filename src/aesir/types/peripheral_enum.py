@@ -15,4 +15,4 @@ from typing import Literal
 
 PeripheralEnum = Literal["cashu-mint", "lnd-krub", "ord-server", "postgres", "redis"]
 
-__all__ = ["PeripheralEnum"]
+__all__ = ("PeripheralEnum",)

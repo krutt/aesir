@@ -18,4 +18,4 @@ class OpenChannel(BaseModel):
   funding_txid: StrictStr
 
 
-__all__ = ["OpenChannel"]
+__all__ = ("OpenChannel",)

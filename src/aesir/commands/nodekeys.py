@@ -62,4 +62,4 @@ def nodekeys() -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ["nodekeys"]
+__all__ = ("nodekeys",)

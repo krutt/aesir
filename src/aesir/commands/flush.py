@@ -44,4 +44,4 @@ def flush() -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ["flush"]
+__all__ = ("flush",)

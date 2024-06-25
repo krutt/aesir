@@ -15,4 +15,4 @@ from typing import Literal
 
 ClusterEnum = Literal["cat", "duo", "ohm", "uno"]
 
-__all__ = ["ClusterEnum"]
+__all__ = ("ClusterEnum",)

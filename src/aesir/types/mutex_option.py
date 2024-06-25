@@ -26,7 +26,7 @@ class MutexOption(Option):
     ).strip()
     super(MutexOption, self).__init__(*args, **kwargs)
 
-  def handle_parse_result(
+  def handle_parse_result(  # type: ignore[misc]
     self, context: Context, options: Mapping[str, Any], arguments: List[str]
   ) -> Tuple[Any, List[str]]:
     current_opt: bool = self.name in options
@@ -41,4 +41,4 @@ class MutexOption(Option):
     return super(MutexOption, self).handle_parse_result(context, options, arguments)
 
 
-__all__ = ["MutexOption"]
+__all__ = ("MutexOption",)

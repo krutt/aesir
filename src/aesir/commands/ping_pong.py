@@ -145,4 +145,4 @@ def ping_pong(channel_size: int) -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ["ping_pong"]
+__all__ = ("ping_pong",)

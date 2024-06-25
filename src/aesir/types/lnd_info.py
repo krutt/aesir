@@ -22,4 +22,4 @@ class LNDInfo(BaseModel):
   synced_to_chain: StrictBool
 
 
-__all__ = ["LNDInfo"]
+__all__ = ("LNDInfo",)

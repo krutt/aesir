@@ -67,4 +67,4 @@ def pull(postgres: bool, redis: bool) -> None:
     list(map(rich_print, outputs))
 
 
-__all__ = ["pull"]
+__all__ = ("pull",)

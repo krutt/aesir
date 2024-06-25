@@ -18,4 +18,4 @@ class NewAddress(BaseModel):
   address: StrictStr
 
 
-__all__ = ["NewAddress"]
+__all__ = ("NewAddress",)

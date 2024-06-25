@@ -21,4 +21,4 @@ class BlockchainInfo(BaseModel):
   time: StrictInt
 
 
-__all__ = ["BlockchainInfo"]
+__all__ = ("BlockchainInfo",)

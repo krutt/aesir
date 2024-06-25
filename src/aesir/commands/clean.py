@@ -56,4 +56,4 @@ def clean(inactive: bool) -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ["clean"]
+__all__ = ("clean",)

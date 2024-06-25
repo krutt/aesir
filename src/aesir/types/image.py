@@ -18,4 +18,4 @@ ImageAlias = Literal[
 ]
 ImageEnum = Literal["optional", "required"]
 
-__all__ = ["ImageAlias", "ImageEnum"]
+__all__ = ("ImageAlias", "ImageEnum")
