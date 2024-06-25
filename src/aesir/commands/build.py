@@ -70,7 +70,7 @@ def build(
     tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
   }
   if len(builds.keys()) != 0:
-    with Yggdrasil(row_count=5) as yggdrasil:
+    with Yggdrasil(row_count=10) as yggdrasil:
       builds_items = builds.items()
       task = yggdrasil.add_task("Build optional images:".ljust(42), total=len(builds_items))
       for tag, build in builds_items:
