@@ -37,7 +37,7 @@ class Yggdrasil(Progress):
       self.rows.append(row)
     table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
     for row_cell in self.rows:
-      table.add_row(row_cell[0:100].ljust(100), style="grey50")
+      table.add_row(row_cell[0:92].ljust(92), style="grey50")
     self.table = table
 
 
