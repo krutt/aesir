@@ -19,11 +19,11 @@ from click import command, option
 from docker import DockerClient, from_env
 from docker.errors import BuildError, DockerException
 from rich import print as rich_print
-from rich.progress import Progress
 
 ### Local modules ###
 from aesir.configs import BUILDS
 from aesir.types import Build
+from aesir.views import Yggdrasil
 
 
 @command
@@ -70,9 +70,9 @@ def build(
     tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
   }
   if len(builds.keys()) != 0:
-    with Progress() as progress:
+    with Yggdrasil(row_count=5) as yggdrasil:
       builds_items = builds.items()
-      task = progress.add_task("Build optional images:".ljust(42), total=len(builds_items))
+      task = yggdrasil.add_task("Build optional images:".ljust(42), total=len(builds_items))
       for tag, build in builds_items:
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
@@ -80,14 +80,13 @@ def build(
               decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
             )
             for line in stream:
-              with progress.console.pager(styles=True):
-                if "stream" in line:
-                  progress.console.print(line.pop("stream").strip(), style="grey50")
-                elif "error" in line:
-                  progress.console.print(line.pop("error").strip(), style="red bold")
+              if "stream" in line:
+                yggdrasil.update_table(line.pop("stream").strip())
+              elif "error" in line:
+                yggdrasil.update_table(line.pop("error").strip())
           except BuildError:
             outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
-      progress.update(task, description="[blue]Complete", advance=100)
+      yggdrasil.update(task, description="[blue]Complete", advance=100)
     list(map(rich_print, outputs))
 
 

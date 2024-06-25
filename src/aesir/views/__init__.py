@@ -12,5 +12,6 @@
 
 ### Local modules ###
 from aesir.views.bifrost import Bifrost
+from aesir.views.yggdrasil import Yggdrasil
 
-__all__ = ("Bifrost",)
+__all__ = ("Bifrost", "Yggdrasil")
