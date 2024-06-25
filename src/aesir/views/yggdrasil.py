@@ -15,6 +15,7 @@ from collections import deque
 from typing import Deque, Optional, Union
 
 ### Third-party packages ###
+from rich.box import MINIMAL
 from rich.console import ConsoleRenderable, Group, RichCast
 from rich.progress import Progress
 from rich.table import Table
@@ -22,7 +23,7 @@ from rich.table import Table
 
 class Yggdrasil(Progress):
   rows: Deque[str]
-  table: Table = Table()
+  table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
 
   def __init__(self, row_count: int) -> None:
     self.rows = deque(maxlen=row_count)
@@ -34,10 +35,9 @@ class Yggdrasil(Progress):
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:
       self.rows.append(row)
-    table: Table = Table()
-    table.add_column("Current progress")
+    table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
     for row_cell in self.rows:
-      table.add_row(row_cell, style="grey50")
+      table.add_row(row_cell[0:100].ljust(100), style="grey50")
     self.table = table
 
 
