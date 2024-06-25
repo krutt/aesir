@@ -28,6 +28,7 @@ from rich.text import Text
 ### Local modules ###
 from aesir.types import BlockchainInfo, LNDInfo, MempoolInfo
 
+
 class MiningDashboard(BaseModel):
   model_config: ConfigDict = ConfigDict(arbitrary_types_allowed=True)  # type: ignore[misc]
   bitcoind: Container
@@ -61,14 +62,17 @@ class MiningDashboard(BaseModel):
           keystroke: Keystroke = self.terminal.inkey(timeout=0.25)
           if keystroke.code == self.terminal.KEY_UP and self.container_index > 0:
             self.container_index -= 1
-          elif keystroke.code == self.terminal.KEY_DOWN and self.container_index < len(self.container_names) - 1:
+          elif (
+            keystroke.code == self.terminal.KEY_DOWN
+            and self.container_index < len(self.container_names) - 1
+          ):
             self.container_index += 1
           elif keystroke in {"Q", "q"}:
             raise StopIteration
 
           container_rows: str = ""
           if self.container_index > 0:
-            container_rows = "\n".join(self.container_names[:self.container_index])
+            container_rows = "\n".join(self.container_names[: self.container_index])
             container_rows += f"\n[reverse]{self.container_names[self.container_index]}[reset]\n"
           else:
             container_rows = f"[reverse]{self.container_names[self.container_index]}[reset]\n"
@@ -132,9 +136,7 @@ class MiningDashboard(BaseModel):
             )
           elif match(r"aesir-(lnd|ping|pong)", container_name):
             container: Container = next(
-              filter(
-                lambda container: container.name == container_name, self.containers
-              )
+              filter(lambda container: container.name == container_name, self.containers)
             )
             lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
               container.exec_run(
@@ -184,5 +186,6 @@ class MiningDashboard(BaseModel):
           )
       except StopIteration:
         print("Valhalla!")
+
 
 __all__ = ("MiningDashboard",)

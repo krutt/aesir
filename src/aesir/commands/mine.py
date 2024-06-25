@@ -95,7 +95,12 @@ def mine(blockcount: int, blocktime: int) -> None:
     )
   scheduler.start()
 
-  mining_dashboard: MiningDashboard = MiningDashboard(bitcoind=bitcoind, containers=aesir_containers, container_index=0, container_names=container_names)
+  mining_dashboard: MiningDashboard = MiningDashboard(
+    bitcoind=bitcoind,
+    containers=aesir_containers,
+    container_index=0,
+    container_names=container_names,
+  )
   mining_dashboard.display()
 
 
