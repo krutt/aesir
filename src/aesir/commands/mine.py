@@ -25,7 +25,7 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.views import MiningDashboard
+from aesir.views import Bifrost
 from aesir.types import NewAddress
 
 
@@ -95,13 +95,13 @@ def mine(blockcount: int, blocktime: int) -> None:
     )
   scheduler.start()
 
-  mining_dashboard: MiningDashboard = MiningDashboard(
+  bifrost: Bifrost = Bifrost(
     bitcoind=bitcoind,
     containers=aesir_containers,
     container_index=0,
     container_names=container_names,
   )
-  mining_dashboard.display()
+  bifrost.display()
 
 
 __all__ = ("mine",)

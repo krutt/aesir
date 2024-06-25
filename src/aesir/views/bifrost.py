@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # coding:utf-8
 # Copyright (C) 2022-2024 All rights reserved.
-# FILENAME:    ~~/src/aesir/views/mining_dashboard.py
+# FILENAME:    ~~/src/aesir/views/bifrost.py
 # VERSION:     0.4.4
 # CREATED:     2024-06-25 19:43
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -29,7 +29,7 @@ from rich.text import Text
 from aesir.types import BlockchainInfo, LNDInfo, MempoolInfo
 
 
-class MiningDashboard(BaseModel):
+class Bifrost(BaseModel):
   model_config: ConfigDict = ConfigDict(arbitrary_types_allowed=True)  # type: ignore[misc]
   bitcoind: Container
   container_index: StrictInt = 0
@@ -37,11 +37,11 @@ class MiningDashboard(BaseModel):
   containers: List[Container] = []
 
   ### Split layouts ###
-  bifrost: ClassVar[Layout] = Layout(name="bifrost", size=20)
   body: ClassVar[Layout] = Layout(name="body", minimum_size=4, ratio=8, size=17)
   footer: ClassVar[Layout] = Layout(name="footer", size=3)
   main: ClassVar[Layout] = Layout(size=72)
   pane: ClassVar[Layout] = Layout()
+  realms: ClassVar[Layout] = Layout(name="realms", size=20)
   sidebar: ClassVar[Layout] = Layout(size=24)
 
   ### Terminal ###
@@ -50,7 +50,7 @@ class MiningDashboard(BaseModel):
   def model_post_init(self, _) -> None:  # type: ignore[no-untyped-def]
     self.pane.split_row(self.sidebar, self.main)
     self.main.split_column(self.body, self.footer)
-    self.sidebar.split_column(self.bifrost)
+    self.sidebar.split_column(self.realms)
 
   def display(self) -> None:
     with self.terminal.cbreak(), self.terminal.hidden_cursor(), Live(
@@ -78,7 +78,7 @@ class MiningDashboard(BaseModel):
             container_rows = f"[reverse]{self.container_names[self.container_index]}[reset]\n"
           if self.container_index < len(self.container_names) - 1:
             container_rows += "\n".join(self.container_names[self.container_index + 1 :])
-          self.pane["bifrost"].update(Panel(container_rows))
+          self.pane["realms"].update(Panel(container_rows, title="realms"))
 
           container_name: str = self.container_names[self.container_index]
           body_table: Table = Table(expand=True, show_lines=True)
@@ -188,4 +188,4 @@ class MiningDashboard(BaseModel):
         print("Valhalla!")
 
 
-__all__ = ("MiningDashboard",)
+__all__ = ("Bifrost",)

@@ -11,6 +11,6 @@
 # *************************************************************
 
 ### Local modules ###
-from aesir.views.mining_dashboard import MiningDashboard
+from aesir.views.bifrost import Bifrost
 
-__all__ = ("MiningDashboard",)
+__all__ = ("Bifrost",)
