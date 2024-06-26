@@ -77,7 +77,7 @@ def build(
       task = yggdrasil.add_task("Build specified images:".ljust(42), total=build_count)
       for tag, build in builds_items:
         build_task = yggdrasil.add_task(
-          f"Building <[bright_magenta]Image [green]'{ tag }'[reset]>…".ljust(42), total=100
+          f"Building <[bright_magenta]Image [green]'{tag}'[reset]>…".ljust(42), total=100
         )
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
@@ -99,10 +99,12 @@ def build(
             yggdrasil.update(
               build_task,
               completed=0,
-              description=f"[red bold]Build unsuccessful for <Image '{ tag }'>.",
+              description=f"[red bold]Build unsuccessful for <Image '{tag}'>.",
             )
           yggdrasil.update(
-            build_task, completed=100, description=f"[blue]Built <Image '{ tag }'> successfully."
+            build_task,
+            completed=100,
+            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully."
           )
           yggdrasil.update(task, advance=1)
       yggdrasil.update(task, completed=build_count, description="[blue]Complete")
