@@ -12,38 +12,25 @@
 
 ### Standard packages ###
 from collections import deque
-from typing import Deque, Dict, List, Optional, Union
+from typing import Deque, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
 from rich.console import ConsoleRenderable, Group, RichCast
-from rich.progress import Progress, Task
+from rich.progress import Progress
 from rich.table import Table
-
-### Local modules ###
-from aesir.types import Build
 
 
 class Yggdrasil(Progress):
-  builds: Dict[str, Build]
-  main_task: Task
   rows: Deque[str]
   table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
 
-  def __init__(self, builds: Dict[str, Build], row_count: int) -> None:
-    self.builds = builds
+  def __init__(self, row_count: int) -> None:
     self.rows = deque(maxlen=row_count)
     super().__init__()
 
-  def __post_init__(self) -> None:
-    build_count: int = len(self.builds)
-    self.main_task = self.add_task("Build specified images:".ljust(42), total=build_count)
-
   def get_renderable(self) -> Union[ConsoleRenderable, RichCast, str]:
     return Group(self.table, *self.get_renderables())
-
-  def update_main_task(self, **kwargs) -> None:
-    self.update(self.main_task, **kwargs)
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:
