@@ -128,6 +128,8 @@ $ aesir clean
 * **0.4.1** Remove Ordinals' spiked ball
 * **0.4.2** Disable bitcoind prune mode
 * **0.4.3** Implement dashboard walkthrough using [blessed](https://github.com/chj/blessed)
+* **0.4.4** Add `cat` cluster in deployment and `--bitcoind-cat` flag for customized build
+* **0.4.5** The Yggdrasil update where docker build logs are chunked for display
 
 ## Roadmap
 
