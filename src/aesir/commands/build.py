@@ -71,10 +71,11 @@ def build(
   builds: Dict[str, Build] = {
     tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
   }
-  if len(builds.keys()) != 0:
+  build_count: int = len(builds.keys())
+  if build_count != 0:
     with Yggdrasil(row_count=10) as yggdrasil:
       builds_items = builds.items()
-      task = yggdrasil.add_task("Build specified images:".ljust(42), total=len(builds_items))
+      task = yggdrasil.add_task("Build specified images:".ljust(42), total=build_count)
       for tag, build in builds_items:
         build_task = yggdrasil.add_task(
           f"Building <[bright_magenta]Image [green]'{ tag }'[reset]>…".ljust(42), total=100
@@ -105,7 +106,7 @@ def build(
             build_task, completed=100, description=f"[blue]Built <Image '{ tag }'> successfully."
           )
           yggdrasil.update(task, advance=1)
-      yggdrasil.update(task, completed=len(builds_items), description="[blue]Complete")
+      yggdrasil.update(task, completed=build_count, description="[blue]Complete")
 
 
 __all__ = ("build",)
