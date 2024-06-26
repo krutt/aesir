@@ -104,7 +104,7 @@ def build(
           yggdrasil.update(
             build_task,
             completed=100,
-            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully."
+            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully.",
           )
           yggdrasil.update(task, advance=1)
       yggdrasil.update(task, completed=build_count, description="[blue]Complete")

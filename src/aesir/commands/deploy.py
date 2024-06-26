@@ -12,14 +12,15 @@
 
 ### Standard packages ###
 from io import BytesIO
-from re import match
+from math import floor
+from re import match, search
 from time import sleep
 from typing import Dict, List
 
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, BuildError, DockerException, NotFound
+from docker.errors import APIError, BuildError, DockerException, ImageNotFound, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
@@ -28,6 +29,7 @@ from rich.progress import track
 ### Local modules ###
 from aesir.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
 from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
+from aesir.views import Yggdrasil
 
 
 @command
@@ -137,7 +139,6 @@ def deploy(
   }
 
   ### Build missing images if any for shared-volume peripherals ###
-  outputs: List[str] = []
   image_names: List[str] = list(
     map(
       lambda image: image.tags[0].split(":")[0],
@@ -147,32 +148,68 @@ def deploy(
   builds: Dict[str, Build] = {
     tag: build for tag, build in BUILDS.items() if selector[tag] and tag not in image_names
   }
-  if len(builds.keys()) != 0:
-    for tag, build in track(builds.items(), description="Build missing peripherals:".ljust(42)):
-      with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
-        try:
-          client.images.build(fileobj=fileobj, platform=build.platform, rm=True, tag=tag)
-        except BuildError:
-          outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
-  list(map(rich_print, outputs))
-  outputs = []
+  build_count: int = len(builds.keys())
+  if build_count != 0:
+    with Yggdrasil(row_count=10) as yggdrasil:
+      builds_items = builds.items()
+      task = yggdrasil.add_task("Build specified images:".ljust(42), total=build_count)
+      for tag, build in builds_items:
+        build_task = yggdrasil.add_task(
+          f"Building <[bright_magenta]Image [green]'{tag}'[reset]>…".ljust(42), total=100
+        )
+        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
+          try:
+            chunk = client.api.build(
+              decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
+            )
+            for line in chunk:
+              if "stream" in line:
+                stream: str = line.pop("stream").strip()
+                step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+                if step is not None:
+                  divided: int = int(step.group("divided"))
+                  divisor: int = int(step.group("divisor"))
+                  yggdrasil.update(build_task, completed=floor(divided / divisor * 100))
+                yggdrasil.update_table(stream)
+              elif "error" in line:
+                yggdrasil.update_table(line.pop("error").strip())
+          except BuildError:
+            yggdrasil.update(
+              build_task,
+              completed=0,
+              description=f"[red bold]Build unsuccessful for <Image '{tag}'>.",
+            )
+          yggdrasil.update(
+            build_task,
+            completed=100,
+            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully.",
+          )
+          yggdrasil.update(task, advance=1)
+      yggdrasil.update(task, completed=build_count, description="[blue]Complete")
 
   ### Deploy shared volume peripherals ###
+  run_errors: List[str] = []
   peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if selector[k]}  # type: ignore[index, misc]
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     volume_target = "aesir-bitcoind" if name == "aesir-ord" else volume_target
-    client.containers.run(
-      service.alias,
-      command=service.command,
-      detach=True,
-      environment=service.env_vars,
-      name=name,
-      network=NETWORK,
-      ports=ports,
-      volumes_from=[volume_target],
-    )
+    try:
+      client.containers.run(
+        service.alias,
+        command=service.command,
+        detach=True,
+        environment=service.env_vars,
+        name=name,
+        network=NETWORK,
+        ports=ports,
+        volumes_from=[volume_target],
+      )
+    except ImageNotFound:
+      run_errors.append(
+        f"<[bright_magenta]Image [green]'{ service.alias }'[reset]> [red]is not found.[reset]"
+      )
+  list(map(rich_print, run_errors))
 
   if len(treasuries) != 0:
     ### Retrieve bitcoind container ###
