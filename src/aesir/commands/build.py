@@ -74,15 +74,17 @@ def build(
   if len(builds.keys()) != 0:
     with Yggdrasil(row_count=10) as yggdrasil:
       builds_items = builds.items()
-      task = yggdrasil.add_task("Build optional images:".ljust(42), total=len(builds_items))
+      task = yggdrasil.add_task("Build specified images:".ljust(42), total=len(builds_items))
       for tag, build in builds_items:
-        build_task = yggdrasil.add_task(f"Building { tag }...".ljust(42), total=100)
+        build_task = yggdrasil.add_task(
+          f"Building <[bright_magenta]Image [green]'{ tag }'[reset]>…".ljust(42), total=100
+        )
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
-            stream = client.api.build(
+            chunk = client.api.build(
               decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
             )
-            for line in stream:
+            for line in chunk:
               if "stream" in line:
                 stream: str = line.pop("stream").strip()
                 step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
@@ -94,11 +96,16 @@ def build(
               elif "error" in line:
                 yggdrasil.update_table(line.pop("error").strip())
           except BuildError:
-            outputs.append(f"[red bold]Build unsuccessful for <Image '{ tag }'>.")
-          yggdrasil.update(build_task, completed=100, description="[blue]Built successfully")
+            yggdrasil.update(
+              build_task,
+              completed=0,
+              description=f"[red bold]Build unsuccessful for <Image '{ tag }'>.",
+            )
+          yggdrasil.update(
+            build_task, completed=100, description=f"[blue]Built <Image '{ tag }'> successfully."
+          )
           yggdrasil.update(task, advance=1)
       yggdrasil.update(task, completed=len(builds_items), description="[blue]Complete")
-    list(map(rich_print, outputs))
 
 
 __all__ = ("build",)
