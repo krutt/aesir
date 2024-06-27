@@ -48,7 +48,7 @@ class Yggdrasil(Progress):
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
 
-  def progress_build(self, chunk: Generator, task: Task) -> None:
+  def progress_build(self, chunk: Generator, task_id: int) -> None:
     for line in chunk:
       if "stream" in line:
         stream: str = line.pop("stream").strip()
@@ -56,7 +56,7 @@ class Yggdrasil(Progress):
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
-          self.update(task, completed=floor(divided / divisor * 100))
+          self.update(task_id, completed=floor(divided / divisor * 100))
         self.update_table(stream)
       elif "error" in line:
         self.update_table(line.pop("error").strip())
