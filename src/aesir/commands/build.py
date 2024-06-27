@@ -12,8 +12,6 @@
 
 ### Standard packages ###
 from io import BytesIO
-from math import floor
-from re import search
 from typing import Dict, List, Set
 
 ### Third-party packages ###
@@ -72,29 +70,19 @@ def build(
   }
   build_count: int = len(builds.keys())
   if build_count != 0:
+    builds_items = builds.items()
     with Yggdrasil(row_count=10) as yggdrasil:
-      builds_items = builds.items()
-      task = yggdrasil.add_task("Build specified images:".ljust(42), total=build_count)
+      task = yggdrasil.add_task("", progress_type="primary", total=build_count)
       for tag, build in builds_items:
-        build_task = yggdrasil.add_task(
-          f"Building <[bright_magenta]Image [green]'{tag}'[reset]>…".ljust(42), total=100
-        )
+        build_task = yggdrasil.add_task(tag, progress_type="build", total=100)
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
-            chunk = client.api.build(
-              decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
+            yggdrasil.progress_build(  # type: ignore[misc]
+              client.api.build(
+                decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
+              ),
+              build_task
             )
-            for line in chunk:
-              if "stream" in line:
-                stream: str = line.pop("stream").strip()
-                step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
-                if step is not None:
-                  divided: int = int(step.group("divided"))
-                  divisor: int = int(step.group("divisor"))
-                  yggdrasil.update(build_task, completed=floor(divided / divisor * 100))
-                yggdrasil.update_table(stream)
-              elif "error" in line:
-                yggdrasil.update_table(line.pop("error").strip())
           except BuildError:
             yggdrasil.update(
               build_task,

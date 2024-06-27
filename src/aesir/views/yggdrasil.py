@@ -12,16 +12,19 @@
 
 ### Standard packages ###
 from collections import deque
-from typing import Deque, Optional, Union
+from math import floor
+from re import search
+from typing import Any, Deque, Dict, Literal, Generator, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
 from rich.console import ConsoleRenderable, Group, RichCast
-from rich.progress import Progress
+from rich.progress import BarColumn, Progress, Task
 from rich.table import Table
 
 
 class Yggdrasil(Progress):
+  primary_task: Task
   rows: Deque[str]
   table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
 
@@ -31,6 +34,32 @@ class Yggdrasil(Progress):
 
   def get_renderable(self) -> Union[ConsoleRenderable, RichCast, str]:
     return Group(self.table, *self.get_renderables())
+
+  def get_renderables(self) -> Generator[Table, Any, Any]:
+    for task in self.tasks:
+      if task.fields.get("progress_type") == "build":
+        target: str = task.description or "undefined"
+        self.columns = (
+          f"Building <[bright_magenta]Image [green]'{target}'[reset]>…",
+          "".ljust(9),
+          BarColumn(),
+        )
+      elif task.fields.get("progress_type") == "primary":
+        self.columns = ("Build specified images:".ljust(42), BarColumn())
+      yield self.make_tasks_table([task])
+
+  def progress_build(self, chunk: Generator, task: Task) -> None:
+    for line in chunk:
+      if "stream" in line:
+        stream: str = line.pop("stream").strip()
+        step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+        if step is not None:
+          divided: int = int(step.group("divided"))
+          divisor: int = int(step.group("divisor"))
+          self.update(task.id, completed=floor(divided / divisor * 100))
+        self.update_table(stream)
+      elif "error" in line:
+        self.update_table(line.pop("error").strip())
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:
