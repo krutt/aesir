@@ -56,7 +56,7 @@ class Yggdrasil(Progress):
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
-          self.update(task.id, completed=floor(divided / divisor * 100))
+          self.update(task, completed=floor(divided / divisor * 100))
         self.update_table(stream)
       elif "error" in line:
         self.update_table(line.pop("error").strip())
