@@ -37,6 +37,44 @@
         mode='normal'
         />
     </filter>
+    <filter
+      height='200%'
+      id='dropShadowLite'
+      width='200%'
+      x='0'
+      y='0'
+      >
+      <feOffset
+        dx='6'
+        dy='6'
+        in='SourceGraphic'
+        result='offOut'
+        >
+      </feOffset>
+      <feColorMatrix
+        in='offOut'
+        result='matrixOut'
+        type='matrix'
+        values='
+          0.1 0 0 0
+          0 0 0.1 0 0
+          0 0 0 0.1 0
+          0 0 0 0 0.2 0
+        '>
+      </feColorMatrix>
+      <feGaussianBlur
+        in='matrixOut'
+        result='blurOut'
+        stdDeviation='4'
+        >
+      </feGaussianBlur>
+      <feBlend
+        in='SourceGraphic'
+        in2='blurOut'
+        mode='normal'
+        >
+      </feBlend>
+    </filter>
     <pattern
       height='100%'
       id='logo'
@@ -59,6 +97,13 @@
     </style>
   </defs>
   <rect
+    fill="white"
+    height='100%'
+    width='100%'
+    x='0'
+    y='0'
+    />
+  <rect
     fill='url(#logo)'
     filter='url(#dropShadow)'
     height='400px'
@@ -69,31 +114,54 @@
     />
   <text
     font-family='Nordic'
-    font-size='200px'
+    font-size='220px'
     text-anchor='left'
     x='500px'
-    y='330px'>
+    y='300px'>
     Aesir
   </text>
   <text
     font-family='Courier'
-    font-size='28px'
-    x='500px'
-    y='400px'>
-    Command line interface for setting up
+    font-size='2rem'
+    y='360px'>
+    <tspan
+      dy='0rem'
+      x='500px'>
+      Command line interface for setting up
+    </tspan>
+    <tspan
+      dy='2.4rem'
+      x='500px'>
+      local regtest Bitcoin &amp; Lightning ⚡️
+    </tspan>
+    <tspan
+      dy='2.4rem'
+      x='500px'>
+      cluster using Docker Daemon
+    </tspan>
   </text>
-  <text
-    font-family='Courier'
-    font-size='28px'
+  <rect
+    fill="#3572A5"
+    filter='url(#dropShadowLite)'
+    height='18px'
+    rx='9px'
+    width='740px'
     x='500px'
-    y='440px'>
-    local Bitcoin &amp; Lightning ⚡️ environment
-  </text>
+    y='460px'
+    />
   <text
-    font-family='Courier'
-    font-size='28px'
+    font-family='Arial'
+    font-size='30'
     x='500px'
-    y='480px'>
-    using Docker Daemon
+    y='520px'
+    >
+    <tspan>
+      Python
+    </tspan>
+    <tspan
+      fill='#888'
+      >
+      100.0%
+    </tspan>
   </text>
 </svg>

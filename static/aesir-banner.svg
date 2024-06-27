@@ -91,26 +91,24 @@
   </text>
   <text
     font-family='Courier'
-    font-size='18px'
+    font-size='1.2rem'
     x='265px'
-    y='170px'
+    y='160px'
     >
-    Command line interface for setting up
-  </text>
-  <text
-    font-family='Courier'
-    font-size='18px'
-    x='265px'
-    y='195px'
-    >
-    local Bitcoin &amp; Lightning ⚡️ environment
-  </text>
-  <text
-    font-family='Courier'
-    font-size='18px'
-    x='265px'
-    y='220px'
-    >
-    using Docker Daemon
+    <tspan
+      dy='0rem'
+      x='265px'>
+      Command line interface for setting up
+    </tspan>
+    <tspan
+      dy='1.6rem'
+      x='265px'>
+      local regtest Bitcoin &amp; Lightning ⚡️
+    </tspan>
+    <tspan
+      dy='1.6rem'
+      x='265px'>
+      cluster using Docker Daemon
+    </tspan>
   </text>
 </svg>
