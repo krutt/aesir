@@ -133,9 +133,11 @@ $ aesir clean
 
 ## Roadmap
 
-* Make image versioning a little bit more intuitive.
-* Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
+* Simplify `schema.yml` and embed commands to service definitions
+* De-couple from `polarlightning` images and build from aesir definitions
+* Remove `deprecated` section
 * Write [click](https://click.palletsprojects.com) tests.
+* Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
 * Create and add some type of `ordapi` peripheral service.
 
