@@ -14,7 +14,7 @@
 from collections import deque
 from math import floor
 from re import search
-from typing import Any, Deque, Dict, Literal, Generator, Optional, Union
+from typing import Any, Deque, Generator, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
