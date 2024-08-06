@@ -130,6 +130,7 @@ $ aesir clean
 * **0.4.3** Implement dashboard walkthrough using [blessed](https://github.com/chj/blessed)
 * **0.4.4** Add `cat` cluster in deployment and `--bitcoind-cat` flag for customized build
 * **0.4.5** The Yggdrasil update where docker build logs are chunked for display
+* **0.4.6** Create default wallet if no lnd containers
 
 ## Roadmap
 
