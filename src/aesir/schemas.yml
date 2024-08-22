@@ -6,7 +6,7 @@ builds:
       - RUN apt-get install -y autoconf bsdmainutils build-essential git libboost-all-dev libtool pkg-config
       - WORKDIR /usr
       - RUN git clone --depth 1 --branch dont-success-cat https://github.com/rot13maxi/bitcoin.git
-      - RUN cd bitcoin && ./autogen.sh && ./configure && make -j4
+      - RUN cd bitcoin && ./autogen.sh && ./configure
       - FROM debian:stable-slim AS runner
       - WORKDIR /usr/app
       - RUN apt-get update
