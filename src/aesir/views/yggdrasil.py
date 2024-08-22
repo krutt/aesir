@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2024 All rights reserved.
 # FILENAME:    ~~/src/aesir/views/yggdrasil.py
-# VERSION:     0.4.6
+# VERSION:     0.4.7
 # CREATED:     2024-06-26 00:14
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
@@ -38,12 +38,20 @@ class Yggdrasil(Progress):
   def get_renderables(self) -> Generator[Table, Any, Any]:
     for task in self.tasks:
       if task.fields.get("progress_type") == "build":
-        target: str = task.description or "undefined"
-        self.columns = (
-          f"Building <[bright_magenta]Image [green]'{target}'[reset]>…",
-          "".ljust(9),
-          BarColumn(),
-        )
+        image_name: str = task.description or "undefined"
+        if task.completed < 0:
+          self.columns = (f"[red bold]Build unsuccessful for <Image '{image_name}'>.",)
+        elif task.completed > 0 and task.completed < 100:
+          self.columns = (
+            f"Building <[bright_magenta]Image [green]'{image_name}'[reset]>…",
+            "".ljust(9),
+            BarColumn(),
+          )
+        else:
+          self.columns = (
+            f"[blue]Built [reset]<[bright_magenta]Image [green]'{image_name}'[reset]>[blue] successfully.[reset]",
+            BarColumn(),
+          )
       elif task.fields.get("progress_type") == "primary":
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
