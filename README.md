@@ -131,7 +131,8 @@ $ aesir clean
 * **0.4.4** Add `cat` cluster in deployment and `--bitcoind-cat` flag for customized build
 * **0.4.5** The Yggdrasil update where docker build logs are chunked for display
 * **0.4.6** Create default wallet if no lnd containers
-* **0.4.7** Remove unittesting from image build process
+* **0.4.7** (reverted) Remove unittesting from image build process
+* **0.4.8** Follow [Productivity Notes](https://github.com/bitcoin/bitcoin/blob/master/doc/productivity.md) for `bitcoind-cat`; Fix progress bar overlap.
 
 ## Roadmap
 
