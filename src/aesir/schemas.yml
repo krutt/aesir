@@ -151,13 +151,11 @@ clusters:
         - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
         - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       ports:
+        - 8080:8080
         - 9735:9735
         - 10001:10001
     aesir-pong:
       alias: lnd
-      ports:
-        - 9735:9736
-        - 10001:10002
       command:
         - --noseedbackup
         - --trickledelay=5000
@@ -174,6 +172,10 @@ clusters:
         - --bitcoind.rpcpass=aesir
         - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
         - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+      ports:
+        - 8080:8081
+        - 9735:9736
+        - 10001:10002
   ohm:
     aesir-bitcoind:
       alias: bitcoind
@@ -251,6 +253,7 @@ clusters:
         - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
         - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       ports:
+        - 8080:8080
         - 9735:9735
         - 10001:10001
 deprecated:
