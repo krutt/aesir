@@ -146,30 +146,63 @@ $ aesir clean
 
 ## Contributions
 
-This project uses [poetry](https://python-poetry.org) package manager to keep track of dependencies.
-You can set up your local environment as such:
+### Set up local environment
 
-```sh
-pip install --user poetry
-```
+The following guide walks through setting up your local working environment using `pyenv`
+as Python version manager and `uv` as Python package manager. If you do not have `pyenv`
+installed, run the following command.
 
-And then you can install development dependencies like so:
+<details>
+  <summary> Install using Homebrew (Darwin) </summary>
+  
+  ```sh
+  brew install pyenv --head
+  ```
+</details>
 
-```sh
-$ pip install --user poetry
-> ...
-$ poetry install --with dev  # install with development dependencies
-> Installing dependencies from lock file
->
-> Package operations: 33 installs, 0 updates, 0 removals
->
->   • ...
->   • ...
->   • ...
->   • ...
->
-> Installing the current project: aesir (0.4.2)
-```
+<details>
+  <summary> Install using standalone installer (Darwin and Linux) </summary>
+  
+  ```sh
+  curl https://pyenv.run | bash
+  ```
+</details>
+
+If you do not have `uv` installed, run the following command.
+
+<details>
+  <summary> Install using Homebrew (Darwin) </summary>
+
+  ```sh
+  brew install uv
+  ```
+</details>
+
+<details>
+  <summary> Install using standalone installer (Darwin and Linux) </summary>
+
+  ```sh
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+</details>
+
+
+Once you have `pyenv` Python version manager installed, you can
+install any version of Python above version 3.9 for this project.
+The following commands help you set up and activate a Python virtual
+environment where `uv` can download project dependencies from the `PyPI`
+open-sourced registry defined under `pyproject.toml` file.
+
+<details>
+  <summary> Set up environment and synchroniz project dependencies </summary>
+
+  ```sh
+  pyenv shell 3.11.9
+  uv venv  --python-preference system
+  source .venv/bin/activate
+  uv sync --dev
+  ```
+</details>
 
 ### Known issues
 
