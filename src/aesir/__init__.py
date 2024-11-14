@@ -11,8 +11,8 @@
 # *************************************************************
 
 ### Local modules ###
-from aesir.commands import build, clean, deploy, flush, mine, nodekeys, ping_pong, pull
+from aesir.commands import build, clean, deploy, flush, invoice, mine, nodekeys, ping_pong, pull
 
-__all__ = ("build", "clean", "deploy", "flush", "mine", "nodekeys", "ping_pong", "pull")
+__all__ = ("build", "clean", "deploy", "flush", "invoice", "mine", "nodekeys", "ping_pong", "pull")
 
 __version__ = "0.4.8"
