@@ -14,11 +14,10 @@
 from aesir.commands.build import build
 from aesir.commands.clean import clean
 from aesir.commands.deploy import deploy
-from aesir.commands.flush import flush
 from aesir.commands.invoice import invoice
 from aesir.commands.mine import mine
 from aesir.commands.nodekeys import nodekeys
 from aesir.commands.ping_pong import ping_pong
 from aesir.commands.pull import pull
 
-__all__ = ("build", "clean", "deploy", "flush", "invoice", "mine", "nodekeys", "ping_pong", "pull")
+__all__ = ("build", "clean", "deploy", "invoice", "mine", "nodekeys", "ping_pong", "pull")
