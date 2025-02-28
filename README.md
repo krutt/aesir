@@ -136,7 +136,7 @@ $ aesir clean
 
 ## Roadmap
 
-* Simplify `schema.yml` and embed commands to service definitions
+* Simplify `schemas.yml` and embed commands to service definitions
 * De-couple from `polarlightning` images and build from aesir definitions
 * Remove `deprecated` section
 * Write [click](https://click.palletsprojects.com) tests.
