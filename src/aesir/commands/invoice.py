@@ -16,9 +16,9 @@ from uuid import uuid4 as uuid
 
 ### Third-party packages ###
 from click import argument, command, option
-from docker import DockerClient, from_env
-from docker.errors import DockerException, NotFound
-from docker.models.containers import Container
+from podman import PodmanClient
+from podman.domain.containers import Container
+from podman.errors import APIError, NotFound
 from pydantic import TypeAdapter
 from rich import print as rich_print
 
@@ -34,12 +34,10 @@ from aesir.types import LNDInvoice, MutexOption, ServiceName
 @option("--pong", alternatives=["lnd", "ping"], cls=MutexOption, is_flag=True, type=bool)
 def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
   """For either "uno" or "duo" cluster, create an invoice from specified lnd container"""
-  client: DockerClient
   try:
-    client = from_env()
-    if not client.ping():
-      raise DockerException
-  except DockerException:
+    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client.ping()
+  except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

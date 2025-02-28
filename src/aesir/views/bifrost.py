@@ -17,7 +17,7 @@ from typing import ClassVar, List
 ### Third-party packages ###
 from blessed import Terminal
 from blessed.keyboard import Keystroke
-from docker.models.containers import Container
+from podman.domain.containers import Container
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, TypeAdapter
 from rich.layout import Layout
 from rich.live import Live
@@ -53,8 +53,10 @@ class Bifrost(BaseModel):
     self.sidebar.split_column(self.realms)
 
   def display(self) -> None:
-    with self.terminal.cbreak(), self.terminal.hidden_cursor(), Live(
-      self.pane, refresh_per_second=4, transient=True
+    with (
+      self.terminal.cbreak(),
+      self.terminal.hidden_cursor(),
+      Live(self.pane, refresh_per_second=4, transient=True),
     ):
       try:
         while True:
@@ -147,7 +149,7 @@ class Bifrost(BaseModel):
                   --tlscertpath=/home/lnd/.lnd/tls.cert
                 getinfo
                 """
-              ).output
+              )
             )
             body_table.add_row(
               Text.assemble(

@@ -14,7 +14,7 @@
 from collections import deque
 from math import floor
 from re import search
-from typing import Any, Deque, Generator, Optional, Union
+from typing import Any, Deque, Generator, Iterator, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -56,18 +56,18 @@ class Yggdrasil(Progress):
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
 
-  def progress_build(self, chunk: Generator, task_id: int) -> None:
+  def progress_build(self, chunk: Iterator[bytes], task_id: int) -> None:
     for line in chunk:
-      if "stream" in line:
-        stream: str = line.pop("stream").strip()
+      if b"stream" in line:
+        stream: str = line.strip().decode("utf-8")
         step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
           self.update(TaskID(task_id), completed=floor(divided / divisor * 100))
         self.update_table(stream)
-      elif "error" in line:
-        self.update_table(line.pop("error").strip())
+      elif b"error" in line:
+        self.update_table(line.strip().decode("utf-8"))
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:

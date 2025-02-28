@@ -16,27 +16,25 @@ from typing import List
 
 ### Third-party packages ###
 from click import command, option
-from docker import DockerClient, from_env
-from docker.errors import DockerException, NotFound
-from docker.models.containers import Container
-from docker.models.networks import Network
+from podman import PodmanClient
+from podman.domain.containers import Container
+from podman.domain.networks import Network
+from podman.errors import APIError, NotFound
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import NETWORK
+from aesir.configs import HOST, IDENTITY, NETWORK
 
 
 @command
 @option("--inactive", help="Query inactive containers for removal.", is_flag=True, type=bool)
 def clean(inactive: bool) -> None:
   """Remove all active "aesir-*" containers, drop network."""
-  client: DockerClient
   try:
-    client = from_env()
-    if not client.ping():
-      raise DockerException
-  except DockerException:
+    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client.ping()
+  except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

@@ -16,14 +16,15 @@ from typing import Dict, List
 
 ### Third-party packages ###
 from click import argument, command
-from docker import DockerClient, from_env
-from docker.errors import DockerException, NotFound
-from docker.models.containers import Container
+from podman import PodmanClient
+from podman.domain.containers import Container
+from podman.errors import APIError, NotFound
 from pydantic import TypeAdapter, ValidationError
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
+from aesir.configs import HOST, IDENTITY
 from aesir.types import LNDInfo, NewAddress, OpenChannel
 
 
@@ -31,12 +32,10 @@ from aesir.types import LNDInfo, NewAddress, OpenChannel
 @argument("channel_size", default=16777215)
 def ping_pong(channel_size: int) -> None:
   """For "duo" cluster, create channels between LND nodes."""
-  client: DockerClient
   try:
-    client = from_env()
-    if not client.ping():
-      raise DockerException
-  except DockerException:
+    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client.ping()
+  except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

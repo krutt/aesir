@@ -2,7 +2,7 @@
 
 [![Bitcoin-only](https://img.shields.io/badge/bitcoin-only-FF9900?logo=bitcoin)](https://twentyone.world)
 [![LN](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
-[![Docker](https://img.shields.io/badge/docker-2496ED?&logo=docker&logoColor=white)](https://hub.docker.com)
+[![Podman](https://img.shields.io/badge/podman-892CA0?&logo=podman&logoColor=white)](https://podman.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/krutt/aesir/blob/master/LICENSE)
 [![Top](https://img.shields.io/github/languages/top/krutt/aesir)](https://github.com/krutt/aesir)
 [![Languages](https://img.shields.io/github/languages/count/krutt/aesir)](https://github.com/krutt/aesir)
@@ -13,9 +13,9 @@
 
 ## Prerequisites
 
-* python (3.8+)
+* python (3.9+)
 * pip
-* docker
+* podman
 
 ## Getting started
 
@@ -45,7 +45,7 @@ $ aesir deploy
 > Mine initial capital for parties:          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
 ```
 
-You will have docker containers running in the backend, ready to be interfaced by your local
+You will have podman containers running in the backend, ready to be interfaced by your local
 environment applications you are developing.
 
 ## Begin local mining
@@ -204,28 +204,6 @@ open-sourced registry defined under `pyproject.toml` file.
   uv sync --dev
   ```
 </details>
-
-### Known issues
-
-You may run into this setback when first running this project. This is a
-[docker-py](https://github.com/docker/docker-py/issues/3059) issue widely known as of October 2022.
-
-```python
-docker.errors.DockerException:
-  Error while fetching server API version: (
-    'Connection aborted.', FileNotFoundError(
-      2, 'No such file or directory'
-    )
-  )
-```
-
-See the following issue for Mac OSX troubleshooting.
-[docker from_env and pull is broken on mac](https://github.com/docker/docker-py/issues/3059#issuecomment-1294369344)
-Recommended fix is to run the following command:
-
-```sh
-sudo ln -s "$HOME/.docker/run/docker.sock" /var/run/docker.sock
-```
 
 ## License
 

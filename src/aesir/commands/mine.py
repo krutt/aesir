@@ -17,14 +17,15 @@ from typing import List
 ### Third-party packages ###
 from apscheduler.schedulers.background import BackgroundScheduler
 from click import argument, command
-from docker import DockerClient, from_env
-from docker.errors import DockerException, NotFound
-from docker.models.containers import Container
+from podman import PodmanClient
+from podman.domain.containers import Container
+from podman.errors import APIError, NotFound
 from pydantic import TypeAdapter
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
+from aesir.configs import HOST, IDENTITY
 from aesir.views import Bifrost
 from aesir.types import NewAddress
 
@@ -34,12 +35,10 @@ from aesir.types import NewAddress
 @argument("blocktime", default=5, type=int)
 def mine(blockcount: int, blocktime: int) -> None:
   """Scheduled mining with "blockcount" and "blocktime"."""
-  client: DockerClient
   try:
-    client = from_env()
-    if not client.ping():
-      raise DockerException
-  except DockerException:
+    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client.ping()
+  except APIError:
     rich_print("[red bold]Unable to connect to daemon.")
     return
 
@@ -88,7 +87,7 @@ def mine(blockcount: int, blocktime: int) -> None:
             --tlscertpath=/home/lnd/.lnd/tls.cert
           newaddress p2wkh
           """
-        ).output
+        )
       )
       treasuries.append(new_address.address)
 

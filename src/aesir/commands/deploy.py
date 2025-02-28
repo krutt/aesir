@@ -18,15 +18,15 @@ from typing import Dict, List
 
 ### Third-party packages ###
 from click import command, option
-from docker import DockerClient, from_env
-from docker.errors import APIError, BuildError, DockerException, ImageNotFound, NotFound
-from docker.models.containers import Container
+from podman import PodmanClient
+from podman.domain.containers import Container
+from podman.errors import APIError, BuildError, ImageNotFound, NotFound
 from pydantic import TypeAdapter
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
+from aesir.configs import BUILDS, CLUSTERS, HOST, IDENTITY, IMAGES, NETWORK, PERIPHERALS
 from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
 from aesir.views import Yggdrasil
 
@@ -53,12 +53,10 @@ def deploy(
   with_redis: bool,
 ) -> None:
   """Deploy cluster, either with one or two LND nodes."""
-  client: DockerClient
   try:
-    client = from_env()
-    if not client.ping():
-      raise DockerException
-  except DockerException:
+    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client.ping()
+  except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 
