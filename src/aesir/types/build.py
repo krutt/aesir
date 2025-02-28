@@ -13,6 +13,7 @@
 ### Standard packages ###
 from typing import List, Literal
 
+### Third-party packages ###
 from pydantic import BaseModel, StrictStr
 
 
