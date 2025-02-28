@@ -138,6 +138,7 @@ $ aesir clean
 ## Roadmap
 
 * Simplify `schemas.yml` and embed commands to service definitions
+* Drop `docker-py` and replace with `podman-py`
 * De-couple from `polarlightning` images and build from aesir definitions
 * Write [click](https://click.palletsprojects.com) tests.
 * Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
