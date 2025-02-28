@@ -54,5 +54,5 @@ dmypy.json
 
 ### Workspace settings ###
 .idea
+.ignore
 .vscode
-
