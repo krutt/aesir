@@ -14,7 +14,7 @@
 from click import group
 
 ### Local modules ###
-from aesir.commands import build, clean, deploy, flush, invoice, mine, nodekeys, ping_pong, pull
+from aesir.commands import build, clean, deploy, invoice, mine, nodekeys, ping_pong, pull
 
 
 @group
@@ -25,7 +25,6 @@ def cli() -> None:
 cli.add_command(build, "build")
 cli.add_command(clean, "clean")
 cli.add_command(deploy, "deploy")
-cli.add_command(flush, "flush")
 cli.add_command(invoice, "invoice")
 cli.add_command(mine, "mine")
 cli.add_command(nodekeys, "nodekeys")
