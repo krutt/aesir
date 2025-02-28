@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 ### Standard packages ###
 from pydantic import TypeAdapter
@@ -32,7 +32,6 @@ from aesir.types import (
 
 BUILDS: Dict[BuildEnum, Build]
 CLUSTERS: Dict[ClusterEnum, Dict[ServiceName, Service]]
-DEPRECATED: List[str]
 IMAGES: Dict[ImageEnum, Dict[ImageAlias, str]]
 NETWORK: str
 PERIPHERALS: Dict[PeripheralEnum, Dict[ServiceName, Service]]
@@ -45,11 +44,10 @@ with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
     CLUSTERS = TypeAdapter(Dict[ClusterEnum, Dict[ServiceName, Service]]).validate_python(
       schema["clusters"]
     )
-    DEPRECATED = schema.get("deprecated", [])
     IMAGES = TypeAdapter(Dict[ImageEnum, Dict[ImageAlias, str]]).validate_python(schema["images"])
     NETWORK = schema.get("network", "aesir")
     PERIPHERALS = TypeAdapter(Dict[PeripheralEnum, Dict[ServiceName, Service]]).validate_python(
       schema["peripherals"]
     )
 
-__all__ = ("BUILDS", "CLUSTERS", "DEPRECATED", "IMAGES", "NETWORK", "PERIPHERALS")
+__all__ = ("BUILDS", "CLUSTERS", "IMAGES", "NETWORK", "PERIPHERALS")

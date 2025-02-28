@@ -256,16 +256,6 @@ clusters:
         - 8080:8080
         - 9735:9735
         - 10001:10001
-deprecated:
-  - polarlightning/bitcoind:24.0
-  - polarlightning/lnd:0.16.0-beta
-  - polarlightning/lnd:0.16.1-beta
-  - polarlightning/lnd:0.16.2-beta
-  - polarlightning/lnd:0.16.4-beta
-  - polarlightning/lnd:0.17.0-beta.rc1
-  - polarlightning/lnd:0.17.0-beta.rc2
-  - polarlightning/lnd:0.17.0-beta
-  - polarlightning/lnd:0.17.1-beta
 images:
   optional:
     bitcoind-cat: bitcoind-cat
