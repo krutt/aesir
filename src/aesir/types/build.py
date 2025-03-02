@@ -23,7 +23,7 @@ class Build(BaseModel):
 
 
 BuildEnum = Literal[
-  "bitcoind", "bitcoind-cat", "cashu-mint", "lnd-krub", "ord-server", "tesla-ball"
+  "bitcoind", "bitcoind-cat", "cashu-mint", "lnd", "lnd-krub", "ord-server", "tesla-ball"
 ]
 
 
