@@ -10,7 +10,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from io import BytesIO
+from io import StringIO
 from typing import Dict, List, Set
 
 ### Third-party packages ###
@@ -82,7 +82,7 @@ def build(
       task_id: int = yggdrasil.add_task("", progress_type="primary", total=build_count)
       for tag, build in builds_items:
         build_task_id: int = yggdrasil.add_task(tag, progress_type="build", total=100)
-        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
+        with StringIO("\n".join(build.instructions)) as fileobj:
           try:
             yggdrasil.progress_build(
               client.images.build(fileobj=str(fileobj), platform=build.platform, rm=True, tag=tag)[
