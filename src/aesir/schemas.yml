@@ -1,12 +1,35 @@
 builds:
+  bitcoind:
+    instructions:
+      - FROM debian:stable-slim AS builder
+      - RUN apt-get update
+      - RUN apt-get install -y autoconf bsdmainutils build-essential ccache clang git libboost-all-dev libtool pkg-config
+      - WORKDIR /usr
+      - RUN mkdir ~/.ccache && echo "max_size = 50.0G\nbase_dir = /usr/bitcoin\n" > ~/.ccache/ccache.conf
+      - RUN git clone --depth 1 https://github.com/bitcoin/bitcoin.git
+      - RUN cd bitcoin && git fetch origin --tags && git checkout tags/v27.1
+      - RUN cd bitcoin && ./autogen.sh
+      - RUN cd bitcoin && ./configure CC="clang" CXX="clang++"
+      - RUN cd bitcoin && make -j"$(($(nproc)+1))" src/bitcoind src/bitcoin-cli
+      - FROM debian:stable-slim AS runner
+      - WORKDIR /usr/app
+      - RUN apt-get update
+      - RUN apt-get install -y libevent-dev
+      - COPY --from=builder /usr/bitcoin/src/bitcoind /usr/app/bitcoind
+      - COPY --from=builder /usr/bitcoin/src/bitcoin-cli /usr/app/bitcoin-cli
+      - ENV PATH=$PATH:/usr/app
+      - RUN mkdir -p /home/bitcoin/.bitcoin
+      - VOLUME [ "/home/bitcoin/.bitcoin" ]
+      - EXPOSE 18443 18444 28334 28335
+      - ENTRYPOINT ["/usr/app/bitcoind"]
   bitcoind-cat:
     instructions:
       - FROM debian:stable-slim AS builder
       - RUN apt-get update
       - RUN apt-get install -y autoconf bsdmainutils build-essential ccache clang git libboost-all-dev libtool pkg-config
       - WORKDIR /usr
-      - RUN git clone --depth 1 --branch dont-success-cat https://github.com/rot13maxi/bitcoin.git
       - RUN mkdir ~/.ccache && echo "max_size = 50.0G\nbase_dir = /usr/bitcoin\n" > ~/.ccache/ccache.conf
+      - RUN git clone --depth 1 --branch dont-success-cat https://github.com/rot13maxi/bitcoin.git
       - RUN cd bitcoin && ./autogen.sh && ./configure CC="clang" CXX="clang++" && make -j"$(($(nproc)+1))" src/bitcoind src/bitcoin-cli
       - FROM debian:stable-slim AS runner
       - WORKDIR /usr/app

@@ -26,12 +26,14 @@ from aesir.views import Yggdrasil
 
 
 @command
+@option("--bitcoind", is_flag=True, help="Build bitcoind image", type=bool)
 @option("--bitcoind-cat", is_flag=True, help="Build bitcoind-cat optional image", type=bool)
 @option("--cashu-mint", is_flag=True, help="Build cashu-mint optional image", type=bool)
 @option("--lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
 @option("--ord-server", is_flag=True, help="Build ord-server optional image", type=bool)
 @option("--tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
 def build(
+  bitcoind: bool,
   bitcoind_cat: bool, cashu_mint: bool, lnd_krub: bool, ord_server: bool, tesla_ball: bool
 ) -> None:
   """Build peripheral images for the desired cluster."""
@@ -50,6 +52,7 @@ def build(
     )
   )
   build_select: Dict[str, bool] = {
+    "bitcoind": bitcoind,
     "bitcoind-cat": bitcoind_cat,
     "cashu-mint": cashu_mint,
     "lnd-krub": lnd_krub,
