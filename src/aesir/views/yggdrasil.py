@@ -12,9 +12,10 @@
 
 ### Standard packages ###
 from collections import deque
+from json import loads
 from math import floor
 from re import search
-from typing import Any, Deque, Generator, Iterator, Optional, Union
+from typing import Any, Deque, Dict, Generator, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -56,18 +57,20 @@ class Yggdrasil(Progress):
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
 
-  def progress_build(self, chunk: Iterator[bytes], task_id: int) -> None:
+  def progress_build(self, chunk: Generator[bytes, None, None], task_id: int) -> None:
     for line in chunk:
-      if b"stream" in line:
-        stream: str = line.strip().decode("utf-8")
-        step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+      data: Dict[str, Union[Dict[str, str], str]] = loads(line)
+      if "stream" in data.keys():
+        stream: str = data["stream"].strip()  # type: ignore FIXME
+        step = search(r"^STEP (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
           self.update(TaskID(task_id), completed=floor(divided / divisor * 100))
         self.update_table(stream)
-      elif b"error" in line:
-        self.update_table(line.strip().decode("utf-8"))
+      elif "errorDetail" in data.keys():
+        error: str = data["errorDetail"]["message"].strip()  # type: ignore FIXME
+        self.update_table(f"[red]{ error }[reset]")
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:

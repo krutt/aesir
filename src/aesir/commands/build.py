@@ -15,12 +15,12 @@ from typing import Dict, List, Set
 
 ### Third-party packages ###
 from click import command, option
-from podman import PodmanClient
 from podman.errors import APIError, BuildError
 from rich import print as rich_print
 
 ### Local modules ###
 from aesir.configs import BUILDS, HOST, IDENTITY
+from aesir.shims import PodmanClient
 from aesir.types import Build
 from aesir.views import Yggdrasil
 
@@ -85,16 +85,18 @@ def build(
         with StringIO("\n".join(build.instructions)) as fileobj:
           try:
             yggdrasil.progress_build(
-              client.images.build(fileobj=fileobj, platform=build.platform, rm=True, tag=tag)[
-                1
-              ],
-              build_task_id,
+              client.images.build(
+                encoding="utf-8",
+                fileobj=fileobj,
+                forcerm=True,
+                platform=build.platform,
+                rm=True,
+                tag=tag,
+              ),
+              build_task_id
             )
-          except BuildError:
-            yggdrasil.update(build_task_id, completed=-1)
-          yggdrasil.update(build_task_id, completed=100)
-          yggdrasil.update(task_id, advance=1)
-      yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
+          except BuildError as err:
+            print(err)
 
 
 __all__ = ("build",)
