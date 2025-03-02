@@ -67,7 +67,8 @@ builds:
       - RUN apt-get update -y
       - RUN apt-get install -y curl wait-for-it
       - RUN curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v${LND_VERSION}/lnd-linux-arm64-v${LND_VERSION}.tar.gz
-      - RUN tar -xzf lnd-linux-arm64-v${LND_VERSION}.tar.gz -C lnd
+      - RUN tar -xzf lnd-linux-arm64-v${LND_VERSION}.tar.gz
+      - RUN mv lnd-linux-arm64-v${LND_VERSION} lnd
       - RUN rm lnd-linux-arm64-v${LND_VERSION}.tar.gz
       - RUN curl -SLO https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion
       - RUN mkdir /etc/bash_completion.d
