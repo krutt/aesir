@@ -85,7 +85,7 @@ def build(
         with StringIO("\n".join(build.instructions)) as fileobj:
           try:
             yggdrasil.progress_build(
-              client.images.build(fileobj=str(fileobj), platform=build.platform, rm=True, tag=tag)[
+              client.images.build(fileobj=fileobj, platform=build.platform, rm=True, tag=tag)[
                 1
               ],
               build_task_id,
