@@ -69,7 +69,7 @@ def build(
 
   outputs: List[str] = []
   built: Set[str] = {tag for tag in BUILDS.keys() if build_select[tag] and tag in image_names}
-  outputs += map(lambda tag: f"<Image: '{tag}'> already exists in local docker images.", built)
+  outputs += map(lambda tag: f"<Image: '{tag}'> already exists within images.", built)
   list(map(rich_print, outputs))
 
   builds: Dict[str, Build] = {
