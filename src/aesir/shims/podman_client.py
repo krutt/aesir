@@ -10,12 +10,11 @@
 # *************************************************************
 
 ### Standard packages ###
-from json import loads
 from functools import cached_property
 from pathlib import Path
 from shutil import copyfileobj
 from tempfile import TemporaryDirectory
-from typing import BinaryIO, Generator, Iterator
+from typing import BinaryIO, Generator
 
 ### Third-party packages ###
 from podman import PodmanClient as OriginalPodmanClient, api
@@ -24,8 +23,7 @@ from podman.errors.exceptions import ImageNotFound
 
 
 class ImagesManager(OriginalImagesManager):
-
-  def build(self, **kwargs) -> Generator[Iterator[bytes], None, None]:  # type: ignore FIXME
+  def build(self, **kwargs) -> Generator[bytes, None, None]:  # type: ignore FIXME
     """Returns built image.
 
     Keyword Args:
@@ -87,8 +85,8 @@ class ImagesManager(OriginalImagesManager):
       path = TemporaryDirectory()
       filename = Path(path.name) / params["dockerfile"]  # type: ignore
 
-      with open(filename, "w", encoding='utf-8') as file:
-          copyfileobj(kwargs["fileobj"], file)
+      with open(filename, "w", encoding="utf-8") as file:
+        copyfileobj(kwargs["fileobj"], file)
       body = api.create_tar(anchor=path.name, gzip=kwargs.get("gzip", False))
     elif "path" in kwargs:
       filename = Path(kwargs["path"]) / params["dockerfile"]  # type: ignore FIXME
@@ -96,9 +94,7 @@ class ImagesManager(OriginalImagesManager):
       params["dockerfile"] = api.prepare_containerfile(kwargs["path"], str(filename))  # type: ignore FIXME
 
       excludes = api.prepare_containerignore(kwargs["path"])
-      body = api.create_tar(
-        anchor=kwargs["path"], exclude=excludes, gzip=kwargs.get("gzip", False)
-      )
+      body = api.create_tar(anchor=kwargs["path"], exclude=excludes, gzip=kwargs.get("gzip", False))
 
     post_kwargs = {}
     if kwargs.get("timeout"):
@@ -132,5 +128,6 @@ class PodmanClient(OriginalPodmanClient):
   def images(self) -> ImagesManager:
     """Returns Manager for operations on images stored by a Podman service."""
     return ImagesManager(client=self.api)
+
 
 __all__ = ("PodmanClient",)
