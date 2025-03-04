@@ -93,10 +93,14 @@ def build(
                 rm=True,
                 tag=tag,
               ),
-              build_task_id
+              build_task_id,
             )
-          except BuildError as err:
-            print(err)
+          except BuildError:
+            yggdrasil.update(build_task_id, completed=-1)
+            continue
+          yggdrasil.update(build_task_id, completed=100)
+          yggdrasil.update(task_id, advance=1)
+        yggdrasil.update(task_id, completed=build_count, description="[blue]Complete[reset]")
 
 
 __all__ = ("build",)
