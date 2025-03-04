@@ -27,7 +27,7 @@ from rich.progress import track
 
 ### Local modules ###
 from aesir.configs import BUILDS, CLUSTERS, HOST, IDENTITY, IMAGES, NETWORK, PERIPHERALS
-from aesir.types import Build, MutexOption, NewAddress, Service, ServiceName
+from aesir.types import Build, ClusterEnum, ImageAlias, MutexOption, NewAddress, Service, ServiceName
 from aesir.views import Yggdrasil
 
 
@@ -61,14 +61,14 @@ def deploy(
     return
 
   ### Defaults to duo network; Derive cluster information from parameters ###
-  selector: Dict[ServiceName, bool] = {"cat": cat, "duo": duo, "ohm": ohm, "uno": uno}
-  cluster_name: ServiceName = "duo"
+  cluster_selector: Dict[ClusterEnum, bool] = {"cat": cat, "duo": duo, "ohm": ohm, "uno": uno}
+  cluster_name: ClusterEnum = "duo"
   try:
-    cluster_name = next(filter(lambda value: value[1], selector.items()))[0]
+    cluster_name = next(filter(lambda value: value[1], cluster_selector.items()))[0]
   except StopIteration:
     pass
   cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
-  selector = {
+  image_selector: Dict[ImageAlias, bool] = {
     "cashu-mint": False,
     "lnd-krub": False,
     "ord-server": False,
@@ -78,7 +78,7 @@ def deploy(
   peripherals: Dict[ServiceName, Service] = {
     f"aesir-{key}": value[f"aesir-{key}"]  # type: ignore[index, misc]
     for key, value in PERIPHERALS.items()
-    if selector[key]
+    if image_selector[key]
   }
   cluster.update(peripherals)
 
@@ -126,7 +126,7 @@ def deploy(
         treasuries.append(new_address.address)
 
   ### Define selection for shared-volume peripherals ###
-  selector = {
+  image_selector = {
     "bitcoind-cat": False,
     "cashu-mint": with_cashu_mint,
     "lnd-krub": with_lnd_krub and with_postgres and with_redis,
@@ -143,7 +143,7 @@ def deploy(
     )
   )
   builds: Dict[str, Build] = {
-    tag: build for tag, build in BUILDS.items() if selector[tag] and tag not in image_names
+    tag: build for tag, build in BUILDS.items() if image_selector[tag] and tag not in image_names
   }
   build_count: int = len(builds.keys())
   if build_count != 0:
