@@ -15,6 +15,7 @@ from collections import deque
 from json import loads
 from math import floor
 from re import search
+from textwrap import wrap
 from typing import Any, Deque, Dict, Generator, Optional, Union
 
 ### Third-party packages ###
@@ -77,7 +78,7 @@ class Yggdrasil(Progress):
       self.rows.append(row)
     table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
     for row_cell in self.rows:
-      table.add_row(row_cell[0:92].ljust(92), style="grey50")
+      table.add_row("\n".join(wrap(row_cell, width=92)), style="grey50")
     self.table = table
 
 
