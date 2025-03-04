@@ -1,7 +1,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/shims/podman_client.py
-# VERSION:     0.4.9
+# VERSION:     0.5.0
 # CREATED:     2024-03-02 21:41
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
