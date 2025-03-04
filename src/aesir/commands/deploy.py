@@ -27,7 +27,15 @@ from rich.progress import track
 
 ### Local modules ###
 from aesir.configs import BUILDS, CLUSTERS, HOST, IDENTITY, IMAGES, NETWORK, PERIPHERALS
-from aesir.types import Build, ClusterEnum, ImageAlias, MutexOption, NewAddress, Service, ServiceName
+from aesir.types import (
+  Build,
+  ClusterEnum,
+  ImageAlias,
+  MutexOption,
+  NewAddress,
+  Service,
+  ServiceName,
+)
 from aesir.views import Yggdrasil
 
 
