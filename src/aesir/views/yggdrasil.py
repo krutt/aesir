@@ -62,7 +62,7 @@ class Yggdrasil(Progress):
       data: Dict[str, Union[Dict[str, str], str]] = loads(line)
       if "stream" in data.keys():
         stream: str = data["stream"].strip()  # type: ignore FIXME
-        step = search(r"^STEP (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+        step = search(r"^STEP (?P<divided>\d+)\/(?P<divisor>\d+):", stream)
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
