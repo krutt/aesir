@@ -104,7 +104,7 @@ builds:
     platform: linux/amd64
   ord-server:
     instructions:
-      - FROM rust:1.75.0-bookworm AS builder
+      - FROM rust:1.85.0-bookworm AS builder
       - WORKDIR /usr/src/ord
       - RUN apt-get install -y git
       - RUN git clone --branch master --depth=1 https://github.com/ordinals/ord.git
