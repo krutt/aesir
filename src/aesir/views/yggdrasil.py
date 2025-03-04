@@ -46,7 +46,7 @@ class Yggdrasil(Progress):
         elif task.completed > 0 and task.completed < 100:
           self.columns = (
             f"Building <[bright_magenta]Image [green]'{image_name}'[reset]>…",
-            "".ljust(9),
+            "".ljust(18),
             BarColumn(),
           )
         else:
