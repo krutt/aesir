@@ -147,6 +147,11 @@ $ aesir clean
 
 ## Contributions
 
+### Prerequisites
+
+* [pyenv](https://github.com/pyenv/pyenv) - simple Python version management
+* [uv](https://docs.astral.sh/uv) - extremely fast Python package & project manager written in Rust
+
 ### Set up local environment
 
 The following guide walks through setting up your local working environment using `pyenv`
