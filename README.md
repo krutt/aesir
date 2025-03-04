@@ -134,6 +134,7 @@ $ aesir clean
 * **0.4.7** (reverted) Remove unittesting from image build process
 * **0.4.8** Follow [Productivity Notes](https://github.com/bitcoin/bitcoin/blob/master/doc/productivity.md) for `bitcoind-cat`; Fix progress bar overlap.
 * **0.4.9** Change package manager and add `invoice` command
+* **0.5.0** Adopt podman to encourage daemonlessness and rootlessness
 
 ## Roadmap
 
