@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.9
 # coding:utf-8
-# Copyright (C) 2022-2024 All rights reserved.
+# Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/cluster_enum.py
 # VERSION:     0.4.9
 # CREATED:     2023-12-01 05:31
