@@ -23,6 +23,7 @@ from pydantic import TypeAdapter
 from rich import print as rich_print
 
 ### Local modules ###
+from aesir.configs import HOST, IDENTITY
 from aesir.types import LNDInvoice, MutexOption, ServiceName
 
 
