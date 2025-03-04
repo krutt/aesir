@@ -66,16 +66,16 @@ builds:
       - WORKDIR /usr/app
       - RUN apt-get update -y
       - RUN apt-get install -y curl wait-for-it
-      - RUN curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v${LND_VERSION}/lnd-linux-arm64-v${LND_VERSION}.tar.gz
-      - RUN tar -xzf lnd-linux-arm64-v${LND_VERSION}.tar.gz
-      - RUN mv lnd-linux-arm64-v${LND_VERSION} lnd
-      - RUN rm lnd-linux-arm64-v${LND_VERSION}.tar.gz
+      - RUN curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v$LND_VERSION/lnd-linux-arm64-v$LND_VERSION.tar.gz
+      - RUN tar -xzf lnd-linux-arm64-v$LND_VERSION.tar.gz
+      - RUN mv lnd-linux-arm64-v$LND_VERSION lnd
+      - RUN rm lnd-linux-arm64-v$LND_VERSION.tar.gz
       - RUN curl -SLO https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion
       - RUN mkdir /etc/bash_completion.d
       - RUN mv lncli.bash-completion /etc/bash_completion.d/lncli.bash-completion
       - RUN curl -SLO https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
       - RUN mv bash_completion /usr/share/bash-completion/bash_completion
-      - RUN source /usr/share/bash-completion/bash_completion
+      - RUN bash /usr/share/bash-completion/bash_completion
       - VOLUME [ "/home/lnd/.lnd" ]
       - EXPOSE 8080 9735 10000
       - CMD lnd
