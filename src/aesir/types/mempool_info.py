@@ -17,26 +17,32 @@ from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictFloat
 class MempoolInfo(BaseModel):
   full_rbf: StrictBool = Field(
     alias="fullrbf",
+    default=0,
     description="True if mempool accepts RBF without replaceability signaling introspection",
   )
-  loaded: StrictBool = Field(description="True if mempool is fully loaded")
+  loaded: StrictBool = Field(default=0, description="True if mempool is fully loaded")
   max_mempool: StrictInt = Field(
-    alias="maxmempool", description="Maxmimum memory usage for the mempool"
+    alias="maxmempool", default=0, description="Maxmimum memory usage for the mempool"
   )
   mempool_minimum_fee: StrictFloat = Field(
-    alias="mempoolminfee", description="Minimum fee rate in BTC/kvB for transaction to be accepted"
+    alias="mempoolminfee",
+    default=0,
+    description="Minimum fee rate in BTC/kvB for transaction to be accepted",
   )
   minimum_relay_transaction_fee: StrictFloat = Field(
-    alias="minrelaytxfee", description="Minimum relay fees for transaction"
+    alias="minrelaytxfee", default=0, description="Minimum relay fees for transaction"
   )
-  total_fee: StrictFloat = Field(description="Total fees for the mempool in BTC")
-  txn_count: StrictInt = Field(alias="size", description="Current transaction count")
+  total_fee: StrictFloat = Field(default=0, description="Total fees for the mempool in BTC")
+  txn_count: StrictInt = Field(alias="size", default=0, description="Current transaction count")
   txn_bytes: StrictInt = Field(
-    alias="bytes", description="Sum of all virtual transaction sizes as defined in BIP-141"
+    alias="bytes",
+    default=0,
+    description="Sum of all virtual transaction sizes as defined in BIP-141",
   )
-  usage: StrictInt = Field(description="Total memory usage for mempool")
+  usage: StrictInt = Field(default=0, description="Total memory usage for mempool")
   unbroadcast_count: StrictInt = Field(
     alias="unbroadcastcount",
+    default=0,
     description="Number of transactions that have not passed initial broadcast",
   )
 
