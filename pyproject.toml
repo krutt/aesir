@@ -37,6 +37,7 @@ dependencies = [
   'podman >=5.4.0.1',
   'pydantic >=2.5.2',
   'pyyaml >=6.0.1',
+  'requests >=2.32.3',
   'rich >=13.7.0',
 ]
 description = 'Command line interface used for generating local Lightning test environment'
