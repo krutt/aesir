@@ -59,86 +59,87 @@ def ping_pong(channel_size: int) -> None:
 
   ### Fetch nodekeys ###
   for container in track(paddles, "Fetch LND nodekeys:".ljust(42)):
-    lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
-      container.exec_run(
-        """
-        lncli
-          --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-          --rpcserver=localhost:10001
-          --tlscertpath=/home/lnd/.lnd/tls.cert
-        getinfo
-        """
-      ).output
+    response_code, output = container.exec_run(
+      """
+      lncli
+        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+        --rpcserver=localhost:10001
+        --tlscertpath=/home/lnd/.lnd/tls.cert
+      getinfo
+      """
     )
-    nodekeys[container.name] = lnd_info.identity_pubkey
-    new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
-      container.exec_run(
-        """
-        lncli
-          --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-          --rpcserver=localhost:10001
-          --tlscertpath=/home/lnd/.lnd/tls.cert
-        newaddress p2wkh
-        """
-      ).output
+    if response_code == 0:
+      lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(output.decode("utf-8"))
+      nodekeys[container.name] = lnd_info.identity_pubkey
+    response_code, output = container.exec_run(
+      """
+      lncli
+        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+        --rpcserver=localhost:10001
+        --tlscertpath=/home/lnd/.lnd/tls.cert
+      newaddress p2wkh
+      """
     )
-    treasuries[container.name] = new_address.address
+    if response_code == 0:
+      new_address: NewAddress = TypeAdapter(NewAddress).validate_json(output)
+      treasuries[container.name] = new_address.address
 
   ### Open channels ###
   outputs: List[str] = []
   for container in track(paddles, "Open channels:".ljust(42)):
     if container.name == "aesir-ping":
       try:
-        open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(
-          container.exec_run(
-            """
-            lncli
-              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-              --rpcserver=localhost:10001
-              --tlscertpath=/home/lnd/.lnd/tls.cert
-            openchannel %d
-              --node_key %s
-              --connect aesir-pong:9735
-            """
-            % (channel_size, nodekeys.get("aesir-pong", ""))
-          ).output
-        )
-        outputs.append(
-          f"<Channel 'aesir-ping --> aesir-pong' : txid='{ open_channel.funding_txid }'>"
-        )
-        bitcoind.exec_run(
+        response_code, output = container.exec_run(
           """
-          bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
+          lncli
+            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+            --rpcserver=localhost:10001
+            --tlscertpath=/home/lnd/.lnd/tls.cert
+          openchannel %d
+            --node_key %s
+            --connect aesir-pong:9735
           """
-          % (6, treasuries.get("aesir-ping", ""))
+          % (channel_size, nodekeys.get("aesir-pong", "")),
+          demux=True,
         )
+        if response_code == 0:
+          open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(output.decode("utf-8"))
+          outputs.append(
+            f"<Channel 'aesir-ping --> aesir-pong' : txid='{ open_channel.funding_txid }'>"
+          )
+          bitcoind.exec_run(
+            """
+            bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
+            """
+            % (6, treasuries.get("aesir-ping", ""))
+          )
       except ValidationError:
         outputs.append("[dim yellow1]Unable to open 'aesir-pong --> aesir-ping' channel.")
     elif container.name == "aesir-pong":
       try:
-        open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(  # type: ignore[no-redef]
-          container.exec_run(
-            """
-            lncli
-              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-              --rpcserver=localhost:10001
-              --tlscertpath=/home/lnd/.lnd/tls.cert
-            openchannel %d
-              --node_key %s
-              --connect aesir-ping:9735
-            """
-            % (channel_size, nodekeys.get("aesir-ping", ""))
-          ).output
-        )
-        outputs.append(
-          f"<Channel 'aesir-pong --> aesir-ping' : txid='{ open_channel.funding_txid }'>"
-        )
-        bitcoind.exec_run(
+        response_code, output = container.exec_run(
           """
-          bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
+          lncli
+            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+            --rpcserver=localhost:10001
+            --tlscertpath=/home/lnd/.lnd/tls.cert
+          openchannel %d
+            --node_key %s
+            --connect aesir-ping:9735
           """
-          % (6, treasuries.get("aesir-pong", ""))
+          % (channel_size, nodekeys.get("aesir-ping", ""))
         )
+        if response_code == 0:
+          open_channel: OpenChannel = TypeAdapter(OpenChannel).validate_json(output.decode("utf-8"))
+          outputs.append(
+            f"<Channel 'aesir-pong --> aesir-ping' : txid='{ open_channel.funding_txid }'>"
+          )
+          bitcoind.exec_run(
+            """
+            bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir generatetoaddress %d %s
+            """
+            % (6, treasuries.get("aesir-pong", ""))
+          )
       except ValidationError:
         outputs.append("[dim yellow1]Unable to open 'aesir-pong --> aesir-ping' channel.")
   list(map(rich_print, outputs))

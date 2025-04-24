@@ -63,20 +63,22 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
     return
 
   ### Generate invoice ###
-  lnd_invoice: LNDInvoice = TypeAdapter(LNDInvoice).validate_json(
-    container.exec_run(
-      f"""
-      lncli
-        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-        --rpcserver=localhost:10001
-        --tlscertpath=/home/lnd/.lnd/tls.cert
-      addinvoice
-        --amt={ amount }
-        --memo={ memo }
-      """
-    ).output
+  response_code, output = container.exec_run(
+    f"""
+    lncli
+      --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+      --rpcserver=localhost:10001
+      --tlscertpath=/home/lnd/.lnd/tls.cert
+    addinvoice
+      --amt={ amount }
+      --memo={ memo }
+    """
   )
-  rich_print(lnd_invoice)
+  if response_code == 0:
+    lnd_invoice: LNDInvoice = TypeAdapter(LNDInvoice).validate_json(output.decode("utf-8"))
+    rich_print(lnd_invoice)
+  else:
+    rich_print(f"[red]FIXME[reset]")
 
 
 __all__ = ("invoice",)
