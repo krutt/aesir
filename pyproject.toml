@@ -42,7 +42,7 @@ dependencies = [
 description = 'Command line interface used for generating local Lightning test environment'
 homepage = 'https://github.com/krutt/aesir'
 include = [
-  {path='src/aesir/schemas.yml', format=['sdist', 'wheel']}
+  {format=['sdist', 'wheel'], path='src/aesir/schemas.yml'}
 ]
 keywords = ['anonymous', 'bitcoin', 'cashu', 'chaum', 'chaumian', 'cli', 'ecash', 'lightning']
 license = 'MIT'
