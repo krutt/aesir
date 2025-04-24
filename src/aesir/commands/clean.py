@@ -22,6 +22,7 @@ from podman.domain.networks import Network
 from podman.errors import APIError, NotFound
 from rich import print as rich_print
 from rich.progress import track
+from requests.exceptions import JSONDecodeError
 
 ### Local modules ###
 from aesir.configs import HOST, IDENTITY, NETWORK
@@ -42,7 +43,10 @@ def clean(inactive: bool) -> None:
   containers: List[Container] = client.containers.list(all=inactive)
   for container in track(containers, f"Clean {('active','all')[inactive]} containers:".ljust(42)):
     if match(r"aesir-*", container.name) is not None:
-      container.stop()
+      try:
+        container.stop()
+      except JSONDecodeError:
+        pass
       container.remove(v=True)  # if `v` is true, remove associated volume
       outputs.append(f"<Container '{ container.name }'> removed.")
   try:
