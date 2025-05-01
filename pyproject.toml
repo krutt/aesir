@@ -82,4 +82,5 @@ dev-dependencies = [
   'pytest >=7.4.3',
   'ruff >=0.2.2',
   'types-pyyaml >=6.0.12.12',
+  "types-requests>=2.32.0.20250328",
 ]
