@@ -18,6 +18,7 @@ from click import command, option
 from docker import DockerClient, from_env
 from docker.errors import APIError, BuildError
 from rich import print as rich_print
+from rich.progress import TaskID
 
 ### Local modules ###
 from aesir.configs import BUILDS
@@ -85,13 +86,8 @@ def build(
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
             yggdrasil.progress_build(
-              client.images.build(
-                encoding="utf-8",
-                fileobj=fileobj,
-                forcerm=True,
-                platform=build.platform,
-                rm=True,
-                tag=tag,
+              client.api.build(
+                decode=True, fileobj=fileobj, gzip=True, platform=build.platform, rm=True, tag=tag
               ),
               build_task_id,
             )
@@ -100,7 +96,6 @@ def build(
             continue
           yggdrasil.update(build_task_id, completed=100)
           yggdrasil.update(task_id, advance=1)
-        yggdrasil.update(task_id, completed=build_count, description="[blue]Complete[reset]")
-
+      yggdrasil.update(task_id, completed=build_count, description="[blue]Complete[reset]")
 
 __all__: Tuple[str, ...] = ("build",)
