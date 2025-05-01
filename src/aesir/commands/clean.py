@@ -24,6 +24,8 @@ from rich import print as rich_print
 from rich.progress import track
 from requests.exceptions import JSONDecodeError
 
+### Local modules ###
+from aesir.configs import NETWORK
 
 @command
 @option("--inactive", help="Query inactive containers for removal.", is_flag=True, type=bool)
