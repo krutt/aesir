@@ -86,26 +86,20 @@ class Bifrost(BaseModel):
           body_table: Table = Table(expand=True, show_lines=True)
           body_table.add_column(container_name, "dark_sea_green bold")
           if match(r"aesir-(bitcoind)", container_name):
-            response_code, output = self.bitcoind.exec_run(
-              """
-              bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getblockchaininfo
-              """
+            blockchain_info: BlockchainInfo = TypeAdapter(BlockchainInfo).validate_json(
+              self.bitcoind.exec_run(
+                """
+                bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getblockchaininfo
+                """
+              ).output
             )
-            blockchain_info: BlockchainInfo
-            if response_code == 0:
-              blockchain_info = TypeAdapter(BlockchainInfo).validate_json(output.decode("utf-8"))
-            else:
-              blockchain_info = BlockchainInfo()
-            response_code, output = self.bitcoind.exec_run(
-              """
-              bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getmempoolinfo
-              """
+            mempool_info: MempoolInfo = TypeAdapter(MempoolInfo).validate_json(
+              self.bitcoind.exec_run(
+                """
+                bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getmempoolinfo
+                """
+              ).output
             )
-            mempool_info: MempoolInfo
-            if response_code == 0:
-              mempool_info = TypeAdapter(MempoolInfo).validate_json(output.decode("utf-8"))
-            else:
-              mempool_info = MempoolInfo()
             body_table.add_row(
               Text.assemble(
                 f"\n{ 'Blockchain information:'.ljust(20) }\n",
@@ -146,20 +140,17 @@ class Bifrost(BaseModel):
             container: Container = next(
               filter(lambda container: container.name == container_name, self.containers)
             )
-            response_code, output = container.exec_run(
-              """
-              lncli
-                --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-                --rpcserver=localhost:10001
-                --tlscertpath=/home/lnd/.lnd/tls.cert
-              getinfo
-              """
+            lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+              container.exec_run(
+                """
+                lncli
+                  --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+                  --rpcserver=localhost:10001
+                  --tlscertpath=/home/lnd/.lnd/tls.cert
+                getinfo
+                """
+              )
             )
-            lnd_info: LNDInfo
-            if response_code == 0:
-              lnd_info = TypeAdapter(LNDInfo).validate_json(output.decode("utf-8"))
-            else:
-              lnd_info = LNDInfo()
             body_table.add_row(
               Text.assemble(
                 "\n\n\n",

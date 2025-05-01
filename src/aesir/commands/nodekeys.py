@@ -46,18 +46,18 @@ def nodekeys() -> None:
   )
   outputs: List[str] = []
   for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
-    response_code, output = container.exec_run(
-      """
-      lncli
-        --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-        --rpcserver=localhost:10001
-        --tlscertpath=/home/lnd/.lnd/tls.cert
-      getinfo
-      """
+    lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
+      container.exec_run(
+        """
+        lncli
+          --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+          --rpcserver=localhost:10001
+          --tlscertpath=/home/lnd/.lnd/tls.cert
+        getinfo
+        """
+      ).output
     )
-    if response_code == 0:
-      lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(output)
-      outputs.append(f"<Nodekey: '{ container.name }', '{ lnd_info.identity_pubkey }'>")
+    outputs.append(f"<Nodekey: '{ container.name }', '{ lnd_info.identity_pubkey }'>")
   list(map(rich_print, outputs))
 
 

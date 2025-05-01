@@ -70,28 +70,26 @@ def mine(blockcount: int, blocktime: int) -> None:
       bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir createwallet default
       """
     )
-    response_code, output = bitcoind.exec_run(
+    treasury_address: str = bitcoind.exec_run(
       """
       bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir getnewaddress treasury bech32
       """
-    )
-    if response_code == 0:
-      treasury_address: str = output.decode("utf-8")
-      treasuries.append(treasury_address)
+    ).output.decode("utf-8")
+    treasuries.append(treasury_address)
   else:
     for container in track(lnd_containers, "Generate mining treasuries:".ljust(42)):
-      response_code, output = container.exec_run(
-        """
-        lncli
-          --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-          --rpcserver=localhost:10001
-          --tlscertpath=/home/lnd/.lnd/tls.cert
-        newaddress p2wkh
-        """
+      new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
+        container.exec_run(
+          """
+          lncli
+            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+            --rpcserver=localhost:10001
+            --tlscertpath=/home/lnd/.lnd/tls.cert
+          newaddress p2wkh
+          """
+        )
       )
-      if response_code == 0:
-        new_address: NewAddress = TypeAdapter(NewAddress).validate_json(output.decode("utf-8"))
-        treasuries.append(new_address.address)
+      treasuries.append(new_address.address)
 
   ### Set up mining schedule using command arguments ###
   scheduler: BackgroundScheduler = BackgroundScheduler()

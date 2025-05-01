@@ -120,18 +120,18 @@ def deploy(
     ### Mine starting capital ###
     for container in track(client.containers.list(), "Generate addresses:".ljust(42)):
       if match(r"aesir-lnd|aesir-ping|aesir-pong", container.name) is not None:
-        response_code, output = container.exec_run(
-          """
-          lncli
-            --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-            --rpcserver=localhost:10001
-            --tlscertpath=/home/lnd/.lnd/tls.cert
-          newaddress p2wkh
-          """,
+        new_address: NewAddress = TypeAdapter(NewAddress).validate_json(
+          container.exec_run(
+            """
+            lncli
+              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+              --rpcserver=localhost:10001
+              --tlscertpath=/home/lnd/.lnd/tls.cert
+            newaddress p2wkh
+            """
+          ).output
         )
-        if response_code == 0:
-          new_address: NewAddress = TypeAdapter(NewAddress).validate_json(output.decode("utf-8"))
-          treasuries.append(new_address.address)
+        treasuries.append(new_address.address)
 
   ### Define selection for shared-volume peripherals ###
   image_selector = {
