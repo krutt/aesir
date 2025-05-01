@@ -41,4 +41,4 @@ class MutexOption(Option):
     return super(MutexOption, self).handle_parse_result(context, options, arguments)
 
 
-__all__ = ("MutexOption",)
+__all__: Tuple[str, ...] = ("MutexOption",)

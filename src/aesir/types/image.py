@@ -11,11 +11,11 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal
+from typing import Literal, Tuple
 
 ImageAlias = Literal[
   "bitcoind", "bitcoind-cat", "cashu-mint", "lnd", "lnd-krub", "ord-server", "postgres", "redis"
 ]
 ImageEnum = Literal["optional", "required"]
 
-__all__ = ("ImageAlias", "ImageEnum")
+__all__: Tuple[str, ...] = ("ImageAlias", "ImageEnum")

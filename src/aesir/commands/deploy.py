@@ -14,7 +14,7 @@
 from io import BytesIO
 from re import match
 from time import sleep
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -229,4 +229,4 @@ def deploy(
   list(map(rich_print, warnings))
 
 
-__all__ = ("deploy",)
+__all__: Tuple[str, ...] = ("deploy",)

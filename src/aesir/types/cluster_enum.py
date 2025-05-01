@@ -11,8 +11,8 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal
+from typing import Literal, Tuple
 
 ClusterEnum = Literal["cat", "duo", "ohm", "uno"]
 
-__all__ = ("ClusterEnum",)
+__all__: Tuple[str, ...] = ("ClusterEnum",)

@@ -11,8 +11,8 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal
+from typing import Literal, Tuple
 
 PeripheralEnum = Literal["cashu-mint", "lnd-krub", "ord-server", "postgres", "redis"]
 
-__all__ = ("PeripheralEnum",)
+__all__: Tuple[str, ...] = ("PeripheralEnum",)

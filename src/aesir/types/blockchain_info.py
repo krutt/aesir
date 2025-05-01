@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, StrictInt, StrictStr
 
@@ -21,4 +24,4 @@ class BlockchainInfo(BaseModel):
   time: StrictInt = 0
 
 
-__all__ = ("BlockchainInfo",)
+__all__: Tuple[str, ...] = ("BlockchainInfo",)

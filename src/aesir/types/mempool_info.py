@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictFloat
 
@@ -47,4 +50,4 @@ class MempoolInfo(BaseModel):
   )
 
 
-__all__ = ("MempoolInfo",)
+__all__: Tuple[str, ...] = ("MempoolInfo",)

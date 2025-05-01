@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 ### Standard packages ###
 from pydantic import TypeAdapter
@@ -51,4 +51,4 @@ with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
       schema["peripherals"]
     )
 
-__all__ = ("BUILDS", "CLUSTERS", "IMAGES", "NETWORK", "PERIPHERALS")
+__all__: Tuple[str, ...] = ("BUILDS", "CLUSTERS", "IMAGES", "NETWORK", "PERIPHERALS")

@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
 
@@ -18,4 +21,4 @@ class NewAddress(BaseModel):
   address: StrictStr
 
 
-__all__ = ("NewAddress",)
+__all__: Tuple[str, ...] = ("NewAddress",)

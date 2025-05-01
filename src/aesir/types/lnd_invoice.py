@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictStr
 
@@ -21,4 +24,4 @@ class LNDInvoice(BaseModel):
   payment_request: StrictStr
 
 
-__all__ = ("LNDInvoice",)
+__all__: Tuple[str, ...] = ("LNDInvoice",)

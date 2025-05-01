@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import List, Literal
+from typing import List, Literal, Tuple
 
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
@@ -27,4 +27,4 @@ BuildEnum = Literal[
 ]
 
 
-__all__ = ("Build", "BuildEnum")
+__all__: Tuple[str, ...] = ("Build", "BuildEnum")

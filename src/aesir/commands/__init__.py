@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Local modules ###
 from aesir.commands.build import build
 from aesir.commands.clean import clean
@@ -20,4 +23,13 @@ from aesir.commands.nodekeys import nodekeys
 from aesir.commands.ping_pong import ping_pong
 from aesir.commands.pull import pull
 
-__all__ = ("build", "clean", "deploy", "invoice", "mine", "nodekeys", "ping_pong", "pull")
+__all__: Tuple[str, ...] = (
+  "build",
+  "clean",
+  "deploy",
+  "invoice",
+  "mine",
+  "nodekeys",
+  "ping_pong",
+  "pull",
+)

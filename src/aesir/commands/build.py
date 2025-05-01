@@ -11,7 +11,7 @@
 
 ### Standard packages ###
 from io import BytesIO
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -103,4 +103,4 @@ def build(
         yggdrasil.update(task_id, completed=build_count, description="[blue]Complete[reset]")
 
 
-__all__ = ("build",)
+__all__: Tuple[str, ...] = ("build",)

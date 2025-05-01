@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import List, Literal
+from typing import List, Literal, Tuple
 
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
@@ -40,4 +40,4 @@ ServiceName = Literal[
   "aesir-redis",
 ]
 
-__all__ = ("Service", "ServiceName")
+__all__: Tuple[str, ...] = ("Service", "ServiceName")

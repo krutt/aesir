@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from re import match
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 ### Third-party packages ###
 from click import argument, command
@@ -143,4 +143,4 @@ def ping_pong(channel_size: int) -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ("ping_pong",)
+__all__: Tuple[str, ...] = ("ping_pong",)

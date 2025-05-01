@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 
@@ -22,4 +25,4 @@ class LNDInfo(BaseModel):
   synced_to_chain: StrictBool = False
 
 
-__all__ = ("LNDInfo",)
+__all__: Tuple[str, ...] = ("LNDInfo",)

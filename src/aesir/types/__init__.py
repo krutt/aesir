@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Local modules ###
 from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
@@ -25,7 +28,7 @@ from aesir.types.peripheral_enum import PeripheralEnum
 from aesir.types.service import Service, ServiceName
 
 
-__all__ = (
+__all__: Tuple[str, ...] = (
   "BlockchainInfo",
   "Build",
   "BuildEnum",

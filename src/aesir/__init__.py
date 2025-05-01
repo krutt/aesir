@@ -10,9 +10,20 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Local modules ###
 from aesir.commands import build, clean, deploy, invoice, mine, nodekeys, ping_pong, pull
 
-__all__ = ("build", "clean", "deploy", "invoice", "mine", "nodekeys", "ping_pong", "pull")
-
-__version__ = "0.5.0"
+__all__: Tuple[str, ...] = (
+  "build",
+  "clean",
+  "deploy",
+  "invoice",
+  "mine",
+  "nodekeys",
+  "ping_pong",
+  "pull",
+)
+__version__: str = "0.5.0"

@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -65,4 +65,4 @@ def pull(postgres: bool, redis: bool) -> None:
     list(map(rich_print, outputs))
 
 
-__all__ = ("pull",)
+__all__: Tuple[str, ...] = ("pull",)

@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from re import match
-from typing import List
+from typing import List, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -55,4 +55,4 @@ def clean(inactive: bool) -> None:
   list(map(rich_print, outputs))
 
 
-__all__ = ("clean",)
+__all__: Tuple[str, ...] = ("clean",)

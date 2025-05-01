@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Dict
+from typing import Dict, Tuple
 from uuid import uuid4 as uuid
 
 ### Third-party packages ###
@@ -78,4 +78,4 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
   rich_print(lnd_invoice)
 
 
-__all__ = ("invoice",)
+__all__: Tuple[str, ...] = ("invoice",)

@@ -10,6 +10,9 @@
 # HISTORY:
 # *************************************************************
 
+### Standard packages ###
+from typing import Tuple
+
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
 
@@ -18,4 +21,4 @@ class OpenChannel(BaseModel):
   funding_txid: StrictStr
 
 
-__all__ = ("OpenChannel",)
+__all__: Tuple[str, ...] = ("OpenChannel",)

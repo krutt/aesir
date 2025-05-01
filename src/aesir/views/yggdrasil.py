@@ -16,7 +16,7 @@ from json import loads
 from math import floor
 from re import search
 from textwrap import wrap
-from typing import Any, Deque, Dict, Generator, Optional, Union
+from typing import Any, Deque, Dict, Generator, Optional, Tuple, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -81,4 +81,4 @@ class Yggdrasil(Progress):
     self.table = table
 
 
-__all__ = ("Yggdrasil",)
+__all__: Tuple[str, ...] = ("Yggdrasil",)

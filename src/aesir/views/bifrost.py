@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from re import match
-from typing import ClassVar, List
+from typing import ClassVar, List, Tuple
 
 ### Third-party packages ###
 from blessed import Terminal
@@ -190,4 +190,4 @@ class Bifrost(BaseModel):
         print("Valhalla!")
 
 
-__all__ = ("Bifrost",)
+__all__: Tuple[str, ...] = ("Bifrost",)

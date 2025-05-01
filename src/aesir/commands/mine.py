@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from re import match
-from typing import List
+from typing import List, Tuple
 
 ### Third-party packages ###
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -115,4 +115,4 @@ def mine(blockcount: int, blocktime: int) -> None:
   bifrost.display()
 
 
-__all__ = ("mine",)
+__all__: Tuple[str, ...] = ("mine",)
