@@ -10,17 +10,17 @@
 # *************************************************************
 
 ### Standard packages ###
-from io import StringIO
+from io import BytesIO
 from typing import Dict, List, Set
 
 ### Third-party packages ###
 from click import command, option
-from podman.errors import APIError, BuildError
+from docker import DockerClient, from_env
+from docker.errors import APIError, BuildError
 from rich import print as rich_print
 
 ### Local modules ###
-from aesir.configs import BUILDS, HOST, IDENTITY
-from aesir.shims import PodmanClient
+from aesir.configs import BUILDS
 from aesir.types import Build
 from aesir.views import Yggdrasil
 
@@ -44,7 +44,7 @@ def build(
 ) -> None:
   """Build peripheral images for the desired cluster."""
   try:
-    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client: DockerClient = from_env()
     client.ping()
   except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")
@@ -82,7 +82,7 @@ def build(
       task_id: int = yggdrasil.add_task("", progress_type="primary", total=build_count)
       for tag, build in builds_items:
         build_task_id: int = yggdrasil.add_task(tag, progress_type="build", total=100)
-        with StringIO("\n".join(build.instructions)) as fileobj:
+        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
             yggdrasil.progress_build(
               client.images.build(

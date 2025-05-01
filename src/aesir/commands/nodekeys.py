@@ -16,15 +16,14 @@ from typing import List
 
 ### Third-party packages ###
 from click import command
-from podman import PodmanClient
-from podman.domain.containers import Container
-from podman.errors import APIError
+from docker import DockerClient, from_env
+from docker.errors import APIError
+from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import HOST, IDENTITY
 from aesir.types import LNDInfo
 
 
@@ -32,7 +31,7 @@ from aesir.types import LNDInfo
 def nodekeys() -> None:
   """Fetch nodekeys from active LND containers."""
   try:
-    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client: DockerClient = from_env()
     client.ping()
   except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")

@@ -16,14 +16,13 @@ from uuid import uuid4 as uuid
 
 ### Third-party packages ###
 from click import argument, command, option
-from podman import PodmanClient
-from podman.domain.containers import Container
-from podman.errors import APIError, NotFound
+from docker import DockerClient, from_env
+from docker.errors import APIError, NotFound
+from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
 
 ### Local modules ###
-from aesir.configs import HOST, IDENTITY
 from aesir.types import LNDInvoice, MutexOption, ServiceName
 
 
@@ -36,7 +35,7 @@ from aesir.types import LNDInvoice, MutexOption, ServiceName
 def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
   """For either "uno" or "duo" cluster, create an invoice from specified lnd container"""
   try:
-    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client: DockerClient = from_env()
     client.ping()
   except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")

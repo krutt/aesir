@@ -15,13 +15,13 @@ from typing import Dict, List, Set
 
 ### Third-party packages ###
 from click import command, option
-from podman import PodmanClient
-from podman.errors import APIError
+from docker import DockerClient, from_env
+from docker.errors import APIError
 from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import HOST, IDENTITY, IMAGES
+from aesir.configs import IMAGES
 
 
 @command
@@ -30,7 +30,7 @@ from aesir.configs import HOST, IDENTITY, IMAGES
 def pull(postgres: bool, redis: bool) -> None:
   """Download required and flagged optional docker images from hub."""
   try:
-    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client: DockerClient = from_env()
     client.ping()
   except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")

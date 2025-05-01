@@ -16,16 +16,13 @@ from typing import List
 
 ### Third-party packages ###
 from click import command, option
-from podman import PodmanClient
-from podman.domain.containers import Container
-from podman.domain.networks import Network
-from podman.errors import APIError, NotFound
+from docker import DockerClient, from_env
+from docker.errors import APIError, NotFound
+from docker.models.containers import Container
+from docker.models.networks import Network
 from rich import print as rich_print
 from rich.progress import track
 from requests.exceptions import JSONDecodeError
-
-### Local modules ###
-from aesir.configs import HOST, IDENTITY, NETWORK
 
 
 @command
@@ -33,7 +30,7 @@ from aesir.configs import HOST, IDENTITY, NETWORK
 def clean(inactive: bool) -> None:
   """Remove all active "aesir-*" containers, drop network."""
   try:
-    client: PodmanClient = PodmanClient(base_url=HOST, identity=IDENTITY)
+    client: DockerClient = from_env()
     client.ping()
   except APIError:
     rich_print("[red bold]Unable to connect to docker daemon.")

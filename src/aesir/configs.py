@@ -12,8 +12,7 @@
 
 ### Standard packages ###
 from pathlib import Path
-from subprocess import CalledProcessError, run
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 ### Standard packages ###
 from pydantic import TypeAdapter
@@ -24,46 +23,12 @@ from aesir.types import (
   Build,
   BuildEnum,
   ClusterEnum,
-  Connection,
   ImageAlias,
   ImageEnum,
   PeripheralEnum,
   Service,
   ServiceName,
 )
-
-### Extract default connection's host and identity ###
-HOST: str
-IDENTITY: str
-try:
-  output: str = (
-    "["
-    + ",".join(
-      run(
-        [
-          "podman",
-          "system",
-          "connection",
-          "list",
-          "--format",
-          '{"host": "{{.URI}}", "identity": "{{.Identity}}", "default": {{.Default}}}',
-        ],
-        capture_output=True,
-        check=True,
-      )
-      .stdout.decode("utf-8")
-      .rstrip()
-      .split("\n")
-    )
-    + "]"
-  )
-  connections: List[Connection] = TypeAdapter(List[Connection]).validate_json(output)
-  default_connection: Connection = next(filter(lambda connection: connection.default, connections))
-  HOST = default_connection.host
-  IDENTITY = default_connection.identity
-except CalledProcessError:
-  HOST = ""
-  IDENTITY = ""
 
 ### Parse schemas ###
 BUILDS: Dict[BuildEnum, Build]

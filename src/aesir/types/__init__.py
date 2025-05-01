@@ -14,7 +14,6 @@
 from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
 from aesir.types.cluster_enum import ClusterEnum
-from aesir.types.connection import Connection
 from aesir.types.image import ImageAlias, ImageEnum
 from aesir.types.lnd_info import LNDInfo
 from aesir.types.lnd_invoice import LNDInvoice
@@ -31,7 +30,6 @@ __all__ = (
   "Build",
   "BuildEnum",
   "ClusterEnum",
-  "Connection",
   "ImageAlias",
   "ImageEnum",
   "LNDInfo",

@@ -17,7 +17,7 @@ from typing import ClassVar, List
 ### Third-party packages ###
 from blessed import Terminal
 from blessed.keyboard import Keystroke
-from podman.domain.containers import Container
+from docker.models.containers import Container
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, TypeAdapter
 from rich.layout import Layout
 from rich.live import Live
