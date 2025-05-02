@@ -29,7 +29,7 @@ class MutexOption(Option):
   def handle_parse_result(
     self, ctx: Context, opts: Mapping[str, Any], args: List[str]
   ) -> Tuple[Any, List[str]]:
-    current_opt: bool = self.name in opts 
+    current_opt: bool = self.name in opts
     for mutex_option in self.alternatives:
       if mutex_option in opts:
         if current_opt:

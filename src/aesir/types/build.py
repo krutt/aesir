@@ -22,9 +22,7 @@ class Build(BaseModel):
   platform: StrictStr = "linux/amd64"
 
 
-BuildEnum = Literal[
-  "bitcoind", "bitcoind-cat", "cashu-mint", "lnd", "lnd-krub", "ord-server"
-]
+BuildEnum = Literal["bitcoind", "bitcoind-cat", "cashu-mint", "lnd", "lnd-krub", "ord-server"]
 
 
 __all__: Tuple[str, ...] = ("Build", "BuildEnum")
