@@ -162,7 +162,7 @@ def deploy(
         build_task_id: TaskID = yggdrasil.add_task(tag, progress_type="build", total=100)
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
-            yggdrasil.progress_build(  # type: ignore[misc]
+            yggdrasil.progress_build(
               client.api.build(
                 decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
               ),
