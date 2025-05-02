@@ -80,7 +80,7 @@ def build(
   if build_count != 0:
     builds_items = builds.items()
     with Yggdrasil(row_count=10) as yggdrasil:
-      task_id: int = yggdrasil.add_task("", progress_type="primary", total=build_count)
+      task_id: TaskID = yggdrasil.add_task("", progress_type="primary", total=build_count)
       for tag, build in builds_items:
         build_task_id: TaskID = yggdrasil.add_task(tag, progress_type="build", total=100)
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
