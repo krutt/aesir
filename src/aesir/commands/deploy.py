@@ -184,7 +184,7 @@ def deploy(
 
   ### Deploy shared volume peripherals ###
   run_errors: List[str] = []
-  peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if selector[k]}  # type: ignore[index, misc]
+  peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if selector[k]}  # type: ignore[index, name-defined]
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
