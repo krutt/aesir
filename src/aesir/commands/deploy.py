@@ -23,7 +23,7 @@ from docker.errors import APIError, BuildError, ImageNotFound, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
-from rich.progress import track
+from rich.progress import TaskID, track
 
 ### Local modules ###
 from aesir.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
@@ -159,7 +159,7 @@ def deploy(
     with Yggdrasil(row_count=10) as yggdrasil:
       task_id: int = yggdrasil.add_task("", progress_type="primary", total=build_count)
       for tag, build in builds_items:
-        build_task_id: int = yggdrasil.add_task(tag, progress_type="build", total=100)
+        build_task_id: TaskID = yggdrasil.add_task(tag, progress_type="build", total=100)
         with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
           try:
             yggdrasil.progress_build(  # type: ignore[misc]
