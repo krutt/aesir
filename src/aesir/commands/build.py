@@ -33,7 +33,6 @@ from aesir.views import Yggdrasil
 @option("--lnd", is_flag=True, help="Build lnd image", type=bool)
 @option("--lnd-krub", is_flag=True, help="Build lnd-krub optional image", type=bool)
 @option("--ord-server", is_flag=True, help="Build ord-server optional image", type=bool)
-@option("--tesla-ball", is_flag=True, help="Build tesla-ball optional image", type=bool)
 def build(
   bitcoind: bool,
   bitcoind_cat: bool,
@@ -41,7 +40,6 @@ def build(
   lnd: bool,
   lnd_krub: bool,
   ord_server: bool,
-  tesla_ball: bool,
 ) -> None:
   """Build peripheral images for the desired cluster."""
   try:
@@ -65,7 +63,6 @@ def build(
     "lnd": lnd,
     "lnd-krub": lnd_krub,
     "ord-server": ord_server,
-    "tesla-ball": tesla_ball,
   }
 
   outputs: List[str] = []
