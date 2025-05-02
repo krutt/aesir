@@ -188,7 +188,7 @@ def deploy(
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
-    volume_target = "aesir-bitcoind" if name == "aesir-ord" else volume_target
+    volume_target = "aesir-bitcoind" if name == "aesir-ord-server" else volume_target
     try:
       client.containers.run(
         service.alias,
