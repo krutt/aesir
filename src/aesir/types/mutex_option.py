@@ -26,19 +26,19 @@ class MutexOption(Option):
     ).strip()
     super(MutexOption, self).__init__(*args, **kwargs)
 
-  def handle_parse_result(  # type: ignore[misc]
-    self, context: Context, options: Mapping[str, Any], arguments: List[str]
+  def handle_parse_result(
+    self, ctx: Context, opts: Mapping[str, Any], args: List[str]
   ) -> Tuple[Any, List[str]]:
-    current_opt: bool = self.name in options
+    current_opt: bool = self.name in opts 
     for mutex_option in self.alternatives:
-      if mutex_option in options:
+      if mutex_option in opts:
         if current_opt:
           raise UsageError(
             f"Illegal usage: '{self.name}' is mutually exclusive with {mutex_option}."
           )
         else:
           self.prompt = None
-    return super(MutexOption, self).handle_parse_result(context, options, arguments)
+    return super(MutexOption, self).handle_parse_result(ctx, opts, args)
 
 
 __all__: Tuple[str, ...] = ("MutexOption",)
