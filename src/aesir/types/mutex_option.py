@@ -19,7 +19,7 @@ from click import Context, Option, UsageError
 
 class MutexOption(Option):
   def __init__(self, *args: Any, **kwargs: Any) -> None:
-    self.alternatives: list = kwargs.pop("alternatives")
+    self.alternatives: List[Any] = kwargs.pop("alternatives")
     assert self.alternatives, "'alternatives' parameter required."
     kwargs["help"] = (
       kwargs.get("help", "") + f"Option is mutually exclusive with {', '.join(self.alternatives)}."
