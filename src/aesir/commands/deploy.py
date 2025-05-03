@@ -135,8 +135,10 @@ def deploy(
 
   ### Define selection for shared-volume peripherals ###
   image_selector = {
+    "bitcoind": False,
     "bitcoind-cat": False,
     "cashu-mint": with_cashu_mint,
+    "lnd": False,
     "lnd-krub": with_lnd_krub and with_postgres and with_redis,
     "ord-server": with_ord_server,
     "postgres": False,
