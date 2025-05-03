@@ -135,6 +135,8 @@ $ aesir clean
 * **0.4.8** Follow [Productivity Notes](https://github.com/bitcoin/bitcoin/blob/master/doc/productivity.md) for `bitcoind-cat`; Fix progress bar overlap.
 * **0.4.9** Change package manager and add `invoice` command
 * **0.5.0** Adopt podman to encourage daemonlessness and rootlessness
+* **0.5.1** Drop podman support for unstable SSH connections, viva Docker
+* **0.5.2** Stricten type definitions and fix undefined/attribute bugs
 
 ## Roadmap
 
