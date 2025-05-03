@@ -86,7 +86,7 @@ def mine(blockcount: int, blocktime: int) -> None:
             --tlscertpath=/home/lnd/.lnd/tls.cert
           newaddress p2wkh
           """
-        )
+        ).output
       )
       treasuries.append(new_address.address)
 

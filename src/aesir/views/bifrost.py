@@ -149,7 +149,7 @@ class Bifrost(BaseModel):
                   --tlscertpath=/home/lnd/.lnd/tls.cert
                 getinfo
                 """
-              )
+              ).output
             )
             body_table.add_row(
               Text.assemble(
