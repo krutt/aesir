@@ -80,7 +80,8 @@ class Yggdrasil(Progress):
           self.update(task_id, completed=floor(divided / divisor * 100))
         self.update_table(stream)
       elif "error" in line:
-        self.update_table(line.pop("error").strip())
+        error: str = line.pop("error").strip()
+        self.update_table(f"[red]{ error }[reset]")
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:
