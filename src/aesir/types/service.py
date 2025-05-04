@@ -17,11 +17,11 @@ from typing import List, Literal, Tuple
 from pydantic import BaseModel, StrictStr
 
 ### Local modules ###
-from aesir.types.image import ImageAlias
+from aesir.types.image import Image
 
 
 class Service(BaseModel):
-  alias: ImageAlias
+  image: Image
   command: List[StrictStr] = []
   env_vars: List[StrictStr] = []
   ports: List[StrictStr]

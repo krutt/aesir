@@ -17,14 +17,13 @@ from typing import Tuple
 from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
 from aesir.types.cluster_enum import ClusterEnum
-from aesir.types.image import ImageAlias, ImageEnum
+from aesir.types.image import Image
 from aesir.types.lnd_info import LNDInfo
 from aesir.types.lnd_invoice import LNDInvoice
 from aesir.types.mempool_info import MempoolInfo
 from aesir.types.mutex_option import MutexOption
 from aesir.types.new_address import NewAddress
 from aesir.types.open_channel import OpenChannel
-from aesir.types.peripheral_enum import PeripheralEnum
 from aesir.types.service import Service, ServiceName
 
 
@@ -33,15 +32,13 @@ __all__: Tuple[str, ...] = (
   "Build",
   "BuildEnum",
   "ClusterEnum",
-  "ImageAlias",
-  "ImageEnum",
+  "Image",
   "LNDInfo",
   "LNDInvoice",
   "MempoolInfo",
   "MutexOption",
   "NewAddress",
   "OpenChannel",
-  "PeripheralEnum",
   "Service",
   "ServiceName",
 )

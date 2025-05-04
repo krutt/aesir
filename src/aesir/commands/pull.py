@@ -21,7 +21,7 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.configs import IMAGES
+from aesir.configs import BUILDS, PERIPHERALS
 
 
 @command
@@ -39,29 +39,33 @@ def pull(postgres: bool, redis: bool) -> None:
   ### Pull required images ###
   outputs: List[str] = []
   docker_images: Set[str] = {image.tags[0] for image in client.images.list()}
-  for registry_id in track(IMAGES["required"].values(), "Pull required images:".ljust(42)):
+  for registry_id in track(BUILDS.keys(), "Pull buildable images:".ljust(42)):
     if registry_id in docker_images:
-      outputs.append(f"<Image: '{ registry_id }'> already exists in local docker images.")
+      outputs.append(
+        f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists in registry."
+      )
     else:
       repository, tag = registry_id.split(":")
       client.images.pull(repository=repository, tag=tag)
-      outputs.append(f"<Image: '{ registry_id }'> downloaded.")
+      outputs.append(f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> downloaded.")
   list(map(rich_print, outputs))
 
-  ### Pull optional images ###
-  optional_select: Dict[str, bool] = {"postgres": postgres, "redis": redis}
-  optionals: List[str] = [
-    registry for alias, registry in IMAGES["optional"].items() if optional_select[alias]
+  ### Pull peripheral images ###
+  peripheral_selector: Dict[str, bool] = {"postgres:latest": postgres, "redis:latest": redis}
+  peripherals: List[str] = [
+    registry for alias, registry in PERIPHERALS.keys() if peripheral_selector[alias]
   ]
-  if len(optionals) != 0:
+  if len(peripherals) != 0:
     outputs = []
-    for registry_id in track(optionals, "Pull optional images flagged:".ljust(42)):
+    for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
       if registry_id in docker_images:
-        outputs.append(f"<Image: '{ registry_id }'> already exists in local docker images.")
+        outputs.append(
+          f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists registry."
+        )
       else:
         repository, tag = registry_id.split(":")
         client.images.pull(repository=repository, tag=tag)
-        outputs.append(f"<Image: '{ registry_id }'> downloaded.")
+        outputs.append(f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> downloaded.")
     list(map(rich_print, outputs))
 
 

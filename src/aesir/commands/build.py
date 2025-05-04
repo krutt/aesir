@@ -22,7 +22,7 @@ from rich.progress import TaskID
 
 ### Local modules ###
 from aesir.configs import BUILDS
-from aesir.types import Build
+from aesir.types import Build, BuildEnum
 from aesir.views import Yggdrasil
 
 
@@ -56,13 +56,13 @@ def build(
       filter(lambda image: len(image.tags) != 0, client.images.list()),
     )
   )
-  build_select: Dict[str, bool] = {
-    "bitcoind": bitcoind,
-    "bitcoind-cat": bitcoind_cat,
-    "cashu-mint": cashu_mint,
-    "lnd": lnd,
-    "lnd-krub": lnd_krub,
-    "ord-server": ord_server,
+  build_select: Dict[BuildEnum, bool] = {
+    "aesir-bitcoind": bitcoind,
+    "aesir-bitcoind-cat": bitcoind_cat,
+    "aesir-cashu-mint": cashu_mint,
+    "aesir-lnd": lnd,
+    "aesir-lnd-krub": lnd_krub,
+    "aesir-ord-server": ord_server,
   }
 
   outputs: List[str] = []

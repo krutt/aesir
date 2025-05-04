@@ -11,11 +11,11 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal, Tuple
+from typing import Literal, Tuple, Union
 
-ImageAlias = Literal[
-  "bitcoind", "bitcoind-cat", "cashu-mint", "lnd", "lnd-krub", "ord-server", "postgres", "redis"
-]
-ImageEnum = Literal["optional", "required"]
+### Local modules ###
+from aesir.types.build import BuildEnum
 
-__all__: Tuple[str, ...] = ("ImageAlias", "ImageEnum")
+Image = Union[BuildEnum, Literal["postgres:latest", "redis:latest"]]
+
+__all__: Tuple[str, ...] = ("Image",)

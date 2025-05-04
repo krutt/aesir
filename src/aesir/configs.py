@@ -23,9 +23,6 @@ from aesir.types import (
   Build,
   BuildEnum,
   ClusterEnum,
-  ImageAlias,
-  ImageEnum,
-  PeripheralEnum,
   Service,
   ServiceName,
 )
@@ -33,9 +30,8 @@ from aesir.types import (
 ### Parse schemas ###
 BUILDS: Dict[BuildEnum, Build]
 CLUSTERS: Dict[ClusterEnum, Dict[ServiceName, Service]]
-IMAGES: Dict[ImageEnum, Dict[ImageAlias, str]]
 NETWORK: str
-PERIPHERALS: Dict[PeripheralEnum, Dict[ServiceName, Service]]
+PERIPHERALS: Dict[ServiceName, Service]
 
 file_path: Path = Path(__file__).resolve()
 with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
@@ -45,10 +41,7 @@ with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
     CLUSTERS = TypeAdapter(Dict[ClusterEnum, Dict[ServiceName, Service]]).validate_python(
       schema["clusters"]
     )
-    IMAGES = TypeAdapter(Dict[ImageEnum, Dict[ImageAlias, str]]).validate_python(schema["images"])
     NETWORK = schema.get("network", "aesir")
-    PERIPHERALS = TypeAdapter(Dict[PeripheralEnum, Dict[ServiceName, Service]]).validate_python(
-      schema["peripherals"]
-    )
+    PERIPHERALS = TypeAdapter(Dict[ServiceName, Service]).validate_python(schema["peripherals"])
 
-__all__: Tuple[str, ...] = ("BUILDS", "CLUSTERS", "IMAGES", "NETWORK", "PERIPHERALS")
+__all__: Tuple[str, ...] = ("BUILDS", "CLUSTERS", "NETWORK", "PERIPHERALS")

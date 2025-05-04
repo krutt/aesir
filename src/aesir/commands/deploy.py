@@ -26,11 +26,10 @@ from rich import print as rich_print
 from rich.progress import TaskID, track
 
 ### Local modules ###
-from aesir.configs import BUILDS, CLUSTERS, IMAGES, NETWORK, PERIPHERALS
+from aesir.configs import BUILDS, CLUSTERS, NETWORK, PERIPHERALS
 from aesir.types import (
   Build,
   ClusterEnum,
-  ImageAlias,
   MutexOption,
   NewAddress,
   Service,
@@ -76,12 +75,12 @@ def deploy(
   except StopIteration:
     pass
   cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
-  image_selector: Dict[ImageAlias, bool] = {
-    "cashu-mint": False,
-    "lnd-krub": False,
-    "ord-server": False,
-    "postgres": with_postgres,
-    "redis": with_redis,
+  image_selector: Dict[ServiceName, bool] = {
+    "aesir-cashu-mint": False,
+    "aesir-lnd-krub": False,
+    "aesir-ord-server": False,
+    "aesir-postgres": with_postgres,
+    "aesir-redis": with_redis,
   }
   peripherals: Dict[ServiceName, Service] = {
     f"aesir-{key}": value[f"aesir-{key}"]  # type: ignore[index, misc]
@@ -98,7 +97,7 @@ def deploy(
 
   ### Deploy specified cluster ###
   for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
-    image_name: str = dict(**IMAGES["required"], **IMAGES["optional"])[service.alias]
+    image_name: str = service.image
     ports: Dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
