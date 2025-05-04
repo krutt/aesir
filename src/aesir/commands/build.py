@@ -17,11 +17,13 @@ from typing import Dict, List, Set, Tuple
 from click import command, option
 from docker import DockerClient, from_env
 from docker.errors import APIError, BuildError
+from pydantic import ValidationError
 from rich import print as rich_print
 from rich.progress import TaskID
 
 ### Local modules ###
 from aesir.configs import BUILDS
+from aesir.exceptions import BuildUnsuccessful
 from aesir.types import Build, BuildEnum
 from aesir.views import Yggdrasil
 
@@ -88,7 +90,7 @@ def build(
               ),
               build_task_id,
             )
-          except BuildError:
+          except (BuildError, BuildUnsuccessful, ValidationError):
             yggdrasil.update(build_task_id, completed=-1)
             continue
           yggdrasil.update(build_task_id, completed=100)

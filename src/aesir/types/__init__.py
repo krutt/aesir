@@ -16,6 +16,7 @@ from typing import Tuple
 ### Local modules ###
 from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
+from aesir.types.chunk import Chunk, ErrorDetail
 from aesir.types.cluster_enum import ClusterEnum
 from aesir.types.image import Image
 from aesir.types.lnd_info import LNDInfo
@@ -31,7 +32,9 @@ __all__: Tuple[str, ...] = (
   "BlockchainInfo",
   "Build",
   "BuildEnum",
+  "Chunk",
   "ClusterEnum",
+  "ErrorDetail",
   "Image",
   "LNDInfo",
   "LNDInvoice",

@@ -15,13 +15,18 @@ from collections import deque
 from math import floor
 from re import search
 from textwrap import wrap
-from typing import Deque, Dict, Generator, Literal, Optional, Tuple, Union
+from typing import Deque, Dict, Generator, Optional, Tuple, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
 from rich.console import ConsoleRenderable, Group, RichCast
 from rich.progress import BarColumn, Progress, Task, TaskID
 from rich.table import Table
+
+
+### Local modules ###
+from aesir.exceptions import BuildUnsuccessful
+from aesir.types import Chunk
 
 
 class Yggdrasil(Progress):
@@ -67,21 +72,26 @@ class Yggdrasil(Progress):
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
 
-  def progress_build(
-    self, chunk: Generator[Dict[Literal["stream", "error"], str], None, None], task_id: TaskID
-  ) -> None:
-    for line in chunk:
-      if "stream" in line.keys():
-        stream: str = line.pop("stream").strip()
-        step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", stream)
+  def progress_build(self, chunks: Generator[Dict[str, str], None, None], task_id: TaskID) -> None:
+    """
+    :raises BuildUnsuccessful:
+    :raises pydantic.ValidationError:
+    """
+    for line in chunks:
+      chunk: Chunk = Chunk.model_validate(line)
+      if chunk.stream is not None:
+        step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", chunk.stream)
         if step is not None:
           divided: int = int(step.group("divided"))
           divisor: int = int(step.group("divisor"))
           self.update(task_id, completed=floor(divided / divisor * 100))
-        self.update_table(stream)
-      elif "error" in line:
-        error: str = line.pop("error").strip()
-        self.update_table(f"[red]{ error }[reset]")
+        self.update_table(chunk.stream)
+      elif chunk.error is not None:
+        self.update_table(f"[red]{ chunk.error }[reset]")
+        if chunk.errorDetail is not None:
+          raise BuildUnsuccessful(code=chunk.errorDetail.code, message=chunk.errorDetail.message)
+        else:
+          raise BuildUnsuccessful(code=255, message=chunk.error)
 
   def update_table(self, row: Optional[str] = None) -> None:
     if row is not None:
