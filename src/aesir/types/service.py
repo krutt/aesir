@@ -21,9 +21,9 @@ from aesir.types.image import Image
 
 
 class Service(BaseModel):
-  image: Image
   command: List[StrictStr] = []
   env_vars: List[StrictStr] = []
+  image: Image
   ports: List[StrictStr]
 
 
