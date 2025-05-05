@@ -14,7 +14,7 @@
 from typing import Optional, Tuple
 
 ### Third-party packages ###
-from pydantic import BaseModel, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 
 
 class ErrorDetail(BaseModel):
@@ -24,7 +24,7 @@ class ErrorDetail(BaseModel):
 
 class Chunk(BaseModel):
   error: Optional[StrictStr] = None
-  errorDetail: Optional[ErrorDetail] = None
+  error_detail: Optional[ErrorDetail] = Field(alias="errorDetail", default=None)
   stream: Optional[StrictStr] = None
 
 

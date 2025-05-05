@@ -88,8 +88,8 @@ class Yggdrasil(Progress):
         self.update_table(chunk.stream)
       elif chunk.error is not None:
         self.update_table(f"[red]{ chunk.error }[reset]")
-        if chunk.errorDetail is not None:
-          raise BuildUnsuccessful(code=chunk.errorDetail.code, message=chunk.errorDetail.message)
+        if chunk.error_detail is not None:
+          raise BuildUnsuccessful(code=chunk.error_detail.code, message=chunk.error_detail.message)
         else:
           raise BuildUnsuccessful(code=255, message=chunk.error)
 
