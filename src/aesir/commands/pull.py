@@ -56,7 +56,7 @@ def pull(postgres: bool, redis: bool) -> None:
   for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
     if registry_id in docker_images:
       outputs.append(
-        f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists registry."
+        f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists in registry."
       )
     else:
       repository, tag = registry_id.split(":")
