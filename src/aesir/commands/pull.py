@@ -62,7 +62,7 @@ def pull(postgres: bool, redis: bool) -> None:
       repository, tag = registry_id.split(":")
       client.images.pull(repository=repository, tag=tag)
       outputs.append(f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> downloaded.")
-    list(map(rich_print, outputs))
+  list(map(rich_print, outputs))
 
 
 __all__: Tuple[str, ...] = ("pull",)
