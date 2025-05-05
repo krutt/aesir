@@ -192,7 +192,7 @@ def deploy(
     volume_target = "aesir-bitcoind" if name == "aesir-ord-server" else volume_target
     try:
       client.containers.run(
-        service.alias,
+        service.image,
         command=service.command,
         detach=True,
         environment=service.env_vars,
@@ -203,7 +203,7 @@ def deploy(
       )
     except ImageNotFound:
       run_errors.append(
-        f"<[bright_magenta]Image [green]'{ service.alias }'[reset]> [red]is not found.[reset]"
+        f"<[bright_magenta]Image [green]'{ service.image }'[reset]> [red]is not found.[reset]"
       )
   list(map(rich_print, run_errors))
 
