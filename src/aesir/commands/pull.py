@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Dict, List, Set, Tuple
+from typing import Dict, Iterator, List, Set, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -52,20 +52,16 @@ def pull(postgres: bool, redis: bool) -> None:
 
   ### Pull peripheral images ###
   peripheral_selector: Dict[str, bool] = {"postgres:latest": postgres, "redis:latest": redis}
-  peripherals: List[str] = list(
-    filter(lambda registry: peripheral_selector[registry], PERIPHERALS.keys())
-  )
-  if len(peripherals) != 0:
-    outputs = []
-    for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
-      if registry_id in docker_images:
-        outputs.append(
-          f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists registry."
-        )
-      else:
-        repository, tag = registry_id.split(":")
-        client.images.pull(repository=repository, tag=tag)
-        outputs.append(f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> downloaded.")
+  peripherals: Iterator[str] = filter(lambda key: peripheral_selector[key], PERIPHERALS.keys())
+  for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
+    if registry_id in docker_images:
+      outputs.append(
+        f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists registry."
+      )
+    else:
+      repository, tag = registry_id.split(":")
+      client.images.pull(repository=repository, tag=tag)
+      outputs.append(f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> downloaded.")
     list(map(rich_print, outputs))
 
 
