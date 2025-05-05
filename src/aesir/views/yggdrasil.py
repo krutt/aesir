@@ -65,7 +65,8 @@ class Yggdrasil(Progress):
           )
         else:
           self.columns = (
-            f"[blue]Built [reset]<[bright_magenta]Image [green]'{image_name}'[reset]>[blue] successfully.[reset]",
+            f"[blue]Built [reset]<[bright_magenta]Image [green]'{image_name}'[reset]>"
+            "[blue] successfully.[reset]",
             BarColumn(),
           )
       elif task.fields.get("progress_type") == "primary":
