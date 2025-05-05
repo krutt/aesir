@@ -52,9 +52,9 @@ def pull(postgres: bool, redis: bool) -> None:
 
   ### Pull peripheral images ###
   peripheral_selector: Dict[str, bool] = {"postgres:latest": postgres, "redis:latest": redis}
-  peripherals: List[str] = [
-    registry for alias, registry in PERIPHERALS.keys() if peripheral_selector[alias]
-  ]
+  peripherals: List[str] = list(
+    filter(lambda registry: peripheral_selector[registry], PERIPHERALS.keys())
+  )
   if len(peripherals) != 0:
     outputs = []
     for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
