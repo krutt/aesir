@@ -14,7 +14,7 @@
 from io import BytesIO
 from re import match
 from time import sleep
-from typing import Dict, List, Tuple
+from typing import Dict, Iterator, List, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -29,6 +29,7 @@ from rich.progress import TaskID, track
 from aesir.configs import BUILDS, CLUSTERS, NETWORK, PERIPHERALS
 from aesir.types import (
   Build,
+  BuildEnum,
   ClusterEnum,
   MutexOption,
   NewAddress,
@@ -82,11 +83,9 @@ def deploy(
     "aesir-postgres": with_postgres,
     "aesir-redis": with_redis,
   }
-  peripherals: Dict[ServiceName, Service] = {
-    f"aesir-{key}": value[f"aesir-{key}"]  # type: ignore[index, misc]
-    for key, value in PERIPHERALS.items()
-    if image_selector[key]
-  }
+  peripherals: Iterator[Tuple[ServiceName, Service]] = filter(
+    lambda peripheral_tuple: image_selector[peripheral_tuple[0]], PERIPHERALS.items()
+  )
   cluster.update(peripherals)
 
   ### Attempts to create network if not exist ###
@@ -98,12 +97,13 @@ def deploy(
   ### Deploy specified cluster ###
   for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
     image_name: str = service.image
+    flags: List[str] = list(service.command.values())
     ports: Dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
     client.containers.run(
       image_name,
-      command=service.command,
+      command=flags,
       detach=True,
       environment=service.env_vars,
       name=name,
@@ -133,15 +133,13 @@ def deploy(
         treasuries.append(new_address.address)
 
   ### Define selection for shared-volume peripherals ###
-  image_selector = {
-    "bitcoind": False,
-    "bitcoind-cat": False,
-    "cashu-mint": with_cashu_mint,
-    "lnd": False,
-    "lnd-krub": with_lnd_krub and with_postgres and with_redis,
-    "ord-server": with_ord_server,
-    "postgres": False,
-    "redis": False,
+  build_selector: Dict[BuildEnum, bool] = {
+    "aesir-bitcoind": False,
+    "aesir-bitcoind-cat": False,
+    "aesir-cashu-mint": with_cashu_mint,
+    "aesir-lnd": False,
+    "aesir-lnd-krub": with_lnd_krub and with_postgres and with_redis,
+    "aesir-ord-server": with_ord_server,
   }
 
   ### Build missing images if any for shared-volume peripherals ###
@@ -152,7 +150,7 @@ def deploy(
     )
   )
   builds: Dict[str, Build] = {
-    tag: build for tag, build in BUILDS.items() if image_selector[tag] and tag not in image_names
+    tag: build for tag, build in BUILDS.items() if build_selector[tag] and tag not in image_names
   }
   build_count: int = len(builds.keys())
   if build_count != 0:
@@ -185,15 +183,14 @@ def deploy(
 
   ### Deploy shared volume peripherals ###
   run_errors: List[str] = []
-  peripherals = {f"aesir-{k}": v[f"aesir-{k}"] for k, v in PERIPHERALS.items() if image_selector[k]}  # type: ignore[index, misc]
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
-  for name, service in track(peripherals.items(), "Deploy shared-volume peripherals:".ljust(42)):
+  for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     volume_target = "aesir-bitcoind" if name == "aesir-ord-server" else volume_target
     try:
       client.containers.run(
         service.image,
-        command=service.command,
+        command=service.command.values(),
         detach=True,
         environment=service.env_vars,
         name=name,

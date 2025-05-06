@@ -68,7 +68,8 @@ builds:
       - RUN apt-get install -y curl wait-for-it
       - RUN curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v$LND_VERSION/lnd-linux-arm64-v$LND_VERSION.tar.gz
       - RUN tar -xzf lnd-linux-arm64-v$LND_VERSION.tar.gz
-      - RUN mv lnd-linux-arm64-v$LND_VERSION lnd
+      - RUN mv lnd-linux-arm64-v$LND_VERSION/lnd lnd
+      - RUN mv lnd-linux-arm64-v$LND_VERSION/lncli lncli
       - RUN rm lnd-linux-arm64-v$LND_VERSION.tar.gz
       - RUN curl -SLO https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion
       - RUN mkdir /etc/bash_completion.d
@@ -78,7 +79,7 @@ builds:
       - RUN bash /usr/share/bash-completion/bash_completion
       - VOLUME [ "/home/lnd/.lnd" ]
       - EXPOSE 8080 9735 10000
-      - ENTRYPOINT lnd
+      - ENTRYPOINT [ "/usr/app/lnd" ]
   aesir-lnd-krub:
     instructions:
       - FROM node:18-bullseye AS builder
@@ -118,29 +119,29 @@ builds:
       - CMD ord --chain regtest --cookie-file /home/bitcoin/.bitcoin/regtest --rpc-url aesir-bitcoind:18443 server --http-port 8080
 clusters:
   cat:
-    aesir-bitcoind-cat:
-      command:
-        - -server=1
-        - -regtest=1
-        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
-        - -debug=1
-        - -zmqpubrawblock=tcp://0.0.0.0:28334
-        - -zmqpubrawtx=tcp://0.0.0.0:28335
-        - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=1
-        - -dnsseed=0
-        - -upnp=0
-        - -rpcbind=0.0.0.0
-        - -rpcallowip=0.0.0.0/0
-        - -rpcport=18443
-        - -rpcworkqueue=128
-        - -rest
-        - -listen=1
-        - -listenonion=0
-        - -fallbackfee=0.0002
-        - -blockfilterindex=1
-        - -peerblockfilters=1
-        - -datadir=/home/bitcoin/.bitcoin
+    aesir-bitcoind:
+      command: &bitcoindFlags
+        0: -server=1
+        1: -regtest=1
+        2: -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
+        3: -debug=1
+        4: -zmqpubrawblock=tcp://0.0.0.0:28334
+        5: -zmqpubrawtx=tcp://0.0.0.0:28335
+        6: -zmqpubhashblock=tcp://0.0.0.0:28336
+        7: -txindex=1
+        8: -dnsseed=0
+        9: -upnp=0
+        10: -rpcbind=0.0.0.0
+        11: -rpcallowip=0.0.0.0/0
+        12: -rpcport=18443
+        13: -rpcworkqueue=128
+        14: -rest
+        15: -listen=1
+        16: -listenonion=0
+        17: -fallbackfee=0.0002
+        18: -blockfilterindex=1
+        19: -peerblockfilters=1
+        20: -datadir=/home/bitcoin/.bitcoin
       image: aesir-bitcoind-cat
       ports:
         - 18443:18443
@@ -149,49 +150,29 @@ clusters:
   duo:
     aesir-bitcoind:
       command:
-        - -server=1
-        - -regtest=1
-        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
-        - -debug=1
-        - -zmqpubrawblock=tcp://0.0.0.0:28334
-        - -zmqpubrawtx=tcp://0.0.0.0:28335
-        - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=1
-        - -dnsseed=0
-        - -upnp=0
-        - -rpcbind=0.0.0.0
-        - -rpcallowip=0.0.0.0/0
-        - -rpcport=18443
-        - -rpcworkqueue=128
-        - -rest
-        - -listen=1
-        - -listenonion=0
-        - -fallbackfee=0.0002
-        - -blockfilterindex=1
-        - -peerblockfilters=1
-        - -datadir=/home/bitcoin/.bitcoin
+        <<: *bitcoindFlags
       image: aesir-bitcoind
       ports:
         - 18443:18443
         - 28334:28334
         - 28335:28335
     aesir-ping:
-      command:
-        - --noseedbackup
-        - --trickledelay=5000
-        - --externalip=aesir-ping
-        - --tlsextradomain=aesir-ping
-        - --listen=0.0.0.0:9735
-        - --rpclisten=0.0.0.0:10001
-        - --restlisten=0.0.0.0:8080
-        - --bitcoin.active
-        - --bitcoin.regtest
-        - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=aesir-bitcoind
-        - --bitcoind.rpcuser=aesir
-        - --bitcoind.rpcpass=aesir
-        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+      command: &lndFlags
+        0: --noseedbackup
+        1: --trickledelay=5000
+        2: --externalip=aesir-ping
+        3: --tlsextradomain=aesir-ping
+        4: --listen=0.0.0.0:9735
+        5: --rpclisten=0.0.0.0:10001
+        6: --restlisten=0.0.0.0:8080
+        7: --bitcoin.active
+        8: --bitcoin.regtest
+        9: --bitcoin.node=bitcoind
+        10: --bitcoind.rpchost=aesir-bitcoind
+        11: --bitcoind.rpcuser=aesir
+        12: --bitcoind.rpcpass=aesir
+        13: --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
+        14: --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       image: aesir-lnd
       ports:
         - 8080:8080
@@ -199,21 +180,9 @@ clusters:
         - 10001:10001
     aesir-pong:
       command:
-        - --noseedbackup
-        - --trickledelay=5000
-        - --externalip=aesir-pong
-        - --tlsextradomain=aesir-pong
-        - --listen=0.0.0.0:9735
-        - --rpclisten=0.0.0.0:10001
-        - --restlisten=0.0.0.0:8080
-        - --bitcoin.active
-        - --bitcoin.regtest
-        - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=aesir-bitcoind
-        - --bitcoind.rpcuser=aesir
-        - --bitcoind.rpcpass=aesir
-        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+        <<: *lndFlags
+        2: --externalip=aesir-pong
+        3: --tlsextradomain=aesir-pong
       image: aesir-lnd
       ports:
         - 8080:8081
@@ -222,27 +191,7 @@ clusters:
   ohm:
     aesir-bitcoind:
       command:
-        - -server=1
-        - -regtest=1
-        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
-        - -debug=1
-        - -zmqpubrawblock=tcp://0.0.0.0:28334
-        - -zmqpubrawtx=tcp://0.0.0.0:28335
-        - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=1
-        - -dnsseed=0
-        - -upnp=0
-        - -rpcbind=0.0.0.0
-        - -rpcallowip=0.0.0.0/0
-        - -rpcport=18443
-        - -rpcworkqueue=128
-        - -rest
-        - -listen=1
-        - -listenonion=0
-        - -fallbackfee=0.0002
-        - -blockfilterindex=1
-        - -peerblockfilters=1
-        - -datadir=/home/bitcoin/.bitcoin
+        <<: *bitcoindFlags
       image: aesir-bitcoind
       ports:
         - 18443:18443
@@ -251,27 +200,7 @@ clusters:
   uno:
     aesir-bitcoind:
       command:
-        - -server=1
-        - -regtest=1
-        - -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
-        - -debug=1
-        - -zmqpubrawblock=tcp://0.0.0.0:28334
-        - -zmqpubrawtx=tcp://0.0.0.0:28335
-        - -zmqpubhashblock=tcp://0.0.0.0:28336
-        - -txindex=1
-        - -dnsseed=0
-        - -upnp=0
-        - -rpcbind=0.0.0.0
-        - -rpcallowip=0.0.0.0/0
-        - -rpcport=18443
-        - -rpcworkqueue=128
-        - -rest
-        - -listen=1
-        - -listenonion=0
-        - -fallbackfee=0.0002
-        - -blockfilterindex=1
-        - -peerblockfilters=1
-        - -datadir=/home/bitcoin/.bitcoin
+        <<: *bitcoindFlags
       image: aesir-bitcoind
       ports:
         - 18443:18443
@@ -279,21 +208,9 @@ clusters:
         - 28335:28335
     aesir-lnd:
       command:
-        - --noseedbackup
-        - --trickledelay=5000
-        - --externalip=aesir-lnd
-        - --tlsextradomain=aesir-lnd
-        - --listen=0.0.0.0:9735
-        - --rpclisten=0.0.0.0:10001
-        - --restlisten=0.0.0.0:8080
-        - --bitcoin.active
-        - --bitcoin.regtest
-        - --bitcoin.node=bitcoind
-        - --bitcoind.rpchost=aesir-bitcoind
-        - --bitcoind.rpcuser=aesir
-        - --bitcoind.rpcpass=aesir
-        - --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
-        - --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+        <<: *lndFlags
+        2: --externalip=aesir-lnd
+        3: --tlsextradomain=aesir-lnd
       image: aesir-lnd
       ports:
         - 8080:8080

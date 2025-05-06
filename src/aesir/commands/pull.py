@@ -22,6 +22,7 @@ from rich.progress import track
 
 ### Local modules ###
 from aesir.configs import BUILDS, PERIPHERALS
+from aesir.types import Image, Service, ServiceName
 
 
 @command
@@ -51,9 +52,18 @@ def pull(postgres: bool, redis: bool) -> None:
   list(map(rich_print, outputs))
 
   ### Pull peripheral images ###
-  peripheral_selector: Dict[str, bool] = {"postgres:latest": postgres, "redis:latest": redis}
-  peripherals: Iterator[str] = filter(lambda key: peripheral_selector[key], PERIPHERALS.keys())
-  for registry_id in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
+  peripheral_selector: Dict[ServiceName, bool] = {
+    "aesir-cashu-mint": False,
+    "aesir-ord-server": False,
+    "aesir-postgres": postgres,
+    "aesir-redis": redis,
+  }
+  peripherals: Iterator[Tuple[ServiceName, Service]] = filter(
+    lambda service_tuple: peripheral_selector[service_tuple[0]],
+    PERIPHERALS.items(),
+  )
+  for _, peripheral in track(peripherals, "Pull peripherals images flagged:".ljust(42)):
+    registry_id: Image = peripheral.image  # type: ignore[no-redef]
     if registry_id in docker_images:
       outputs.append(
         f"<[bright_magenta]Image: [green]'{ registry_id }'[reset]> already exists in registry."

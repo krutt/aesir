@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import List, Literal, Tuple
+from typing import List, Literal, Mapping, Tuple
 
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
@@ -21,7 +21,7 @@ from aesir.types.image import Image
 
 
 class Service(BaseModel):
-  command: List[StrictStr] = []
+  command: Mapping[int, StrictStr] = {}
   env_vars: List[StrictStr] = []
   image: Image
   ports: List[StrictStr]
@@ -29,7 +29,6 @@ class Service(BaseModel):
 
 ServiceName = Literal[
   "aesir-bitcoind",
-  "aesir-bitcoind-cat",
   "aesir-cashu-mint",
   "aesir-lnd",
   "aesir-lnd-krub",
