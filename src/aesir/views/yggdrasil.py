@@ -78,8 +78,8 @@ class Yggdrasil(Progress):
     :raises BuildUnsuccessful:
     :raises pydantic.ValidationError:
     """
-    for line in chunks:
-      chunk: Chunk = Chunk.model_validate(line)
+    for dictionary in chunks:
+      chunk: Chunk = Chunk.model_validate(dictionary)
       if chunk.stream is not None:
         step = search(r"^Step (?P<divided>\d+)\/(?P<divisor>\d+) :", chunk.stream)
         if step is not None:
