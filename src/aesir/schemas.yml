@@ -165,14 +165,13 @@ clusters:
         4: --listen=0.0.0.0:9735
         5: --rpclisten=0.0.0.0:10001
         6: --restlisten=0.0.0.0:8080
-        7: --bitcoin.active
-        8: --bitcoin.regtest
-        9: --bitcoin.node=bitcoind
-        10: --bitcoind.rpchost=aesir-bitcoind
-        11: --bitcoind.rpcuser=aesir
-        12: --bitcoind.rpcpass=aesir
-        13: --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
-        14: --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
+        7: --bitcoin.regtest
+        8: --bitcoin.node=bitcoind
+        9: --bitcoind.rpchost=aesir-bitcoind
+        10: --bitcoind.rpcuser=aesir
+        11: --bitcoind.rpcpass=aesir
+        12: --bitcoind.zmqpubrawblock=tcp://aesir-bitcoind:28334
+        13: --bitcoind.zmqpubrawtx=tcp://aesir-bitcoind:28335
       image: aesir-lnd
       ports:
         - 8080:8080
