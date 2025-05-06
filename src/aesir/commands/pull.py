@@ -52,6 +52,7 @@ def pull(postgres: bool, redis: bool) -> None:
   list(map(rich_print, outputs))
 
   ### Pull peripheral images ###
+  outputs = []
   peripheral_selector: Dict[ServiceName, bool] = {
     "aesir-cashu-mint": False,
     "aesir-ord-server": False,
