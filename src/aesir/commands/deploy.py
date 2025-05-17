@@ -123,9 +123,9 @@ def deploy(
           container.exec_run(
             """
             lncli
-              --macaroonpath=/home/lnd/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+              --macaroonpath=/root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
               --rpcserver=localhost:10001
-              --tlscertpath=/home/lnd/.lnd/tls.cert
+              --tlscertpath=/root/.lnd/tls.cert
             newaddress p2wkh
             """
           ).output
