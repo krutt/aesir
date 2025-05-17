@@ -71,15 +71,17 @@ builds:
       - RUN mv lnd-linux-arm64-v$LND_VERSION/lnd lnd
       - RUN mv lnd-linux-arm64-v$LND_VERSION/lncli lncli
       - RUN rm lnd-linux-arm64-v$LND_VERSION.tar.gz
+      - RUN rm -rf lns-linux-arm64-v$LND_VERSION
       - RUN curl -SLO https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion
       - RUN mkdir /etc/bash_completion.d
       - RUN mv lncli.bash-completion /etc/bash_completion.d/lncli.bash-completion
       - RUN curl -SLO https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
       - RUN mv bash_completion /usr/share/bash-completion/bash_completion
       - RUN bash /usr/share/bash-completion/bash_completion
-      - VOLUME [ "/home/lnd/.lnd" ]
+      - ENV PATH /usr/app:$PATH
+      - VOLUME [ "/root/.lnd" ]
       - EXPOSE 8080 9735 10000
-      - ENTRYPOINT [ "/usr/app/lnd" ]
+      - ENTRYPOINT [ "lnd" ]
   aesir-lnd-krub:
     instructions:
       - FROM node:18-bullseye AS builder
