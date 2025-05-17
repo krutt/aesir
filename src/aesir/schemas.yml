@@ -3,7 +3,7 @@ builds:
     instructions:
       - FROM debian:stable-slim AS builder
       - RUN apt-get update
-      - RUN apt-get install -y autoconf bsdmainutils build-essential ccache clang git libboost-all-dev libtool pkg-config
+      - RUN apt-get install -y autoconf bsdmainutils build-essential ccache clang git libboost-all-dev libtool libzmq3-dev pkg-config 
       - WORKDIR /usr
       - RUN mkdir ~/.ccache && echo "max_size = 50.0G\nbase_dir = /usr/bitcoin\n" > ~/.ccache/ccache.conf
       - RUN git clone --depth 1 https://github.com/bitcoin/bitcoin.git
@@ -14,7 +14,7 @@ builds:
       - FROM debian:stable-slim AS runner
       - WORKDIR /usr/app
       - RUN apt-get update
-      - RUN apt-get install -y libevent-dev
+      - RUN apt-get install -y libevent-dev libzmq3-dev
       - COPY --from=builder /usr/bitcoin/src/bitcoind /usr/app/bitcoind
       - COPY --from=builder /usr/bitcoin/src/bitcoin-cli /usr/app/bitcoin-cli
       - ENV PATH=$PATH:/usr/app
