@@ -121,27 +121,27 @@ clusters:
   cat:
     aesir-bitcoind:
       command: &bitcoindFlags
-        0: -server=1
-        1: -regtest=1
-        2: -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
-        3: -debug=1
-        4: -zmqpubrawblock=tcp://0.0.0.0:28334
-        5: -zmqpubrawtx=tcp://0.0.0.0:28335
-        6: -zmqpubhashblock=tcp://0.0.0.0:28336
-        7: -txindex=1
-        8: -dnsseed=0
-        9: -upnp=0
-        10: -rpcbind=0.0.0.0
-        11: -rpcallowip=0.0.0.0/0
-        12: -rpcport=18443
-        13: -rpcworkqueue=128
-        14: -rest
-        15: -listen=1
-        16: -listenonion=0
-        17: -fallbackfee=0.0002
-        18: -blockfilterindex=1
-        19: -peerblockfilters=1
-        20: -datadir=/home/bitcoin/.bitcoin
+        0: -blockfilterindex=1
+        1: -datadir=/home/bitcoin/.bitcoin
+        2: -debug=1
+        3: -dnsseed=0
+        4: -fallbackfee=0.0002
+        5: -listen=1
+        6: -listenonion=0
+        7: -peerblockfilters=1
+        8: -regtest=1
+        9: -rest
+        10: -rpcallowip=0.0.0.0/0
+        11: -rpcauth=aesir:0a17eed40accdd0f2271a548547ec9bb$b269b686f2ad7ccf0b5ea3450e0687dc1a90846d3828811ad0d570de83b65f4c
+        12: -rpcbind=0.0.0.0
+        13: -rpcport=18443
+        14: -rpcworkqueue=128
+        15: -server=1
+        16: -txindex=1
+        17: -upnp=0
+        18: -zmqpubhashblock=tcp://0.0.0.0:28336
+        19: -zmqpubrawblock=tcp://0.0.0.0:28334
+        20: -zmqpubrawtx=tcp://0.0.0.0:28335
       image: aesir-bitcoind-cat
       ports:
         - 18443:18443
