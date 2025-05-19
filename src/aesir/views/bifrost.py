@@ -17,6 +17,7 @@ from typing import ClassVar, List, Tuple
 ### Third-party packages ###
 from blessed import Terminal
 from blessed.keyboard import Keystroke
+from curses import KEY_DOWN, KEY_UP
 from docker.models.containers import Container
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, TypeAdapter
 from rich.layout import Layout
@@ -30,7 +31,7 @@ from aesir.types import BlockchainInfo, LNDInfo, MempoolInfo
 
 
 class Bifrost(BaseModel):
-  model_config: ConfigDict = ConfigDict(arbitrary_types_allowed=True)  # type: ignore[misc]
+  model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
   bitcoind: Container
   container_index: StrictInt = 0
   container_names: List[StrictStr] = []
@@ -62,11 +63,10 @@ class Bifrost(BaseModel):
         while True:
           ### Process input key ###
           keystroke: Keystroke = self.terminal.inkey(timeout=0.25)
-          if keystroke.code == self.terminal.KEY_UP and self.container_index > 0:
+          if keystroke.code == KEY_UP and self.container_index > 0:
             self.container_index -= 1
           elif (
-            keystroke.code == self.terminal.KEY_DOWN
-            and self.container_index < len(self.container_names) - 1
+            keystroke.code == KEY_DOWN and self.container_index < len(self.container_names) - 1
           ):
             self.container_index += 1
           elif keystroke in {"Q", "q"}:
@@ -79,7 +79,7 @@ class Bifrost(BaseModel):
           else:
             container_rows = f"[reverse]{self.container_names[self.container_index]}[reset]\n"
           if self.container_index < len(self.container_names) - 1:
-            container_rows += "\n".join(self.container_names[self.container_index + 1 :])
+            container_rows += "\n".join(self.container_names[self.container_index + 1:])
           self.pane["realms"].update(Panel(container_rows, title="realms"))
 
           container_name: str = self.container_names[self.container_index]
