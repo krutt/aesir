@@ -63,7 +63,7 @@ def mine(blockcount: int, blocktime: int) -> None:
 
   ### Generate treasury addresses as mining destinations ###
   treasuries: List[str] = []
-  if len(lnd_containers) == 0:
+  if len(lnd_containers) == 0:  # FIXME: current bitcoind does not have BerkeleyDB
     bitcoind.exec_run(
       """
       bitcoin-cli -regtest -rpcuser=aesir -rpcpassword=aesir createwallet default
