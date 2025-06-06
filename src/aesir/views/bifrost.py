@@ -65,9 +65,7 @@ class Bifrost(BaseModel):
           keystroke: Keystroke = self.terminal.inkey(timeout=0.25)
           if keystroke.code == KEY_UP and self.container_index > 0:
             self.container_index -= 1
-          elif (
-            keystroke.code == KEY_DOWN and self.container_index < len(self.container_names) - 1
-          ):
+          elif keystroke.code == KEY_DOWN and self.container_index < len(self.container_names) - 1:
             self.container_index += 1
           elif keystroke in {"Q", "q"}:
             raise StopIteration
@@ -79,7 +77,7 @@ class Bifrost(BaseModel):
           else:
             container_rows = f"[reverse]{self.container_names[self.container_index]}[reset]\n"
           if self.container_index < len(self.container_names) - 1:
-            container_rows += "\n".join(self.container_names[self.container_index + 1:])
+            container_rows += "\n".join(self.container_names[self.container_index + 1 :])
           self.pane["realms"].update(Panel(container_rows, title="realms"))
 
           container_name: str = self.container_names[self.container_index]
