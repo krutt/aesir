@@ -15,6 +15,7 @@ from click import group
 
 ### Local modules ###
 from aesir.commands import build, clean, deploy, invoice, mine, nodekeys, ping_pong, pull
+from aesir.commands.address import getnewaddress
 
 
 @group
@@ -22,6 +23,7 @@ def cli() -> None:
   """aesir"""
 
 
+cli.add_command(getnewaddress, "address")
 cli.add_command(build, "build")
 cli.add_command(clean, "clean")
 cli.add_command(deploy, "deploy")
