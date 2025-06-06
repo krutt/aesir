@@ -15,7 +15,7 @@ from re import match
 from typing import List, Tuple
 
 ### Third-party packages ###
-from click import argument, command
+from click import argument, command, option
 from docker import DockerClient, from_env
 from docker.errors import APIError
 from docker.models.containers import Container
@@ -23,10 +23,10 @@ from pydantic import validate_call
 from rich import print as rich_print
 
 
-@argument("sat_per_vbyte", default=21)
 @argument("amount", default=1_000_000)
 @argument("address")
 @command
+@option("--sat-per-vbyte", default=21)
 @validate_call
 def faucet(address: str, amount: int, sat_per_vbyte: int) -> None:
   """ """
