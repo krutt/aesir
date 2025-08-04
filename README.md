@@ -144,7 +144,6 @@ $ aesir clean
 * Simplify `schemas.yml` and embed commands to service definitions
 * Drop `docker-py` and replace with `podman-py` (rolled back and on hold)
 * Write [click](https://click.palletsprojects.com) tests.
-* Add `aesir-tesla-ball` peripheral service using [tesla-ball](https://github.com/krutt/tesla-ball)
 * Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
 * Create and add some type of `ordapi` peripheral service.
 
