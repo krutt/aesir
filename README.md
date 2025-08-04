@@ -141,6 +141,7 @@ $ aesir clean
 
 ## Roadmap
 
+* Add CI/CD with testcontainers
 * Simplify `schemas.yml` and embed commands to service definitions
 * Drop `docker-py` and replace with `podman-py` (rolled back and on hold)
 * Write [click](https://click.palletsprojects.com) tests.
