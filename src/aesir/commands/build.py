@@ -40,7 +40,6 @@ def build(
   bitcoind_cat: bool,
   cashu_mint: bool,
   lnd: bool,
-  lnd_krub: bool,
   ord_server: bool,
 ) -> None:
   """Build peripheral images for the desired cluster."""
