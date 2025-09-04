@@ -31,7 +31,6 @@ ServiceName = Literal[
   "aesir-bitcoind",
   "aesir-cashu-mint",
   "aesir-lnd",
-  "aesir-lnd-krub",
   "aesir-ord-server",
   "aesir-ping",
   "aesir-pong",
