@@ -1,8 +1,8 @@
 # Aesir
 
 [![Bitcoin-only](https://img.shields.io/badge/bitcoin-only-FF9900?logo=bitcoin)](https://twentyone.world)
-[![LN](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
-[![Podman](https://img.shields.io/badge/podman-892CA0?&logo=podman&logoColor=white)](https://podman.io)
+[![Lightning](https://img.shields.io/badge/lightning-792EE5?logo=lightning)](https://mempool.space/lightning)
+[![Docker](https://img.shields.io/badge/docker-#2496ED?&logo=docker&logoColor=white)](https://www.docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/krutt/aesir/blob/master/LICENSE)
 [![Top](https://img.shields.io/github/languages/top/krutt/aesir)](https://github.com/krutt/aesir)
 [![Languages](https://img.shields.io/github/languages/count/krutt/aesir)](https://github.com/krutt/aesir)
@@ -13,9 +13,9 @@
 
 ## Prerequisites
 
-* python (3.9+)
-* pip
-* podman
+* [python](https://www.python.org) 3.9 and above - High-level general-purpose programming language
+* [pip](https://pypi.org/project/pip) - package installer for Python
+* [docker](https://www.docker.com) - build, deploy run, update and manage [containerized](https://opencontainers.org) applications
 
 ## Getting started
 
