@@ -95,7 +95,7 @@ def deploy(
     pass
 
   ### Deploy specified cluster ###
-  for name, service in track(cluster.items(), f"Deploy { cluster_name } cluster:".ljust(42)):
+  for name, service in track(cluster.items(), f"Deploy {cluster_name} cluster:".ljust(42)):
     image_name: str = service.image
     flags: List[str] = list(service.command.values())
     ports: Dict[str, str] = dict(
@@ -200,7 +200,7 @@ def deploy(
       )
     except ImageNotFound:
       run_errors.append(
-        f"<[bright_magenta]Image [green]'{ service.image }'[reset]> [red]is not found.[reset]"
+        f"<[bright_magenta]Image [green]'{service.image}'[reset]> [red]is not found.[reset]"
       )
   list(map(rich_print, run_errors))
 
