@@ -59,6 +59,22 @@ builds:
       - RUN poetry install --without dev
       - EXPOSE 3338
       - ENTRYPOINT mint
+  aesir-electrs:
+    instructions:
+      - FROM rust:1.90.0-slim-bullseye AS builder
+      - ENV ELECTRS_VERSION=0.10.10
+      - WORKDIR /build
+      - RUN apt-get update
+      - RUN apt-get install -y git clang cmake libsnappy-dev
+      - RUN git clone --branch v$ELECTRS_VERSION https://github.com/romanz/electrs .
+      - ENV CARGO_NET_GIT_FETCH_WITH_CLI true
+      - RUN cargo install --locked --path .
+      - FROM debian:bullseye-slim AS runner
+      - WORKDIR /data
+      - COPY --from=builder /usr/local/cargo/bin/electrs /bin/electrs
+      - EXPOSE 4224 50001
+      - STOPSIGNAL SIGINT
+      - ENTRYPOINT ["electrs"]
   aesir-lnd:
     instructions:
       - FROM debian:stable-slim
@@ -208,6 +224,16 @@ peripherals:
     image: aesir-cashu-mint
     ports:
       - 3338:3338
+  aesir-electrs:
+    command:
+      0: --daemon-dir=/home/bitcoin/.bitcoin
+      1: --electrum-rpc-addr=0.0.0.0:50001
+      2: --log-filters=INFO
+      3: --network=regtest
+    image: aesir-electrs
+    ports:
+      - 4224:4224
+      - 50001:50001
   aesir-ord-server:
     image: aesir-ord-server
     env_vars:

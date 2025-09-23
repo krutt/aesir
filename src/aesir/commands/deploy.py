@@ -45,7 +45,7 @@ from aesir.views import Yggdrasil
 @option("--ohm", alternatives=["cat", "duo", "uno"], cls=MutexOption, is_flag=True, type=bool)
 @option("--uno", alternatives=["cat", "duo", "ohm"], cls=MutexOption, is_flag=True, type=bool)
 @option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
-@option("--with-lnd-krub", is_flag=True, help="Deploy lnd-krub peripheral service", type=bool)
+@option("--with-electrs", is_flag=True, help="Deploy electrs peripheral service", type=bool)
 @option("--with-ord-server", is_flag=True, help="Deploy ord-server peripheral service", type=bool)
 @option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
@@ -55,7 +55,7 @@ def deploy(
   ohm: bool,
   uno: bool,
   with_cashu_mint: bool,
-  with_lnd_krub: bool,
+  with_electrs: bool,
   with_ord_server: bool,
   with_postgres: bool,
   with_redis: bool,
@@ -78,7 +78,7 @@ def deploy(
   cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
   image_selector: Dict[ServiceName, bool] = {
     "aesir-cashu-mint": False,
-    "aesir-lnd-krub": False,
+    "aesir-electrs": with_electrs,
     "aesir-ord-server": False,
     "aesir-postgres": with_postgres,
     "aesir-redis": with_redis,
@@ -137,8 +137,8 @@ def deploy(
     "aesir-bitcoind": False,
     "aesir-bitcoind-cat": False,
     "aesir-cashu-mint": with_cashu_mint,
+    "aesir-electrs": with_electrs,
     "aesir-lnd": False,
-    "aesir-lnd-krub": with_lnd_krub and with_postgres and with_redis,
     "aesir-ord-server": with_ord_server,
   }
 
@@ -186,7 +186,11 @@ def deploy(
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
-    volume_target = "aesir-bitcoind" if name == "aesir-ord-server" else volume_target
+    volume_target = (
+      "aesir-bitcoind"
+      if name in {"aesir-electrs", "aesir-ord-server"} is not None
+      else volume_target
+    )
     try:
       client.containers.run(
         service.image,
@@ -219,12 +223,6 @@ def deploy(
         """
         % address
       )
-
-  ### Show warnings ###
-  warnings: List[str] = []
-  if with_lnd_krub and (not with_postgres or not with_redis):
-    warnings.append("[dim yellow1]LNDKrub needs to be launched in tandem with Postgres and Redis.")
-  list(map(rich_print, warnings))
 
 
 __all__: Tuple[str, ...] = ("deploy",)

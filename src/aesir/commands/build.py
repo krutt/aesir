@@ -33,12 +33,14 @@ from aesir.views import Yggdrasil
 @option("--bitcoind", is_flag=True, help="Build bitcoind image", type=bool)
 @option("--bitcoind-cat", is_flag=True, help="Build bitcoind-cat optional image", type=bool)
 @option("--cashu-mint", is_flag=True, help="Build cashu-mint optional image", type=bool)
+@option("--electrs", is_flag=True, help="Build electrs optional image", type=bool)
 @option("--lnd", is_flag=True, help="Build lnd image", type=bool)
 @option("--ord-server", is_flag=True, help="Build ord-server optional image", type=bool)
 def build(
   bitcoind: bool,
   bitcoind_cat: bool,
   cashu_mint: bool,
+  electrs: bool,
   lnd: bool,
   ord_server: bool,
 ) -> None:
@@ -61,6 +63,7 @@ def build(
     "aesir-bitcoind": bitcoind,
     "aesir-bitcoind-cat": bitcoind_cat,
     "aesir-cashu-mint": cashu_mint,
+    "aesir-electrs": electrs,
     "aesir-lnd": lnd,
     "aesir-ord-server": ord_server,
   }

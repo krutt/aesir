@@ -26,6 +26,7 @@ BuildEnum = Literal[
   "aesir-bitcoind",
   "aesir-bitcoind-cat",
   "aesir-cashu-mint",
+  "aesir-electrs",
   "aesir-lnd",
   "aesir-ord-server",
 ]
