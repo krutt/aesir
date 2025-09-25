@@ -36,7 +36,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-pypi-token.pypi
 
 ### Mac OSX finder indexer ###
 **/.DS_Store
