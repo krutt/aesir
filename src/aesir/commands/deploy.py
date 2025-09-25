@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/commands/deploy.py
@@ -14,7 +14,7 @@
 from io import BytesIO
 from re import match
 from time import sleep
-from typing import Dict, Iterator, List, Tuple
+from typing import Iterator
 
 ### Third-party packages ###
 from click import command, option
@@ -69,21 +69,21 @@ def deploy(
     return
 
   ### Defaults to duo network; Derive cluster information from parameters ###
-  cluster_selector: Dict[ClusterEnum, bool] = {"cat": cat, "duo": duo, "ohm": ohm, "uno": uno}
+  cluster_selector: dict[ClusterEnum, bool] = {"cat": cat, "duo": duo, "ohm": ohm, "uno": uno}
   cluster_name: ClusterEnum = "duo"
   try:
     cluster_name = next(filter(lambda value: value[1], cluster_selector.items()))[0]
   except StopIteration:
     pass
-  cluster: Dict[ServiceName, Service] = CLUSTERS[cluster_name]
-  image_selector: Dict[ServiceName, bool] = {
+  cluster: dict[ServiceName, Service] = CLUSTERS[cluster_name]
+  image_selector: dict[ServiceName, bool] = {
     "aesir-cashu-mint": False,
     "aesir-electrs": with_electrs,
     "aesir-ord-server": False,
     "aesir-postgres": with_postgres,
     "aesir-redis": with_redis,
   }
-  peripherals: Iterator[Tuple[ServiceName, Service]] = filter(
+  peripherals: Iterator[tuple[ServiceName, Service]] = filter(
     lambda peripheral_tuple: image_selector[peripheral_tuple[0]], PERIPHERALS.items()
   )
   cluster.update(peripherals)
@@ -97,8 +97,8 @@ def deploy(
   ### Deploy specified cluster ###
   for name, service in track(cluster.items(), f"Deploy {cluster_name} cluster:".ljust(42)):
     image_name: str = service.image
-    flags: List[str] = list(service.command.values())
-    ports: Dict[str, str] = dict(
+    flags: list[str] = list(service.command.values())
+    ports: dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
     client.containers.run(
@@ -111,7 +111,7 @@ def deploy(
       ports=ports,
     )
 
-  treasuries: List[str] = []
+  treasuries: list[str] = []
   if duo or uno:
     ### Wait until lnd(s) ready ###
     sleep(3)
@@ -133,7 +133,7 @@ def deploy(
         treasuries.append(new_address.address)
 
   ### Define selection for shared-volume peripherals ###
-  build_selector: Dict[BuildEnum, bool] = {
+  build_selector: dict[BuildEnum, bool] = {
     "aesir-bitcoind": False,
     "aesir-bitcoind-cat": False,
     "aesir-cashu-mint": with_cashu_mint,
@@ -143,13 +143,13 @@ def deploy(
   }
 
   ### Build missing images if any for shared-volume peripherals ###
-  image_names: List[str] = list(
+  image_names: list[str] = list(
     map(
       lambda image: image.tags[0].split(":")[0],
       filter(lambda image: len(image.tags) != 0, client.images.list()),
     )
   )
-  builds: Dict[str, Build] = {
+  builds: dict[str, Build] = {
     tag: build for tag, build in BUILDS.items() if build_selector[tag] and tag not in image_names
   }
   build_count: int = len(builds.keys())
@@ -182,7 +182,7 @@ def deploy(
       yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
 
   ### Deploy shared volume peripherals ###
-  run_errors: List[str] = []
+  run_errors: list[str] = []
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
@@ -223,4 +223,4 @@ def deploy(
       )
 
 
-__all__: Tuple[str, ...] = ("deploy",)
+__all__: tuple[str, ...] = ("deploy",)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/chunk.py
@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Optional, Tuple
+from typing import Optional
 
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictInt, StrictStr
@@ -28,4 +28,4 @@ class Chunk(BaseModel):
   stream: Optional[StrictStr] = None
 
 
-__all__: Tuple[str, ...] = ("Chunk", "ErrorDetail")
+__all__: tuple[str, ...] = ("Chunk", "ErrorDetail")

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/commands/clean.py
@@ -12,7 +12,6 @@
 
 ### Standard packages ###
 from re import match
-from typing import List, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -39,8 +38,8 @@ def clean(inactive: bool) -> None:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 
-  outputs: List[str] = []
-  containers: List[Container] = client.containers.list(all=inactive)
+  outputs: list[str] = []
+  containers: list[Container] = client.containers.list(all=inactive)
   for container in track(containers, f"Clean {('active','all')[inactive]} containers:".ljust(42)):
     if match(r"aesir-*", container.name) is not None:
       try:
@@ -58,4 +57,4 @@ def clean(inactive: bool) -> None:
   list(map(rich_print, outputs))
 
 
-__all__: Tuple[str, ...] = ("clean",)
+__all__: tuple[str, ...] = ("clean",)

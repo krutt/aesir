@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/exceptions.py
@@ -10,9 +10,6 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Tuple
-
 
 class BuildUnsuccessful(OSError):
   def __init__(self, code: int, message: str):
@@ -20,4 +17,4 @@ class BuildUnsuccessful(OSError):
     self.strerr = message
 
 
-__all__: Tuple[str, ...] = ("BuildUnsuccessful",)
+__all__: tuple[str, ...] = ("BuildUnsuccessful",)

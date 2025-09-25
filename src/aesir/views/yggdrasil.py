@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/views/yggdrasil.py
@@ -15,7 +15,7 @@ from collections import deque
 from math import floor
 from re import search
 from textwrap import wrap
-from typing import Deque, Dict, Generator, Optional, Tuple, Union
+from typing import Deque, Generator, Optional, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -73,7 +73,7 @@ class Yggdrasil(Progress):
         self.columns = ("Build specified images:".ljust(42), BarColumn())
       yield self.make_tasks_table([task])
 
-  def progress_build(self, chunks: Generator[Dict[str, str], None, None], task_id: TaskID) -> None:
+  def progress_build(self, chunks: Generator[dict[str, str], None, None], task_id: TaskID) -> None:
     """
     :raises BuildUnsuccessful:
     :raises pydantic.ValidationError:
@@ -88,7 +88,7 @@ class Yggdrasil(Progress):
           self.update(task_id, completed=floor(divided / divisor * 100))
         self.update_table(chunk.stream)
       elif chunk.error is not None:
-        self.update_table(f"[red]{ chunk.error }[reset]")
+        self.update_table(f"[red]{chunk.error}[reset]")
         if chunk.error_detail is not None:
           raise BuildUnsuccessful(code=chunk.error_detail.code, message=chunk.error_detail.message)
         else:
@@ -102,4 +102,4 @@ class Yggdrasil(Progress):
     self.table = table
 
 
-__all__: Tuple[str, ...] = ("Yggdrasil",)
+__all__: tuple[str, ...] = ("Yggdrasil",)

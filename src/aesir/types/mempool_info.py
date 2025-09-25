@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/blockchain_info.py
@@ -9,9 +9,6 @@
 #
 # HISTORY:
 # *************************************************************
-
-### Standard packages ###
-from typing import Tuple
 
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictFloat
@@ -50,4 +47,4 @@ class MempoolInfo(BaseModel):
   )
 
 
-__all__: Tuple[str, ...] = ("MempoolInfo",)
+__all__: tuple[str, ...] = ("MempoolInfo",)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/commands/__init__.py
@@ -10,9 +10,6 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Tuple
-
 ### Local modules ###
 from aesir.commands.build import build
 from aesir.commands.clean import clean
@@ -23,7 +20,7 @@ from aesir.commands.nodekeys import nodekeys
 from aesir.commands.ping_pong import ping_pong
 from aesir.commands.pull import pull
 
-__all__: Tuple[str, ...] = (
+__all__: tuple[str, ...] = (
   "build",
   "clean",
   "deploy",

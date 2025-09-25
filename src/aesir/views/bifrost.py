@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/views/bifrost.py
@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from re import match
-from typing import ClassVar, List, Tuple
+from typing import ClassVar
 
 ### Third-party packages ###
 from blessed import Terminal
@@ -34,8 +34,8 @@ class Bifrost(BaseModel):
   model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
   bitcoind: Container
   container_index: StrictInt = 0
-  container_names: List[StrictStr] = []
-  containers: List[Container] = []
+  container_names: list[StrictStr] = []
+  containers: list[Container] = []
 
   ### Split layouts ###
   body: ClassVar[Layout] = Layout(name="body", minimum_size=4, ratio=8, size=17)
@@ -188,4 +188,4 @@ class Bifrost(BaseModel):
         print("Valhalla!")
 
 
-__all__: Tuple[str, ...] = ("Bifrost",)
+__all__: tuple[str, ...] = ("Bifrost",)

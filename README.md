@@ -13,7 +13,7 @@
 
 ## Prerequisites
 
-* [python](https://www.python.org) 3.9 and above - High-level general-purpose programming language
+* [python](https://www.python.org) 3.10 and above - High-level general-purpose programming language
 * [pip](https://pypi.org/project/pip) - package installer for Python
 * [docker](https://www.docker.com) - build, deploy run, update and manage [containerized](https://opencontainers.org) applications
 
@@ -197,7 +197,7 @@ If you do not have `uv` installed, run the following command.
 
 
 Once you have `pyenv` Python version manager installed, you can
-install any version of Python above version 3.9 for this project.
+install any version of Python above version 3.10 for this project.
 The following commands help you set up and activate a Python virtual
 environment where `uv` can download project dependencies from the `PyPI`
 open-sourced registry defined under `pyproject.toml` file.

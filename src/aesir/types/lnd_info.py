@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/lnd_info.py
@@ -9,9 +9,6 @@
 #
 # HISTORY:
 # *************************************************************
-
-### Standard packages ###
-from typing import Tuple
 
 ### Third-party packages ###
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
@@ -25,4 +22,4 @@ class LNDInfo(BaseModel):
   synced_to_chain: StrictBool = False
 
 
-__all__: Tuple[str, ...] = ("LNDInfo",)
+__all__: tuple[str, ...] = ("LNDInfo",)

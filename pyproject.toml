@@ -51,7 +51,7 @@ name = 'aesir'
 packages = [{from='src', include='aesir'}]
 readme = 'README.md'
 repository = 'https://github.com/krutt/aesir'
-requires-python = '>=3.9'
+requires-python = '>=3.10'
 version = '0.5.2'
 
 
@@ -70,7 +70,7 @@ strict = true
 [tool.ruff]
 indent-width = 2
 line-length = 100
-target-version = 'py39'
+target-version = 'py310'
 
 
 [tool.ruff.lint.per-file-ignores]

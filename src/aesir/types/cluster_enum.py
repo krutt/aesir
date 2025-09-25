@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/cluster_enum.py
@@ -11,8 +11,8 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal, Tuple
+from typing import Literal
 
 ClusterEnum = Literal["cat", "duo", "ohm", "uno"]
 
-__all__: Tuple[str, ...] = ("ClusterEnum",)
+__all__: tuple[str, ...] = ("ClusterEnum",)

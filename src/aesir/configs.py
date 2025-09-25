@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/configs.py
@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Optional
 
 ### Standard packages ###
 from pydantic import TypeAdapter
@@ -28,20 +28,20 @@ from aesir.types import (
 )
 
 ### Parse schemas ###
-BUILDS: Dict[BuildEnum, Build]
-CLUSTERS: Dict[ClusterEnum, Dict[ServiceName, Service]]
+BUILDS: dict[BuildEnum, Build]
+CLUSTERS: dict[ClusterEnum, dict[ServiceName, Service]]
 NETWORK: str
-PERIPHERALS: Dict[ServiceName, Service]
+PERIPHERALS: dict[ServiceName, Service]
 
 file_path: Path = Path(__file__).resolve()
 with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
-  schema: Optional[Dict[str, Any]] = load(stream, Loader=Loader)
+  schema: Optional[dict[str, Any]] = load(stream, Loader=Loader)
   if schema:
-    BUILDS = TypeAdapter(Dict[BuildEnum, Build]).validate_python(schema["builds"])
-    CLUSTERS = TypeAdapter(Dict[ClusterEnum, Dict[ServiceName, Service]]).validate_python(
+    BUILDS = TypeAdapter(dict[BuildEnum, Build]).validate_python(schema["builds"])
+    CLUSTERS = TypeAdapter(dict[ClusterEnum, dict[ServiceName, Service]]).validate_python(
       schema["clusters"]
     )
     NETWORK = schema.get("network", "aesir")
-    PERIPHERALS = TypeAdapter(Dict[ServiceName, Service]).validate_python(schema["peripherals"])
+    PERIPHERALS = TypeAdapter(dict[ServiceName, Service]).validate_python(schema["peripherals"])
 
-__all__: Tuple[str, ...] = ("BUILDS", "CLUSTERS", "NETWORK", "PERIPHERALS")
+__all__: tuple[str, ...] = ("BUILDS", "CLUSTERS", "NETWORK", "PERIPHERALS")

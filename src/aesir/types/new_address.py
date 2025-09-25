@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/new_address.py
@@ -10,9 +10,6 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Tuple
-
 ### Third-party packages ###
 from pydantic import BaseModel, StrictStr
 
@@ -21,4 +18,4 @@ class NewAddress(BaseModel):
   address: StrictStr
 
 
-__all__: Tuple[str, ...] = ("NewAddress",)
+__all__: tuple[str, ...] = ("NewAddress",)

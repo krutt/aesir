@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/commands/build.py
@@ -12,7 +12,6 @@
 
 ### Standard packages ###
 from io import BytesIO
-from typing import Dict, List, Set, Tuple
 
 ### Third-party packages ###
 from click import command, option
@@ -53,13 +52,13 @@ def build(
     return
 
   ### Build optional images ###
-  image_names: List[str] = list(
+  image_names: list[str] = list(
     map(
       lambda image: image.tags[0].split(":")[0],
       filter(lambda image: len(image.tags) != 0, client.images.list()),
     )
   )
-  build_select: Dict[BuildEnum, bool] = {
+  build_select: dict[BuildEnum, bool] = {
     "aesir-bitcoind": bitcoind,
     "aesir-bitcoind-cat": bitcoind_cat,
     "aesir-cashu-mint": cashu_mint,
@@ -68,12 +67,12 @@ def build(
     "aesir-ord-server": ord_server,
   }
 
-  outputs: List[str] = []
-  built: Set[str] = {tag for tag in BUILDS.keys() if build_select[tag] and tag in image_names}
+  outputs: list[str] = []
+  built: set[str] = {tag for tag in BUILDS.keys() if build_select[tag] and tag in image_names}
   outputs += map(lambda tag: f"<Image: '{tag}'> already exists within images.", built)
   list(map(rich_print, outputs))
 
-  builds: Dict[str, Build] = {
+  builds: dict[str, Build] = {
     tag: build for tag, build in BUILDS.items() if build_select[tag] and tag not in image_names
   }
   build_count: int = len(builds.keys())
@@ -99,4 +98,4 @@ def build(
       yggdrasil.update(task_id, completed=build_count, description="[blue]Complete[reset]")
 
 
-__all__: Tuple[str, ...] = ("build",)
+__all__: tuple[str, ...] = ("build",)

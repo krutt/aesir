@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/__init__.py
@@ -9,9 +9,6 @@
 #
 # HISTORY:
 # *************************************************************
-
-### Standard packages ###
-from typing import Tuple
 
 ### Local modules ###
 from aesir.types.blockchain_info import BlockchainInfo
@@ -28,7 +25,7 @@ from aesir.types.open_channel import OpenChannel
 from aesir.types.service import Service, ServiceName
 
 
-__all__: Tuple[str, ...] = (
+__all__: tuple[str, ...] = (
   "BlockchainInfo",
   "Build",
   "BuildEnum",

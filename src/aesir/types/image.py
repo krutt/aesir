@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/image.py
@@ -11,11 +11,11 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal, Tuple, Union
+from typing import Literal, Union
 
 ### Local modules ###
 from aesir.types.build import BuildEnum
 
 Image = Union[BuildEnum, Literal["postgres:latest", "redis:latest"]]
 
-__all__: Tuple[str, ...] = ("Image",)
+__all__: tuple[str, ...] = ("Image",)
