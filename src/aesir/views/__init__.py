@@ -10,11 +10,8 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Tuple
-
 ### Local modules ###
 from aesir.views.bifrost import Bifrost
 from aesir.views.yggdrasil import Yggdrasil
 
-__all__: Tuple[str, ...] = ("Bifrost", "Yggdrasil")
+__all__: tuple[str, ...] = ("Bifrost", "Yggdrasil")

@@ -12,7 +12,6 @@
 
 ### Standard packages ###
 from re import match
-from typing import List, Tuple
 
 ### Third-party packages ###
 from click import command
@@ -37,13 +36,13 @@ def nodekeys() -> None:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 
-  lnds: List[Container] = list(
+  lnds: list[Container] = list(
     filter(
       lambda container: match(r"aesir-lnd|aesir-ping|aesir-pong", container.name),
       reversed(client.containers.list()),
     )
   )
-  outputs: List[str] = []
+  outputs: list[str] = []
   for container in track(lnds, "Fetch LND nodekeys:".ljust(42)):
     lnd_info: LNDInfo = TypeAdapter(LNDInfo).validate_json(
       container.exec_run(
@@ -56,8 +55,8 @@ def nodekeys() -> None:
         """
       ).output
     )
-    outputs.append(f"<Nodekey: '{ container.name }', '{ lnd_info.identity_pubkey }'>")
+    outputs.append(f"<Nodekey: '{container.name}', '{lnd_info.identity_pubkey}'>")
   list(map(rich_print, outputs))
 
 
-__all__: Tuple[str, ...] = ("nodekeys",)
+__all__: tuple[str, ...] = ("nodekeys",)

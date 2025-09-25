@@ -12,7 +12,6 @@
 
 ### Standard packages ###
 from re import match
-from typing import List, Tuple
 
 ### Third-party packages ###
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -53,16 +52,16 @@ def mine(blockcount: int, blocktime: int) -> None:
       return
 
   ### Retrieve other containers ###
-  aesir_containers: List[Container] = list(
+  aesir_containers: list[Container] = list(
     filter(lambda container: match(r"aesir-*", container.name), reversed(client.containers.list()))
   )
-  container_names: List[str] = list(map(lambda container: container.name, aesir_containers))
-  lnd_containers: List[Container] = list(
+  container_names: list[str] = list(map(lambda container: container.name, aesir_containers))
+  lnd_containers: list[Container] = list(
     filter(lambda container: match(r"aesir-(lnd|ping|pong)", container.name), aesir_containers)
   )
 
   ### Generate treasury addresses as mining destinations ###
-  treasuries: List[str] = []
+  treasuries: list[str] = []
   if len(lnd_containers) == 0:  # FIXME: current bitcoind does not have BerkeleyDB
     bitcoind.exec_run(
       """
@@ -115,4 +114,4 @@ def mine(blockcount: int, blocktime: int) -> None:
   bifrost.display()
 
 
-__all__: Tuple[str, ...] = ("mine",)
+__all__: tuple[str, ...] = ("mine",)

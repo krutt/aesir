@@ -11,7 +11,6 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Dict, Tuple
 from uuid import uuid4 as uuid
 
 ### Third-party packages ###
@@ -43,7 +42,7 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
 
   ### Select LND container from specified mutually exclusive options ###
   container_name: ServiceName = "aesir-lnd"
-  container_selector: Dict[ServiceName, bool] = {
+  container_selector: dict[ServiceName, bool] = {
     "aesir-lnd": lnd,
     "aesir-ping": ping,
     "aesir-pong": pong,
@@ -58,7 +57,7 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
   try:
     container = client.containers.get(container_name)
   except NotFound:
-    rich_print(f'[red bold]Unable to find specified LND container (name="{ container_name }")')
+    rich_print(f'[red bold]Unable to find specified LND container (name="{container_name}")')
     return
 
   ### Generate invoice ###
@@ -70,12 +69,12 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
         --rpcserver=localhost:10001
         --tlscertpath=/home/lnd/.lnd/tls.cert
       addinvoice
-        --amt={ amount }
-        --memo={ memo }
+        --amt={amount}
+        --memo={memo}
       """
     ).output
   )
   rich_print(lnd_invoice)
 
 
-__all__: Tuple[str, ...] = ("invoice",)
+__all__: tuple[str, ...] = ("invoice",)

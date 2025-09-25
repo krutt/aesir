@@ -12,7 +12,6 @@
 
 ### Standard packages ###
 from re import match
-from typing import Dict, List, Tuple
 
 ### Third-party packages ###
 from click import argument, command
@@ -47,14 +46,14 @@ def ping_pong(channel_size: int) -> None:
     return
 
   ### Initiate parameters ###
-  nodekeys: Dict[str, str] = {}
-  paddles: List[Container] = list(
+  nodekeys: dict[str, str] = {}
+  paddles: list[Container] = list(
     filter(
       lambda container: match(r"aesir-ping|aesir-pong", container.name),
       reversed(client.containers.list()),
     )
   )
-  treasuries: Dict[str, str] = {}
+  treasuries: dict[str, str] = {}
 
   ### Fetch nodekeys ###
   for container in track(paddles, "Fetch LND nodekeys:".ljust(42)):
@@ -84,7 +83,7 @@ def ping_pong(channel_size: int) -> None:
     treasuries[container.name] = new_address.address
 
   ### Open channels ###
-  outputs: List[str] = []
+  outputs: list[str] = []
   for container in track(paddles, "Open channels:".ljust(42)):
     if container.name == "aesir-ping":
       try:
@@ -103,7 +102,7 @@ def ping_pong(channel_size: int) -> None:
           ).output
         )
         outputs.append(
-          f"<Channel 'aesir-ping --> aesir-pong' : txid='{ open_channel.funding_txid }'>"
+          f"<Channel 'aesir-ping --> aesir-pong' : txid='{open_channel.funding_txid}'>"
         )
         bitcoind.exec_run(
           """
@@ -130,7 +129,7 @@ def ping_pong(channel_size: int) -> None:
           ).output
         )
         outputs.append(
-          f"<Channel 'aesir-pong --> aesir-ping' : txid='{ open_channel.funding_txid }'>"
+          f"<Channel 'aesir-pong --> aesir-ping' : txid='{open_channel.funding_txid}'>"
         )
         bitcoind.exec_run(
           """
@@ -143,4 +142,4 @@ def ping_pong(channel_size: int) -> None:
   list(map(rich_print, outputs))
 
 
-__all__: Tuple[str, ...] = ("ping_pong",)
+__all__: tuple[str, ...] = ("ping_pong",)
