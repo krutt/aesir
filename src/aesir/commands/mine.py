@@ -24,8 +24,8 @@ from rich import print as rich_print
 from rich.progress import track
 
 ### Local modules ###
-from aesir.views import Bifrost
 from aesir.types import NewAddress
+from aesir.views import Bifrost
 
 
 @command
