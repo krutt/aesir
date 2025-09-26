@@ -190,7 +190,7 @@ def deploy(
       yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
 
   ### Deploy shared volume peripherals ###
-  run_errors: list[str] = []
+  run_errors = []
   volume_target: str = "aesir-ping" if duo else "aesir-lnd"
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
