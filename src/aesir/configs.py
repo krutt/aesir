@@ -14,7 +14,7 @@
 from pathlib import Path
 from typing import Any
 
-### Standard packages ###
+### Third-party packages ###
 from pydantic import TypeAdapter
 from yaml import Loader, load
 
