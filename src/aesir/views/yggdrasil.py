@@ -15,7 +15,7 @@ from collections import deque
 from math import floor
 from re import search
 from textwrap import wrap
-from typing import Deque, Generator, Union
+from typing import Deque, Generator
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -38,7 +38,7 @@ class Yggdrasil(Progress):
     self.rows = deque(maxlen=row_count)
     super().__init__()
 
-  def get_renderable(self) -> Union[ConsoleRenderable, RichCast, str]:
+  def get_renderable(self) -> ConsoleRenderable | RichCast | str:
     return Group(self.table, *self.get_renderables())
 
   def get_renderables(self) -> Generator[Table, None, None]:

@@ -11,11 +11,11 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Literal, Union
+from typing import Literal
 
 ### Local modules ###
 from aesir.types.build import BuildEnum
 
-Image = Union[BuildEnum, Literal["postgres:latest", "redis:latest"]]
+Image = BuildEnum | Literal["postgres:latest", "redis:latest"]
 
 __all__: tuple[str, ...] = ("Image",)
