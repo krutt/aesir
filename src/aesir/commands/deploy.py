@@ -113,7 +113,7 @@ def deploy(
         ports=ports,
       )
     except APIError as err:
-      run_errors.append(f"[bright_magenta]Failed cluster setup due to: [reset]{err.explanation}")
+      run_errors.append(f"[red]Failed cluster setup due to: [reset]{err.explanation}")
       break
   if len(run_errors) != 0:
     list(map(rich_print, run_errors))
