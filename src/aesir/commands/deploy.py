@@ -19,7 +19,7 @@ from typing import Iterator
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, BuildError, ImageNotFound, NotFound
+from docker.errors import BuildError, DockerException, ImageNotFound, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
@@ -64,7 +64,7 @@ def deploy(
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

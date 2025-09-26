@@ -16,7 +16,7 @@ from typing import Iterator
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError
+from docker.errors import DockerException
 from rich import print as rich_print
 from rich.progress import track
 
@@ -33,7 +33,7 @@ def pull(postgres: bool, redis: bool) -> None:
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

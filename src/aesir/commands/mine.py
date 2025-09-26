@@ -17,7 +17,7 @@ from re import match
 from apscheduler.schedulers.background import BackgroundScheduler
 from click import argument, command
 from docker import DockerClient, from_env
-from docker.errors import APIError, NotFound
+from docker.errors import DockerException, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
@@ -36,7 +36,7 @@ def mine(blockcount: int, blocktime: int) -> None:
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to daemon.")
     return
 

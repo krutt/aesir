@@ -16,7 +16,7 @@ from uuid import uuid4 as uuid
 ### Third-party packages ###
 from click import argument, command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, NotFound
+from docker.errors import DockerException, NotFound
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
@@ -36,7 +36,7 @@ def invoice(amount: int, lnd: bool, memo: str, ping: bool, pong: bool) -> None:
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

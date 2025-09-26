@@ -16,7 +16,7 @@ from re import match
 ### Third-party packages ###
 from click import command
 from docker import DockerClient, from_env
-from docker.errors import APIError
+from docker.errors import DockerException
 from docker.models.containers import Container
 from pydantic import TypeAdapter
 from rich import print as rich_print
@@ -32,7 +32,7 @@ def nodekeys() -> None:
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

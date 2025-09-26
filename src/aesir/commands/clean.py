@@ -16,7 +16,7 @@ from re import match
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, NotFound
+from docker.errors import DockerException, NotFound
 from docker.models.containers import Container
 from docker.models.networks import Network
 from rich import print as rich_print
@@ -34,7 +34,7 @@ def clean(inactive: bool) -> None:
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 

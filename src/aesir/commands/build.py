@@ -16,7 +16,7 @@ from io import BytesIO
 ### Third-party packages ###
 from click import command, option
 from docker import DockerClient, from_env
-from docker.errors import APIError, BuildError
+from docker.errors import DockerException, BuildError
 from pydantic import ValidationError
 from rich import print as rich_print
 from rich.progress import TaskID
@@ -47,7 +47,7 @@ def build(
   try:
     client: DockerClient = from_env()
     client.ping()
-  except APIError:
+  except DockerException:
     rich_print("[red bold]Unable to connect to docker daemon.")
     return
 
