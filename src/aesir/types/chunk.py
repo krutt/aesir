@@ -10,9 +10,6 @@
 # HISTORY:
 # *************************************************************
 
-### Standard packages ###
-from typing import Optional
-
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictInt, StrictStr
 
@@ -23,9 +20,9 @@ class ErrorDetail(BaseModel):
 
 
 class Chunk(BaseModel):
-  error: Optional[StrictStr] = None
-  error_detail: Optional[ErrorDetail] = Field(alias="errorDetail", default=None)
-  stream: Optional[StrictStr] = None
+  error: None | StrictStr = None
+  error_detail: None | ErrorDetail = Field(alias="errorDetail", default=None)
+  stream: None | StrictStr = None
 
 
 __all__: tuple[str, ...] = ("Chunk", "ErrorDetail")

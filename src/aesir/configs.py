@@ -12,7 +12,7 @@
 
 ### Standard packages ###
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 ### Standard packages ###
 from pydantic import TypeAdapter
@@ -35,7 +35,7 @@ PERIPHERALS: dict[ServiceName, Service]
 
 file_path: Path = Path(__file__).resolve()
 with open(str(file_path).replace("configs.py", "schemas.yml"), "rb") as stream:
-  schema: Optional[dict[str, Any]] = load(stream, Loader=Loader)
+  schema: None | dict[str, Any] = load(stream, Loader=Loader)
   if schema:
     BUILDS = TypeAdapter(dict[BuildEnum, Build]).validate_python(schema["builds"])
     CLUSTERS = TypeAdapter(dict[ClusterEnum, dict[ServiceName, Service]]).validate_python(

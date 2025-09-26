@@ -15,7 +15,7 @@ from collections import deque
 from math import floor
 from re import search
 from textwrap import wrap
-from typing import Deque, Generator, Optional, Union
+from typing import Deque, Generator, Union
 
 ### Third-party packages ###
 from rich.box import MINIMAL
@@ -94,7 +94,7 @@ class Yggdrasil(Progress):
         else:
           raise BuildUnsuccessful(code=255, message=chunk.error)
 
-  def update_table(self, row: Optional[str] = None) -> None:
+  def update_table(self, row: None | str = None) -> None:
     if row is not None:
       self.rows.append(row)
     table: Table = Table(box=MINIMAL, show_lines=False, show_header=False)
