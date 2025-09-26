@@ -78,7 +78,7 @@ def deploy(
   cluster: dict[ServiceName, Service] = CLUSTERS[cluster_name]
   image_selector: dict[ServiceName, bool] = {
     "aesir-cashu-mint": False,
-    "aesir-electrs": with_electrs,
+    "aesir-electrs": False,
     "aesir-ord-server": False,
     "aesir-postgres": with_postgres,
     "aesir-redis": with_redis,
@@ -95,21 +95,29 @@ def deploy(
     pass
 
   ### Deploy specified cluster ###
+  run_errors: list[str] = []
   for name, service in track(cluster.items(), f"Deploy {cluster_name} cluster:".ljust(42)):
     image_name: str = service.image
     flags: list[str] = list(service.command.values())
     ports: dict[str, str] = dict(
       map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports])
     )
-    client.containers.run(
-      image_name,
-      command=flags,
-      detach=True,
-      environment=service.env_vars,
-      name=name,
-      network=NETWORK,
-      ports=ports,
-    )
+    try:
+      client.containers.run(
+        image_name,
+        command=flags,
+        detach=True,
+        environment=service.env_vars,
+        name=name,
+        network=NETWORK,
+        ports=ports,
+      )
+    except APIError as err:
+      run_errors.append(f"[bright_magenta]Failed cluster setup due to: [reset]{err.explanation}")
+      break
+  if len(run_errors) != 0:
+    list(map(rich_print, run_errors))
+    return
 
   treasuries: list[str] = []
   if duo or uno:
