@@ -18,19 +18,19 @@ from aesir.commands import build, clean, deploy, invoice, mine, nodekeys, ping_p
 
 
 @group
-def cli() -> None:
+def cmdline() -> None:
   """aesir"""
 
 
-cli.add_command(build, "build")
-cli.add_command(clean, "clean")
-cli.add_command(deploy, "deploy")
-cli.add_command(invoice, "invoice")
-cli.add_command(mine, "mine")
-cli.add_command(nodekeys, "nodekeys")
-cli.add_command(ping_pong, "ping-pong")
-cli.add_command(pull, "pull")
+cmdline.add_command(build, "build")
+cmdline.add_command(clean, "clean")
+cmdline.add_command(deploy, "deploy")
+cmdline.add_command(invoice, "invoice")
+cmdline.add_command(mine, "mine")
+cmdline.add_command(nodekeys, "nodekeys")
+cmdline.add_command(ping_pong, "ping-pong")
+cmdline.add_command(pull, "pull")
 
 
 if __name__ == "__main__":
-  cli()
+  cmdline()

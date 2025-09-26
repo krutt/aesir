@@ -56,7 +56,7 @@ version = '0.5.2'
 
 
 [project.scripts]
-aesir = 'aesir.core:cli'
+aesir = 'aesir.core:cmdline'
 
 
 [tool.mypy]
