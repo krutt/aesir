@@ -76,12 +76,7 @@ For example, if you want to deploy a duo-cluster with attached postgres database
 $ aesir deploy --with-postgres
 > ...
 $ aesir mine
-> ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ aesir-postgres       │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ aesir-pong           │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ aesir-ping           ││ aesir-pong    │ 3da33d3eb12  │ 2         │ 1      │ 216    │    true │
-> │ aesir-bitcoind       ││               │ deacf4e1a64  │           │        │        │         │
-> │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
+> FIXME
 ```
 
 Or run an uno-cluster with both attached postgres database and redis solid store cache like this:
@@ -90,12 +85,7 @@ Or run an uno-cluster with both attached postgres database and redis solid store
 $ aesir deploy --uno --with-postgres --with-redis
 > ...
 $ aesir mine
-> ╭───── containers ─────╮┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-> │ aesir-postgres       │┃ Name          ┃ Nodekey      ┃ Channels  ┃ Peers  ┃ Height ┃ Synced? ┃
-> │ aesir-redis          │┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-> │ aesir-lnd            ││ aesir-lnd     │ c0ae6b158d0  │ 0         │ 0      │ 202    │    true │
-> │ aesir-bitcoind       ││               │ 4194459b8f3  │           │        │        │         │
-> │ ...                  ││ ...           │ ...          │ ...       │ ...    │ ...    │ ...     │
+> FIXME
 ```
 
 ## Cleanup
