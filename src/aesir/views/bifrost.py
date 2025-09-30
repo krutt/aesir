@@ -77,7 +77,7 @@ class Bifrost(BaseModel):
           else:
             container_rows = f"[reverse]{self.container_names[self.container_index]}[reset]\n"
           if self.container_index < len(self.container_names) - 1:
-            container_rows += "\n".join(self.container_names[self.container_index + 1 :])
+            container_rows += "\n".join(self.container_names[self.container_index + 1 :])  # noqa: E203
           self.pane["realms"].update(Panel(container_rows, title="realms"))
 
           container_name: str = self.container_names[self.container_index]
