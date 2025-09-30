@@ -227,9 +227,11 @@ peripherals:
   aesir-electrs:
     command:
       0: --daemon-dir=/home/bitcoin/.bitcoin
-      1: --electrum-rpc-addr=0.0.0.0:50001
-      2: --log-filters=INFO
-      3: --network=regtest
+      1: --daemon-rpc-addr=aesir-bitcoind:18443
+      2: --daemon-p2p-addr=aesir-bitcoind:18444
+      3: --electrum-rpc-addr=0.0.0.0:50001
+      4: --log-filters=INFO
+      5: --network=regtest
     image: aesir-electrs
     ports:
       - 4224:4224
