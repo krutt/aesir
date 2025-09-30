@@ -190,17 +190,25 @@ def deploy(
       yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
 
   ### Deploy shared volume peripherals ###
+  shared_volume_selector: dict[str, bool] = {
+    "aesir-cashu-mint": False,
+    "aesir-electrs": with_electrs,
+    "aesir-ord-server": with_ord_server,
+    "aesir-postgres": False,
+    "aesir-redis": False,
+  }
+  peripherals = filter(
+    lambda peripheral_tuple: shared_volume_selector[peripheral_tuple[0]], PERIPHERALS.items()
+  )
   run_errors = []
-  volume_target: str = "aesir-ping" if duo else "aesir-lnd"
+  volume_target: str = "aesir-bitcoind" if not cat else "aesir-bitcoind-cat"
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
+    flags = list(service.command.values())
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
-    volume_target = (
-      "aesir-bitcoind" if name in {"aesir-electrs", "aesir-ord-server"} else volume_target
-    )
     try:
       client.containers.run(
         service.image,
-        command=service.command.values(),
+        command=flags,
         detach=True,
         environment=service.env_vars,
         name=name,
