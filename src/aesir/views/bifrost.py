@@ -100,7 +100,7 @@ class Bifrost(BaseModel):
             )
             body_table.add_row(
               Text.assemble(
-                f"\n{ 'Blockchain information:'.ljust(20) }\n",
+                f"\n{'Blockchain information:'.ljust(20)}\n",
                 ("Chain: ", "bright_magenta bold"),
                 blockchain_info.chain.ljust(9),
                 ("Blocks: ", "green bold"),
