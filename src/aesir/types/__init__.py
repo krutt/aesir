@@ -15,7 +15,9 @@ from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
 from aesir.types.chunk import Chunk, ErrorDetail
 from aesir.types.cluster_enum import ClusterEnum
+from aesir.types.features import Features
 from aesir.types.image import Image
+from aesir.types.jsonrpc import JsonrpcError, JsonrpcResponse
 from aesir.types.lnd_info import LNDInfo
 from aesir.types.lnd_invoice import LNDInvoice
 from aesir.types.mempool_info import MempoolInfo
@@ -32,7 +34,10 @@ __all__: tuple[str, ...] = (
   "Chunk",
   "ClusterEnum",
   "ErrorDetail",
+  "Features",
   "Image",
+  "JsonrpcError",
+  "JsonrpcResponse",
   "LNDInfo",
   "LNDInvoice",
   "MempoolInfo",

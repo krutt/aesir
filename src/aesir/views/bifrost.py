@@ -27,7 +27,7 @@ from rich.table import Table
 from rich.text import Text
 
 ### Local modules ###
-from aesir.types import BlockchainInfo, LNDInfo, MempoolInfo
+from aesir.types import BlockchainInfo, Features, JsonrpcResponse, LNDInfo, MempoolInfo
 
 
 class Bifrost(BaseModel):
@@ -132,6 +132,39 @@ class Bifrost(BaseModel):
                 ("Usage:".ljust(15), "light_coral bold"),
                 f"{mempool_info.usage}".rjust(15),
                 "\n",
+              )
+            )
+          elif match(r"aesir-(electrs)", container_name):
+            container: Container = next(
+              filter(lambda container: container.name == container_name, self.containers)
+            )
+            features: JsonrpcResponse[Features] = TypeAdapter(JsonrpcResponse[Features]).validate_json(
+              container.exec_run([
+                "sh",
+                "-c",
+                """
+                echo '{"id": "feat", "jsonrpc": "2.0", "method": "server.features"}' | nc -N localhost 50001
+                """,
+              ]).output
+            )
+            body_table.add_row(
+              Text.assemble(
+                "\n\n\n",
+                ("Genesis Hash:".ljust(15), "green bold"),
+                features.result.genesis_hash,
+                "\n\n".ljust(20),
+                ("Hash function:".ljust(16), "cyan bold"),
+                f"{features.result.hash_function}".rjust(14),
+                "\n".ljust(19),
+                ("Pruning?:".ljust(15), "bright_magenta bold"),
+                ("true".rjust(15), "green") if features.result.pruning else ("false".rjust(15), "red"),
+                "\n".ljust(19),
+                ("Protocol Minimum:".ljust(13), "light_coral bold"),
+                f"{features.result.protocol_min}".rjust(13),
+                "\n".ljust(19),
+                ("Protocol Maximum:".ljust(13), "blue bold"),
+                f"{features.result.protocol_max}".rjust(13),
+                "\n\n\n",
               )
             )
           elif match(r"aesir-(lnd|ping|pong)", container_name):

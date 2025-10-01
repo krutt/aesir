@@ -65,12 +65,13 @@ builds:
       - ENV ELECTRS_VERSION=0.10.10
       - WORKDIR /build
       - RUN apt-get update
-      - RUN apt-get install -y git clang cmake libsnappy-dev
+      - RUN apt-get install -y git clang cmake libsnappy-dev netcat
       - RUN git clone --branch v$ELECTRS_VERSION https://github.com/romanz/electrs .
       - ENV CARGO_NET_GIT_FETCH_WITH_CLI true
       - RUN cargo install --locked --path .
       - FROM debian:bullseye-slim AS runner
       - WORKDIR /data
+      - COPY --from=builder /usr/bin/netcat /usr/bin/netcat
       - COPY --from=builder /usr/local/cargo/bin/electrs /bin/electrs
       - EXPOSE 4224 50001
       - STOPSIGNAL SIGINT
