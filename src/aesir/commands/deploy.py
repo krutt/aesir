@@ -140,7 +140,7 @@ def deploy(
         )
         treasuries.append(new_address.address)
 
-  ### Define selection for shared-volume peripherals ###
+  ### Define build targets for missing peripherals ###
   build_selector: dict[BuildEnum, bool] = {
     "aesir-bitcoind": False,
     "aesir-bitcoind-cat": False,
@@ -189,7 +189,7 @@ def deploy(
           yggdrasil.update(task_id, advance=1)
       yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
 
-  ### Deploy shared volume peripherals ###
+  ### Define selection for shared-volume peripherals ###
   shared_volume_selector: dict[str, bool] = {
     "aesir-cashu-mint": False,
     "aesir-electrs": with_electrs,
