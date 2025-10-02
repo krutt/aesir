@@ -241,7 +241,7 @@ peripherals:
     command:
       0: --bitcoin-rpc-url=aesir-bitcoind:18443
       1: --chain=regtest
-      2: --cookie-file=/home/bitcoin/.bitcoin/regtest
+      2: --cookie-file=/home/bitcoin/.bitcoin/regtest/.cookie
       3: server
       4: --http-port=8080
     image: aesir-ord-server
