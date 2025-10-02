@@ -138,6 +138,11 @@ $ aesir clean
 * Use [joblib](https://github.com/joblib/joblib) to speed up deployment with parallelization.
 * Create and add some type of `ordapi` peripheral service.
 
+## Known issues
+
+* Mining dashboard hangs when using `aesir-bitcoind` & `aesir-ord-server` together in `ohm` cluster
+* Rust images like `aesir-electrs` and `aesir-ord-server` are prone to build failure
+
 ## Contributions
 
 ### Prerequisites
