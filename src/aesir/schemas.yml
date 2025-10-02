@@ -101,18 +101,18 @@ builds:
       - ENTRYPOINT [ "lnd" ]
   aesir-ord-server:
     instructions:
-      - FROM rust:1.85.0-bookworm AS builder
-      - WORKDIR /usr/src/ord
+      - FROM rust:1.89.0-bookworm AS builder
+      - WORKDIR /usr/src
       - RUN apt-get install -y git
       - RUN git clone --branch master --depth=1 https://github.com/ordinals/ord.git
-      - RUN mv ord/* ./ && rm -rf ord
+      - WORKDIR /usr/src/ord
       - RUN cargo build --bin ord --release
       - FROM debian:bookworm-slim AS runner
       - COPY --from=builder /usr/src/ord/target/release/ord /usr/local/bin
       - RUN apt-get update && apt-get install -y openssl
       - ENV RUST_BACKTRACE=1
       - ENV RUST_LOG=info
-      - CMD ord --chain regtest --cookie-file /home/bitcoin/.bitcoin/regtest --rpc-url aesir-bitcoind:18443 server --http-port 8080
+      - ENTRYPOINT [ "ord" ]
 clusters:
   cat:
     aesir-bitcoind:
@@ -238,6 +238,12 @@ peripherals:
       - 4224:4224
       - 50001:50001
   aesir-ord-server:
+    command:
+      0: --bitcoin-rpc-url=aesir-bitcoind:18443
+      1: --chain=regtest
+      2: --cookie-file=/home/bitcoin/.bitcoin/regtest
+      3: server
+      4: --http-port=8080
     image: aesir-ord-server
     env_vars:
       - ORD_BITCOIN_RPC_PASS=aesir
