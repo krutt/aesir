@@ -24,6 +24,7 @@ from aesir.types.mempool_info import MempoolInfo
 from aesir.types.mutex_option import MutexOption
 from aesir.types.new_address import NewAddress
 from aesir.types.open_channel import OpenChannel
+from aesir.types.ord_status import OrdStatus
 from aesir.types.service import Service, ServiceName
 
 
@@ -44,6 +45,7 @@ __all__: tuple[str, ...] = (
   "MutexOption",
   "NewAddress",
   "OpenChannel",
+  "OrdStatus",
   "Service",
   "ServiceName",
 )
