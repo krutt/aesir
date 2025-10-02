@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/ord_status.py
-# VERSION:     0.5.2
+# VERSION:     0.5.3
 # CREATED:     2025-10-02 14:09
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
