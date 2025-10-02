@@ -27,7 +27,7 @@ from rich.table import Table
 from rich.text import Text
 
 ### Local modules ###
-from aesir.types import BlockchainInfo, Features, JsonrpcResponse, LNDInfo, MempoolInfo
+from aesir.types import BlockchainInfo, Features, JsonrpcResponse, LNDInfo, MempoolInfo, OrdStatus
 
 
 class Bifrost(BaseModel):
@@ -138,14 +138,18 @@ class Bifrost(BaseModel):
             container: Container = next(
               filter(lambda container: container.name == container_name, self.containers)
             )
-            features: JsonrpcResponse[Features] = TypeAdapter(JsonrpcResponse[Features]).validate_json(
-              container.exec_run([
-                "sh",
-                "-c",
-                """
+            features: JsonrpcResponse[Features] = TypeAdapter(
+              JsonrpcResponse[Features]
+            ).validate_json(
+              container.exec_run(
+                [
+                  "sh",
+                  "-c",
+                  """
                 echo '{"id": "feat", "jsonrpc": "2.0", "method": "server.features"}' | nc -N localhost 50001
                 """,
-              ]).output
+                ]
+              ).output
             )
             body_table.add_row(
               Text.assemble(
@@ -157,7 +161,9 @@ class Bifrost(BaseModel):
                 f"{features.result.hash_function}".rjust(14),
                 "\n".ljust(19),
                 ("Pruning?:".ljust(15), "bright_magenta bold"),
-                ("true".rjust(15), "green") if features.result.pruning else ("false".rjust(15), "red"),
+                ("true".rjust(15), "green")
+                if features.result.pruning
+                else ("false".rjust(15), "red"),
                 "\n".ljust(19),
                 ("Protocol Minimum:".ljust(13), "light_coral bold"),
                 f"{features.result.protocol_min}".rjust(13),
@@ -165,6 +171,63 @@ class Bifrost(BaseModel):
                 ("Protocol Maximum:".ljust(13), "blue bold"),
                 f"{features.result.protocol_max}".rjust(13),
                 "\n\n\n",
+              )
+            )
+          elif match(r"aesir-(ord-server)", container_name):
+            container: Container = next(
+              filter(lambda container: container.name == container_name, self.containers)
+            )
+            ord_status: OrdStatus = TypeAdapter(OrdStatus).validate_json(
+              container.exec_run(
+                """
+                curl -s -H "Accept: application/json" http://localhost:8080/status
+                """
+              ).output
+            )
+            body_table.add_row(
+              Text.assemble(
+                "\n".ljust(19),
+                ("Address index:".ljust(15), "light_coral bold"),
+                ("true".rjust(15), "green")
+                if ord_status.address_index
+                else ("false".rjust(15), "red"),
+                "\n".ljust(19),
+                ("Blessed:".ljust(15), "rosy_brown bold"),
+                f"{ord_status.blessed_inscriptions}".rjust(15),
+                "\n".ljust(19),
+                ("Cursed:".ljust(15), "hot_pink bold"),
+                f"{ord_status.cursed_inscriptions}".rjust(15),
+                "\n".ljust(19),
+                ("Chain:".ljust(15), "bright_magenta bold"),
+                f"{ord_status.chain}".rjust(15),
+                "\n".ljust(19),
+                ("Inscriptions:".ljust(15), "sandy_brown bold"),
+                f"{ord_status.inscriptions}".rjust(15),
+                "\n".ljust(19),
+                ("Lost sats:".ljust(15), "light_slate_gray bold"),
+                f"{ord_status.lost_sats}".rjust(15),
+                "\n".ljust(19),
+                ("Rune index:".ljust(15), "cyan bold"),
+                ("true".rjust(15), "green")
+                if ord_status.rune_index
+                else ("false".rjust(15), "red"),
+                "\n".ljust(19),
+                ("Sat Index:".ljust(15), "steel_blue bold"),
+                ("true".rjust(15), "green") if ord_status.sat_index else ("false".rjust(15), "red"),
+                "\n".ljust(19),
+                ("Runes:".ljust(15), "medium_purple bold"),
+                f"{ord_status.runes}".rjust(15),
+                "\n".ljust(19),
+                ("Transaction index:".ljust(13), "dark_sea_green bold"),
+                ("true".rjust(13), "green")
+                if ord_status.transaction_index
+                else ("false".rjust(12), "red"),
+                "\n".ljust(19),
+                ("Unrecoverably reorged:".ljust(13), "tan bold"),
+                ("true".rjust(9), "green")
+                if ord_status.unrecoverably_reorged
+                else ("false".rjust(8), "red"),
+                "\n",
               )
             )
           elif match(r"aesir-(lnd|ping|pong)", container_name):
