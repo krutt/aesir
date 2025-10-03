@@ -14,6 +14,7 @@
 from docker.models.containers import Container
 from pydantic import BaseModel, ConfigDict, TypeAdapter
 from rich.console import Group, RenderableType
+from rich.rule import Rule
 from rich.text import Text
 
 ### Local modules ###
@@ -57,9 +58,10 @@ class Asgard(BaseModel):
         f"{blockchain_info.time}".rjust(10),
         "\n",
       ),
+      Rule(),
       Text.assemble(
         "\n",
-        ("Mempool information".ljust(19), "bold"),
+        ("Mempool information:".ljust(19), "bold"),
         "\n".ljust(19),
         ("Fees:".ljust(15), "green bold"),
         f"{mempool_info.total_fee}".rjust(15),

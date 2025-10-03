@@ -20,6 +20,7 @@ from blessed.keyboard import Keystroke
 from curses import KEY_DOWN, KEY_UP
 from docker.models.containers import Container
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from rich.box import ROUNDED
 from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
@@ -83,33 +84,32 @@ class Bifrost(BaseModel):
             container_rows += "\n".join(self.container_names[self.container_index + 1 :])  # noqa: E203
           self.pane["realms"].update(Panel(container_rows, title="realms"))
 
+          body_table: Table = Table(box=ROUNDED, expand=True, show_lines=True)
           container_name: str = self.container_names[self.container_index]
-          body_table: Table = Table(expand=True, show_lines=True)
+          container: Container = next(
+            filter(lambda container: container.name == container_name, self.containers)
+          )
           body_table.add_column(container_name, "dark_sea_green bold")
           if match(r"aesir-bitcoind", container_name):
-            body_table.add_row(Asgard(container=self.bitcoind).renderable)
-          else:
-            container: Container = next(
-              filter(lambda container: container.name == container_name, self.containers)
-            )
-            if match(r"aesir-electrs", container_name):
-              body_table.add_row(Alfheim(container=container).renderable)
-            elif match(r"aesir-ord-server", container_name):
-              body_table.add_row(Utgard(container=container).renderable)
-            elif match(r"aesir-(lnd|ping|pong)", container_name):
-              body_table.add_row(Midgard(container=container).renderable)
-            self.pane["body"].update(body_table)
-            self.pane["footer"].update(
-              Panel(
-                Text.assemble(
-                  "Select:".rjust(16),
-                  (" ↑↓ ", "bright_magenta bold"),
-                  " " * 20,
-                  "Exit:".rjust(16),
-                  ("  Q ", "red bold"),
-                )
+            body_table.add_row(Asgard(container=container).renderable)
+          elif match(r"aesir-electrs", container_name):
+            body_table.add_row(Alfheim(container=container).renderable)
+          elif match(r"aesir-ord-server", container_name):
+            body_table.add_row(Utgard(container=container).renderable)
+          elif match(r"aesir-(lnd|ping|pong)", container_name):
+            body_table.add_row(Midgard(container=container).renderable)
+          self.pane["body"].update(body_table)
+          self.pane["footer"].update(
+            Panel(
+              Text.assemble(
+                "Select:".rjust(16),
+                (" ↑↓ ", "bright_magenta bold"),
+                " " * 20,
+                "Exit:".rjust(16),
+                ("  Q ", "red bold"),
               )
             )
+          )
       except StopIteration:
         print("Valhalla!")
 
