@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.10
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
-# FILENAME:    ~~/src/aesir/types/features.py
+# FILENAME:    ~~/src/aesir/types/electrs_features.py
 # VERSION:     0.5.3
 # CREATED:     2025-10-01 15:50
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
@@ -17,7 +17,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
 
 
-class Features(BaseModel):
+class ElectrsFeatures(BaseModel):
   genesis_hash: StrictStr
   hash_function: StrictStr = Field(default="sha256")
   hosts: dict[Literal["tcp_port"], StrictInt]
@@ -27,4 +27,4 @@ class Features(BaseModel):
   server_version: StrictStr = Field(default="electrs/0.10.10")
 
 
-__all__: tuple[str, ...] = ("Features",)
+__all__: tuple[str, ...] = ("ElectrsFeatures",)

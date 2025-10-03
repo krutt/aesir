@@ -11,7 +11,10 @@
 # *************************************************************
 
 ### Local modules ###
+from aesir.views.alfheim import Alfheim
+from aesir.views.asgard import Asgard
 from aesir.views.bifrost import Bifrost
+from aesir.views.utgard import Utgard
 from aesir.views.yggdrasil import Yggdrasil
 
-__all__: tuple[str, ...] = ("Bifrost", "Yggdrasil")
+__all__: tuple[str, ...] = ("Alfheim", "Asgard", "Bifrost", "Utgard", "Yggdrasil")

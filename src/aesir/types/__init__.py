@@ -15,7 +15,7 @@ from aesir.types.blockchain_info import BlockchainInfo
 from aesir.types.build import Build, BuildEnum
 from aesir.types.chunk import Chunk, ErrorDetail
 from aesir.types.cluster_enum import ClusterEnum
-from aesir.types.features import Features
+from aesir.types.electrs_features import ElectrsFeatures
 from aesir.types.image import Image
 from aesir.types.jsonrpc import JsonrpcError, JsonrpcResponse
 from aesir.types.lnd_info import LNDInfo
