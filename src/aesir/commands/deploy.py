@@ -191,7 +191,7 @@ def deploy(
 
   ### Define selection for shared-volume peripherals ###
   shared_volume_selector: dict[str, bool] = {
-    "aesir-cashu-mint": False,
+    "aesir-cashu-mint": with_cashu_mint and (duo or uno),
     "aesir-electrs": with_electrs,
     "aesir-ord-server": with_ord_server,
     "aesir-postgres": False,
@@ -201,8 +201,9 @@ def deploy(
     lambda peripheral_tuple: shared_volume_selector[peripheral_tuple[0]], PERIPHERALS.items()
   )
   run_errors = []
-  volume_target: str = "aesir-bitcoind" if not cat else "aesir-bitcoind-cat"
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
+    volume_target: str = "aesir-bitcoind" if not cat else "aesir-bitcoind-cat"
+    volume_target = "aesir-lnd" if (name == "aesir-cashu-mint") and uno else "aesir-ping"
     flags = list(service.command.values())
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     try:
@@ -220,6 +221,8 @@ def deploy(
       run_errors.append(
         f"<[bright_magenta]Image [green]'{service.image}'[reset]> [red]is not found.[reset]"
       )
+  if with_cashu_mint and not (duo or uno):
+    run_errors.append("[red]Cashu Mint needs to be run with at least one LND Node.[reset]")
   list(map(rich_print, run_errors))
 
   if len(treasuries) != 0:
