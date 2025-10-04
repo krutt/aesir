@@ -44,21 +44,28 @@ builds:
       - ENTRYPOINT ["/usr/app/bitcoind"]
   aesir-cashu-mint:
     instructions:
-      - FROM python:3.10-slim
-      - RUN apt-get update
-      - RUN apt-get install -y build-essential git pkg-config
-      - ENV PATH="/root/.local/bin:$PATH"
-      - WORKDIR /app
-      - RUN git clone --branch main --depth=1 https://github.com/cashubtc/nutshell.git
-      - RUN apt-get purge -y git
-      - RUN mv nutshell/* ./
-      - RUN rm -rf nutshell
-      - RUN pip install --upgrade pip
-      - RUN pip install --no-cache-dir poetry
-      - RUN poetry config virtualenvs.create false
-      - RUN poetry install --without dev
+      - FROM python:3.13.2-slim AS builder
+      - RUN apt-get update -y
+      - RUN apt-get install -y --no-install-recommends automake build-essential curl g++ gcc git pkg-config
+      - RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.8.22/uv-installer.sh | sh
+      - ENV PATH=$PATH:/root/.local/bin
+      - WORKDIR /usr/src
+      - RUN git clone --branch main https://github.com/cashubtc/nutshell.git
+      - WORKDIR /usr/src/nutshell
+      - RUN git reset --hard 67b7ea6
+      - RUN echo 3.13.2 > .python-version && uv venv --python-preference system
+      - RUN sed -i 's/authors\s=\s\[.*\]/authors = []/g' pyproject.toml
+      - RUN sed -i 's/^\[tool\.poetry\]$/[project]/g' pyproject.toml
+      - RUN sed -i 's/^\[tool\.poetry\.scripts\]$/[project.scripts]/g' pyproject.toml
+      - RUN sed -i 's/^build-backend\s=\s"poetry\.core\.masonry\.api"$/build-backend = "uv_build"/g' pyproject.toml
+      - RUN sed -i 's/^requires\s=\s\["poetry-core>=1\.0\.0"\]$/requires = ["uv_build"]/g' pyproject.toml
+      - RUN echo '\n[tool.uv.build-backend]\nmodule-name = "cashu"\nmodule-root = ""\n' >> pyproject.toml
+      - RUN uv add -r requirements.txt
+      - RUN uv sync --frozen --no-dev
+      - RUN apt-get purge -y automake build-essential curl g++ gcc git
+      - ENV PATH=$PATH:/usr/src/nutshell/.venv/bin
       - EXPOSE 3338
-      - ENTRYPOINT mint
+      - ENTRYPOINT [ "mint" ]
   aesir-electrs:
     instructions:
       - FROM rust:1.90.0-slim-bullseye AS builder
@@ -95,7 +102,7 @@ builds:
       - RUN curl -SLO https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
       - RUN mv bash_completion /usr/share/bash-completion/bash_completion
       - RUN bash /usr/share/bash-completion/bash_completion
-      - ENV PATH /usr/app:$PATH
+      - ENV PATH=$PATH:/usr/app
       - VOLUME [ "/root/.lnd" ]
       - EXPOSE 8080 9735 10000
       - ENTRYPOINT [ "lnd" ]
