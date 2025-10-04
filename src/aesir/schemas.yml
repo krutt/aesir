@@ -52,7 +52,7 @@ builds:
       - WORKDIR /usr/src
       - RUN git clone --branch main https://github.com/cashubtc/nutshell.git
       - WORKDIR /usr/src/nutshell
-      - RUN git reset --hard 67b7ea6
+      - RUN git reset --hard 15ec97b
       - RUN echo 3.13.2 > .python-version && uv venv --python-preference system
       - RUN sed -i 's/authors\s=\s\[.*\]/authors = []/g' pyproject.toml
       - RUN sed -i 's/^\[tool\.poetry\]$/[project]/g' pyproject.toml
