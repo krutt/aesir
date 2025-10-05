@@ -97,14 +97,14 @@ builds:
       - RUN rm lnd-linux-arm64-v$LND_VERSION.tar.gz
       - RUN rm -rf lns-linux-arm64-v$LND_VERSION
       - RUN curl -SLO https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion
-      - RUN mkdir /etc/bash_completion.d
+      - RUN mkdir -p /etc/bash_completion.d
       - RUN mv lncli.bash-completion /etc/bash_completion.d/lncli.bash-completion
       - RUN curl -SLO https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
       - RUN mv bash_completion /usr/share/bash-completion/bash_completion
       - RUN bash /usr/share/bash-completion/bash_completion
       - ENV PATH=$PATH:/usr/app
       - VOLUME [ "/root/.lnd" ]
-      - EXPOSE 8080 9735 10000
+      - EXPOSE 8080 9735 10009
       - ENTRYPOINT [ "lnd" ]
   aesir-ord-server:
     instructions:
@@ -179,7 +179,7 @@ clusters:
       ports:
         - 8080:8080
         - 9735:9735
-        - 10001:10001
+        - 10009:10009
     aesir-pong:
       command:
         <<: *lndFlags
@@ -189,7 +189,7 @@ clusters:
       ports:
         - 8080:8081
         - 9735:9736
-        - 10001:10002
+        - 10009:10010
   ohm:
     aesir-bitcoind:
       command:
@@ -217,7 +217,7 @@ clusters:
       ports:
         - 8080:8080
         - 9735:9735
-        - 10001:10001
+        - 10009:10009
 network: aesir
 peripherals:
   aesir-cashu-mint:
