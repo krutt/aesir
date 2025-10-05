@@ -11,7 +11,7 @@
 # *************************************************************
 
 ### Standard packages ###
-from typing import Any, Literal  # , Self
+from typing import Literal
 
 ### Third-party packages ###
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
@@ -19,6 +19,7 @@ from pydantic.json_schema import SkipJsonSchema
 
 
 class Method(BaseModel):
+  commands: SkipJsonSchema[None] | list[StrictStr] = None
   description: SkipJsonSchema[None] | StrictBool = None
   name: StrictStr = Field(alias="method")
   unit: Literal["sat"]
@@ -27,7 +28,7 @@ class Method(BaseModel):
 class Nut(BaseModel):
   disabled: SkipJsonSchema[None] | StrictBool = None
   methods: SkipJsonSchema[None] | list[Method] = None
-  supported: SkipJsonSchema[None] | Any = None
+  supported: SkipJsonSchema[None] | StrictBool | list[Method] = None
 
 
 class MintInfo(BaseModel):
