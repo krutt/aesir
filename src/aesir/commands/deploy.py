@@ -132,7 +132,7 @@ def deploy(
             """
             lncli
               --macaroonpath=/root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
-              --rpcserver=localhost:10001
+              --rpcserver=localhost:10009
               --tlscertpath=/root/.lnd/tls.cert
             newaddress p2wkh
             """

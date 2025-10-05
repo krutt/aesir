@@ -166,7 +166,7 @@ clusters:
         2: --externalip=aesir-ping
         3: --tlsextradomain=aesir-ping
         4: --listen=0.0.0.0:9735
-        5: --rpclisten=0.0.0.0:10001
+        5: --rpclisten=0.0.0.0:10009
         6: --restlisten=0.0.0.0:8080
         7: --bitcoin.regtest
         8: --bitcoin.node=bitcoind
