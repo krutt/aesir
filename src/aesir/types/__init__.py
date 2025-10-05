@@ -35,7 +35,7 @@ __all__: tuple[str, ...] = (
   "Chunk",
   "ClusterEnum",
   "ErrorDetail",
-  "Features",
+  "ElectrsFeatures",
   "Image",
   "JsonrpcError",
   "JsonrpcResponse",
