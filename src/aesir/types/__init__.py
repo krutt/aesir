@@ -21,6 +21,7 @@ from aesir.types.jsonrpc import JsonrpcError, JsonrpcResponse
 from aesir.types.lnd_info import LNDInfo
 from aesir.types.lnd_invoice import LNDInvoice
 from aesir.types.mempool_info import MempoolInfo
+from aesir.types.mint_info import Method, MintInfo, Nut
 from aesir.types.mutex_option import MutexOption
 from aesir.types.new_address import NewAddress
 from aesir.types.open_channel import OpenChannel
@@ -42,6 +43,9 @@ __all__: tuple[str, ...] = (
   "LNDInfo",
   "LNDInvoice",
   "MempoolInfo",
+  "Method",
+  "MintInfo",
+  "Nut",
   "MutexOption",
   "NewAddress",
   "OpenChannel",

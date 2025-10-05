@@ -31,6 +31,7 @@ from rich.text import Text
 from aesir.views.alfheim import Alfheim
 from aesir.views.asgard import Asgard
 from aesir.views.midgard import Midgard
+from aesir.views.vanaheim import Vanaheim
 from aesir.views.utgard import Utgard
 
 
@@ -92,6 +93,8 @@ class Bifrost(BaseModel):
           body_table.add_column(container_name, "dark_sea_green bold")
           if match(r"aesir-bitcoind", container_name):
             body_table.add_row(Asgard(container=container).renderable)
+          elif match(r"aesir-cashu-mint", container_name):
+            body_table.add_row(Vanaheim(container=container).renderable)
           elif match(r"aesir-electrs", container_name):
             body_table.add_row(Alfheim(container=container).renderable)
           elif match(r"aesir-ord-server", container_name):

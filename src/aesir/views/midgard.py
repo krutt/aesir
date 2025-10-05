@@ -57,9 +57,7 @@ class Midgard(BaseModel):
       str(lnd_info.block_height).rjust(20),
       "\n".ljust(19),
       ("Synced?:".ljust(10), "steel_blue bold"),
-      ("true".rjust(20), "green")
-      if lnd_info.synced_to_chain
-      else ("false".rjust(20), "red"),
+      ("true".rjust(20), "green") if lnd_info.synced_to_chain else ("false".rjust(20), "red"),
       "\n\n\n",
     )
 
