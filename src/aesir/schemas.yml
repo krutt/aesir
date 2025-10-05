@@ -62,7 +62,7 @@ builds:
       - RUN echo '\n[tool.uv.build-backend]\nmodule-name = "cashu"\nmodule-root = ""\n' >> pyproject.toml
       - RUN uv add -r requirements.txt
       - RUN uv sync --frozen --no-dev
-      - RUN apt-get purge -y automake build-essential curl g++ gcc git
+      - RUN apt-get purge -y automake build-essential g++ gcc git
       - ENV PATH=$PATH:/usr/src/nutshell/.venv/bin
       - EXPOSE 3338
       - ENTRYPOINT [ "mint" ]
