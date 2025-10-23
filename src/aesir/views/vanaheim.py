@@ -44,10 +44,7 @@ class Vanaheim(BaseModel):
     supported_nuts: list[int] = list(
       map(
         lambda num_nut: num_nut[0],
-        filter(
-          lambda num_nut: not num_nut[1].disabled,
-          mint_info.nuts.items()
-        )
+        filter(lambda num_nut: not num_nut[1].disabled, mint_info.nuts.items()),
       )
     )
     return Text.assemble(
