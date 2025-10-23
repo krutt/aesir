@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/views/vanaheim.py
-# VERSION:     0.5.2
+# VERSION:     0.5.4
 # CREATED:     2025-10-05 18:42
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
