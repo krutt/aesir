@@ -275,8 +275,15 @@ peripherals:
       - 8080:8081
   aesir-litd:
     command:
-      0: --network=regtest
-      1: --uipassword=heimdall
+      0: --autopilot.disable
+      1: --lit-dir=/root/.lit
+      2: --lnd-mode=remote
+      3: --lnd.rpclisten=aesir-lnd
+      4: --network=regtest
+      5: --remote.lnd.rpcserver=aesir-lnd:10009
+      6: --remote.lnd.macaroonpath=/root/.lnd/data/chain/bitcoin/regtest/admin.macaroon
+      7: --remote.lnd.tlscertpath=/root/.lnd/tls.cert
+      8: --uipassword=heimdall
     image: aesir-litd
     ports:
       - 8443:8443
