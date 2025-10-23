@@ -45,8 +45,7 @@ class Helheim(BaseModel):
         """
         litcli --network=regtest status
         """
-      )
-      .output.replace(b"}\n{", b",")
+      ).output.replace(b"}\n{", b",")
     )
     return Group(
       Text.assemble(
@@ -73,16 +72,24 @@ class Helheim(BaseModel):
         else ("false".rjust(15), "red"),
         "\n".ljust(19),
         ("Lit?:".ljust(15), "light_coral bold"),
-        ("true".rjust(15), "green") if litd_status.sub_servers.lit.running else ("false".rjust(15), "red"),
+        ("true".rjust(15), "green")
+        if litd_status.sub_servers.lit.running
+        else ("false".rjust(15), "red"),
         "\n".ljust(19),
         ("Lnd?:".ljust(15), "blue bold"),
-        ("true".rjust(15), "green") if litd_status.sub_servers.lnd.running else ("false".rjust(15), "red"),
+        ("true".rjust(15), "green")
+        if litd_status.sub_servers.lnd.running
+        else ("false".rjust(15), "red"),
         "\n".ljust(19),
         ("Loop?:".ljust(15), "sandy_brown bold"),
-        ("true".rjust(15), "green") if litd_status.sub_servers.loop.running else ("false".rjust(15), "red"),
+        ("true".rjust(15), "green")
+        if litd_status.sub_servers.loop.running
+        else ("false".rjust(15), "red"),
         "\n".ljust(19),
         ("Pool?:".ljust(15), "light_slate_gray bold"),
-        ("true".rjust(15), "green") if litd_status.sub_servers.pool.running else ("false".rjust(15), "red"),
+        ("true".rjust(15), "green")
+        if litd_status.sub_servers.pool.running
+        else ("false".rjust(15), "red"),
         "\n".ljust(19),
         ("TaprootAssets?:".ljust(15), "rosy_brown bold"),
         ("true".rjust(15), "green")
