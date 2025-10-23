@@ -46,6 +46,7 @@ from aesir.views import Yggdrasil
 @option("--uno", alternatives=["cat", "duo", "ohm"], cls=MutexOption, is_flag=True, type=bool)
 @option("--with-cashu-mint", is_flag=True, help="Deploy cashu-mint peripheral service", type=bool)
 @option("--with-electrs", is_flag=True, help="Deploy electrs peripheral service", type=bool)
+@option("--with-litd", is_flag=True, help="Deploy litd peripheral service", type=bool)
 @option("--with-ord-server", is_flag=True, help="Deploy ord-server peripheral service", type=bool)
 @option("--with-postgres", is_flag=True, help="Deploy postgres peripheral service", type=bool)
 @option("--with-redis", is_flag=True, help="Deploy redis peripheral service", type=bool)
@@ -56,6 +57,7 @@ def deploy(
   uno: bool,
   with_cashu_mint: bool,
   with_electrs: bool,
+  with_litd: bool,
   with_ord_server: bool,
   with_postgres: bool,
   with_redis: bool,
@@ -79,6 +81,7 @@ def deploy(
   image_selector: dict[ServiceName, bool] = {
     "aesir-cashu-mint": False,
     "aesir-electrs": False,
+    "aesir-litd": False,
     "aesir-ord-server": False,
     "aesir-postgres": with_postgres,
     "aesir-redis": with_redis,
@@ -146,6 +149,7 @@ def deploy(
     "aesir-bitcoind-cat": False,
     "aesir-cashu-mint": with_cashu_mint,
     "aesir-electrs": with_electrs,
+    "aesir-litd": with_litd,
     "aesir-lnd": False,
     "aesir-ord-server": with_ord_server,
   }
@@ -193,6 +197,7 @@ def deploy(
   shared_volume_selector: dict[str, bool] = {
     "aesir-cashu-mint": with_cashu_mint and (duo or uno),
     "aesir-electrs": with_electrs,
+    "aesir-litd": with_litd,
     "aesir-ord-server": with_ord_server,
     "aesir-postgres": False,
     "aesir-redis": False,
@@ -203,7 +208,7 @@ def deploy(
   run_errors = []
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     volume_target: str = "aesir-bitcoind" if not cat else "aesir-bitcoind-cat"
-    volume_target = "aesir-lnd" if (name == "aesir-cashu-mint") and uno else "aesir-ping"
+    volume_target = "aesir-lnd" if (name in {"aesir-cashu-mint", "aesir-litd"}) and uno else "aesir-ping"
     flags = list(service.command.values())
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     try:
