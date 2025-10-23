@@ -30,6 +30,7 @@ from rich.text import Text
 ### Local modules ###
 from aesir.views.alfheim import Alfheim
 from aesir.views.asgard import Asgard
+from aesir.views.helheim import Helheim
 from aesir.views.midgard import Midgard
 from aesir.views.vanaheim import Vanaheim
 from aesir.views.utgard import Utgard
@@ -97,6 +98,8 @@ class Bifrost(BaseModel):
             body_table.add_row(Vanaheim(container=container).renderable)
           elif match(r"aesir-electrs", container_name):
             body_table.add_row(Alfheim(container=container).renderable)
+          elif match(r"aesir-litd", container_name):
+            body_table.add_row(Helheim(container=container).renderable)
           elif match(r"aesir-ord-server", container_name):
             body_table.add_row(Utgard(container=container).renderable)
           elif match(r"aesir-(lnd|ping|pong)", container_name):

@@ -208,7 +208,9 @@ def deploy(
   run_errors = []
   for name, service in track(peripherals, "Deploy shared-volume peripherals:".ljust(42)):
     volume_target: str = "aesir-bitcoind" if not cat else "aesir-bitcoind-cat"
-    volume_target = "aesir-lnd" if (name in {"aesir-cashu-mint", "aesir-litd"}) and uno else "aesir-ping"
+    volume_target = (
+      "aesir-lnd" if (name in {"aesir-cashu-mint", "aesir-litd"}) and uno else "aesir-ping"
+    )
     flags = list(service.command.values())
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     try:

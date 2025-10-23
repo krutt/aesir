@@ -18,6 +18,8 @@ from aesir.types.cluster_enum import ClusterEnum
 from aesir.types.electrs_features import ElectrsFeatures
 from aesir.types.image import Image
 from aesir.types.jsonrpc import JsonrpcError, JsonrpcResponse
+from aesir.types.litd_info import LitdInfo
+from aesir.types.litd_status import LitdStatus, SubServer, SubServers
 from aesir.types.lnd_info import LNDInfo
 from aesir.types.lnd_invoice import LNDInvoice
 from aesir.types.mempool_info import MempoolInfo
@@ -40,6 +42,8 @@ __all__: tuple[str, ...] = (
   "Image",
   "JsonrpcError",
   "JsonrpcResponse",
+  "LitdInfo",
+  "LitdStatus",
   "LNDInfo",
   "LNDInvoice",
   "MempoolInfo",
@@ -52,4 +56,6 @@ __all__: tuple[str, ...] = (
   "OrdStatus",
   "Service",
   "ServiceName",
+  "SubServer",
+  "SubServers",
 )
