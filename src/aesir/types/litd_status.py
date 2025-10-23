@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/types/litd_status.py
-# VERSION:     0.5.3
+# VERSION:     0.5.4
 # CREATED:     2025-10-23 19:49
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:

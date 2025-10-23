@@ -2,7 +2,7 @@
 # coding:utf-8
 # Copyright (C) 2022-2025 All rights reserved.
 # FILENAME:    ~~/src/aesir/views/yggdrasil.py
-# VERSION:     0.5.3
+# VERSION:     0.5.4
 # CREATED:     2024-06-26 00:14
 # AUTHOR:      Sitt Guruvanich <aekasitt.g+github@siamintech.co.th>
 # DESCRIPTION:
