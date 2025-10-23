@@ -102,7 +102,7 @@ builds:
   aesir-lnd:
     instructions:
       - FROM debian:stable-slim
-      - ENV LND_VERSION=0.18.5-beta
+      - ENV LND_VERSION=0.19.0-beta
       - WORKDIR /usr/app
       - RUN apt-get update -y
       - RUN apt-get install -y curl wait-for-it
