@@ -14,14 +14,14 @@
 from typing import Literal, Mapping
 
 ### Third-party packages ###
-from pydantic import BaseModel, StrictStr
+from pydantic import BaseModel, StrictInt, StrictStr
 
 ### Local modules ###
 from aesir.types.image import Image
 
 
 class Service(BaseModel):
-  command: Mapping[int, StrictStr] = {}
+  command: Mapping[StrictInt, StrictStr] = {}
   env_vars: list[StrictStr] = []
   image: Image
   ports: list[StrictStr]
