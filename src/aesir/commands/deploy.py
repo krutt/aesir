@@ -215,6 +215,11 @@ def deploy(
     flags = list(service.command.values())
     ports = dict(map(lambda item: (item[0], item[1]), [port.split(":") for port in service.ports]))
     try:
+      if duo and name == "aesir-cashu-mint":
+        pass  # Target aesir-ping for LND REST instead
+      elif duo and name == "aesir-litd":
+        flags[3] = "--lnd.rpclisten=aesir-ping"
+        flags[5] = "--remote.lnd.rpcserver=aesir-ping:10009"
       client.containers.run(
         service.image,
         command=flags,
