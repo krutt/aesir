@@ -76,6 +76,7 @@ def deploy(
   try:
     cluster_name = next(filter(lambda value: value[1], cluster_selector.items()))[0]
   except StopIteration:
+    duo = cluster_name == "duo"
     pass
   cluster: dict[ServiceName, Service] = CLUSTERS[cluster_name]
   image_selector: dict[ServiceName, bool] = {
