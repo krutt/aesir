@@ -129,6 +129,7 @@ $ aesir clean
 * **0.5.2** Stricten type definitions and fix undefined/attribute bugs
 * **0.5.3** Define `aesir-bitcoind` and `aesir-lnd` build instructions. Decouple from Polar's
 * **0.5.4** Add Lightning Terminal to list of available peripherals as `aesir-litd`
+* **0.5.5** Fix build selection and ordering for missing images in deploy command
 
 ## Roadmap
 
