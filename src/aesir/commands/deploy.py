@@ -92,6 +92,55 @@ def deploy(
   )
   cluster.update(peripherals)
 
+  ### Define build targets for missing peripherals ###
+  build_selector: dict[BuildEnum, bool] = {
+    "aesir-bitcoind": True if duo or uno else False,
+    "aesir-bitcoind-cat": True if cat else False,
+    "aesir-cashu-mint": with_cashu_mint,
+    "aesir-electrs": with_electrs,
+    "aesir-litd": with_litd,
+    "aesir-lnd": True if duo or uno else False,
+    "aesir-ord-server": with_ord_server,
+  }
+  ### Build missing images if any ###
+  image_names: list[str] = list(
+    map(
+      lambda image: image.tags[0].split(":")[0],
+      filter(lambda image: len(image.tags) != 0, client.images.list()),
+    )
+  )
+  builds: dict[str, Build] = {
+    tag: build for tag, build in BUILDS.items() if build_selector[tag] and tag not in image_names
+  }
+  build_count: int = len(builds.keys())
+  if build_count != 0:
+    builds_items = builds.items()
+    with Yggdrasil(row_count=10) as yggdrasil:
+      task_id: TaskID = yggdrasil.add_task("", progress_type="primary", total=build_count)
+      for tag, build in builds_items:
+        build_task_id: TaskID = yggdrasil.add_task(tag, progress_type="build", total=100)
+        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
+          try:
+            yggdrasil.progress_build(
+              client.api.build(
+                decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
+              ),
+              build_task_id,
+            )
+          except BuildError:
+            yggdrasil.update(
+              build_task_id,
+              completed=0,
+              description=f"[red bold]Build unsuccessful for <Image '{tag}'>.",
+            )
+          yggdrasil.update(
+            build_task_id,
+            completed=100,
+            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully.",
+          )
+          yggdrasil.update(task_id, advance=1)
+      yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
+
   ### Attempts to create network if not exist ###
   try:
     client.networks.create(NETWORK, check_duplicate=True)
@@ -143,56 +192,6 @@ def deploy(
           ).output
         )
         treasuries.append(new_address.address)
-
-  ### Define build targets for missing peripherals ###
-  build_selector: dict[BuildEnum, bool] = {
-    "aesir-bitcoind": False,
-    "aesir-bitcoind-cat": False,
-    "aesir-cashu-mint": with_cashu_mint,
-    "aesir-electrs": with_electrs,
-    "aesir-litd": with_litd,
-    "aesir-lnd": False,
-    "aesir-ord-server": with_ord_server,
-  }
-
-  ### Build missing images if any for shared-volume peripherals ###
-  image_names: list[str] = list(
-    map(
-      lambda image: image.tags[0].split(":")[0],
-      filter(lambda image: len(image.tags) != 0, client.images.list()),
-    )
-  )
-  builds: dict[str, Build] = {
-    tag: build for tag, build in BUILDS.items() if build_selector[tag] and tag not in image_names
-  }
-  build_count: int = len(builds.keys())
-  if build_count != 0:
-    builds_items = builds.items()
-    with Yggdrasil(row_count=10) as yggdrasil:
-      task_id: TaskID = yggdrasil.add_task("", progress_type="primary", total=build_count)
-      for tag, build in builds_items:
-        build_task_id: TaskID = yggdrasil.add_task(tag, progress_type="build", total=100)
-        with BytesIO("\n".join(build.instructions).encode("utf-8")) as fileobj:
-          try:
-            yggdrasil.progress_build(
-              client.api.build(
-                decode=True, fileobj=fileobj, platform=build.platform, rm=True, tag=tag
-              ),
-              build_task_id,
-            )
-          except BuildError:
-            yggdrasil.update(
-              build_task_id,
-              completed=0,
-              description=f"[red bold]Build unsuccessful for <Image '{tag}'>.",
-            )
-          yggdrasil.update(
-            build_task_id,
-            completed=100,
-            description=f"[blue]Built <[bright_magenta]Image [green]'{tag}'[reset]> successfully.",
-          )
-          yggdrasil.update(task_id, advance=1)
-      yggdrasil.update(task_id, completed=build_count, description="[blue]Complete")
 
   ### Define selection for shared-volume peripherals ###
   shared_volume_selector: dict[str, bool] = {
